@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# EnergyPlus and Sinergym generated output
+Eplus-*/
+episode-*/
+Sinergym_output/
+.lock
+
+# Runtime logs (curated experiment evidence belongs in experiments/)
+logs/*
+!logs/.gitkeep
+*.log
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

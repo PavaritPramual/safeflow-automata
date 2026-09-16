@@ -1,0 +1,192 @@
+[
+  {
+    "step": 1,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        0.0,
+        4.4
+      ]
+    },
+    "ai_proposed_action": 6,
+    "simulator_response": {
+      "reward": -0.1186,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 2,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        0.0,
+        4.8
+      ]
+    },
+    "ai_proposed_action": 7,
+    "simulator_response": {
+      "reward": -0.3753,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 3,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        0.0,
+        5.2
+      ]
+    },
+    "ai_proposed_action": 3,
+    "simulator_response": {
+      "reward": -0.2499,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 4,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        0.0,
+        5.6
+      ]
+    },
+    "ai_proposed_action": 1,
+    "simulator_response": {
+      "reward": -0.3032,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 5,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        1.0,
+        5.35
+      ]
+    },
+    "ai_proposed_action": 4,
+    "simulator_response": {
+      "reward": -0.3423,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 6,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        1.0,
+        5.1
+      ]
+    },
+    "ai_proposed_action": 9,
+    "simulator_response": {
+      "reward": -0.4838,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 7,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        1.0,
+        4.85
+      ]
+    },
+    "ai_proposed_action": 4,
+    "simulator_response": {
+      "reward": -0.2284,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 8,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        1.0,
+        4.6
+      ]
+    },
+    "ai_proposed_action": 0,
+    "simulator_response": {
+      "reward": -0.3324,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 9,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        2.0,
+        4.38
+      ]
+    },
+    "ai_proposed_action": 4,
+    "simulator_response": {
+      "reward": -0.386,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  },
+  {
+    "step": 10,
+    "input_observation": {
+      "indoor_temp_c": 1.0,
+      "raw_obs_sample": [
+        1.0,
+        1.0,
+        2.0,
+        4.15
+      ]
+    },
+    "ai_proposed_action": 3,
+    "simulator_response": {
+      "reward": -0.4346,
+      "next_indoor_temp_c": 1.0,
+      "terminated": false,
+      "truncated": false
+    }
+  }
+]
