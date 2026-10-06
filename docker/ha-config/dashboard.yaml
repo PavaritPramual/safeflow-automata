@@ -6,7 +6,7 @@ views:
       - type: markdown
         content: |
           ## SafeFlow AI — stage one
-          Simulated devices only. **Unshielded**, with input validation and proposal logs.
+          Simulated devices only. AI commands pass Automata guards; human requests bypass safety rules and remain logged.
           Device toggles queue a request; **Run one round** executes it before AI.
           Automatic control is enabled by the backend's --interval option.
       - type: entities
@@ -18,6 +18,9 @@ views:
           - sensor.safeflow_simulation_time
           - sensor.safeflow_pending
           - sensor.safeflow_status
+          - sensor.safeflow_decision
+          - sensor.safeflow_decision_reason
+          - sensor.safeflow_cooldown
           - number.safeflow_target_temperature
           - switch.safeflow_light_required
       - type: entities

@@ -1,5 +1,6 @@
 """Strict proposal decoding; no safety policy is applied here."""
 from dataclasses import asdict, dataclass
+import json
 
 MODES = {
     "air_conditioner": ("off", "cool"),
@@ -38,8 +39,20 @@ def decode_call(call):
     return Command(name, device, mode)
 
 
-def decode_response(response):
+def decode_response(response, output_mode="tools"):
     message = response.get("message") if isinstance(response, dict) else None
+    if output_mode == "json":
+        try:
+            value = json.loads(message["content"])
+            if not isinstance(value, dict) or set(value) != {"name", "device", "mode"}:
+                raise ValueError("invalid_json_command")
+            if value["name"] == "hold" and (value["device"] is not None or value["mode"] is not None):
+                raise ValueError("invalid_hold_arguments")
+            return decode_call({"function": {"name": value["name"], "arguments": {} if value["name"] == "hold" else {"device": value["device"], "mode": value["mode"]}}})
+        except (KeyError, TypeError, json.JSONDecodeError) as exc:
+            raise ValueError("invalid_json_command") from exc
+    if output_mode != "tools":
+        raise ValueError("unknown_output_mode")
     calls = message.get("tool_calls") if isinstance(message, dict) else None
     if not isinstance(calls, list) or len(calls) != 1:
         raise ValueError("exactly_one_tool_call_required")

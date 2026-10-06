@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd">
+<nta>
+  <declaration>// smart-home-v1. Commands: hold, AC off/on, heater off/on, fan off/on, light off/on.
+clock rest;
+bool ac=false, heater=false, fan=false, light=false, has_off=false;
+int[0,8] command=0;
+int[0,1] source=0; // 0 AI, 1 human
+bool allowed=false;
+bool bad_conflict=false, bad_cooldown=false, bad_block=false;
+bool before_ac=false, before_heater=false;
+bool human_conflict_seen=false, ai_open_seen=false, expired_open_seen=false, block_seen=false;
+bool conflict() { return (command==2 &amp;&amp; heater) || (command==4 &amp;&amp; ac); }
+bool resting() { return command==2 &amp;&amp; !ac &amp;&amp; has_off &amp;&amp; rest&lt;180; }
+bool permit() { return source==1 || (!conflict() &amp;&amp; !resting()); }
+void execute() {
+  if (allowed) {
+    if (source==0 &amp;&amp; conflict()) bad_conflict=true;
+    if (source==0 &amp;&amp; resting()) bad_cooldown=true;
+    if (command==1) { if(ac) { rest=0; has_off=true; } ac=false; }
+    if (command==2) { if(source==0 &amp;&amp; !ac &amp;&amp; has_off &amp;&amp; rest&gt;=180) expired_open_seen=true; ac=true; if(source==0) ai_open_seen=true; }
+    if (command==3) heater=false;
+    if (command==4) heater=true;
+    if (command==5) fan=false;
+    if (command==6) fan=true;
+    if (command==7) light=false;
+    if (command==8) light=true;
+    if (source==1 &amp;&amp; ac &amp;&amp; heater) human_conflict_seen=true;
+  } else {
+    block_seen=true;
+    if(ac!=before_ac || heater!=before_heater) bad_block=true;
+  }
+}
+chan proposal, decision, done;</declaration>
+  <template>
+    <name>Proposer</name>
+    <location id="ProposerReady" x="0" y="0">
+      <name>Ready</name>
+    </location>
+    <location id="ProposerWaiting" x="0" y="0">
+      <name>Waiting</name>
+      <committed />
+    </location>
+    <init ref="ProposerReady" />
+    <transition>
+      <source ref="ProposerReady" />
+      <target ref="ProposerWaiting" />
+      <label kind="select">c:int[0,8], s:int[0,1]</label>
+      <label kind="synchronisation">proposal!</label>
+      <label kind="assignment">command=c, source=s, before_ac=ac, before_heater=heater</label>
+    </transition>
+    <transition>
+      <source ref="ProposerWaiting" />
+      <target ref="ProposerReady" />
+      <label kind="synchronisation">done?</label>
+    </transition>
+  </template>
+  <template>
+    <name>Guard</name>
+    <location id="GuardIdle" x="0" y="0">
+      <name>Idle</name>
+    </location>
+    <location id="GuardCheck" x="0" y="0">
+      <name>Check</name>
+      <committed />
+    </location>
+    <location id="GuardApply" x="0" y="0">
+      <name>Apply</name>
+      <committed />
+    </location>
+    <init ref="GuardIdle" />
+    <transition>
+      <source ref="GuardIdle" />
+      <target ref="GuardCheck" />
+      <label kind="synchronisation">proposal?</label>
+    </transition>
+    <transition>
+      <source ref="GuardCheck" />
+      <target ref="GuardApply" />
+      <label kind="assignment">allowed=permit()</label>
+    </transition>
+    <transition>
+      <source ref="GuardApply" />
+      <target ref="GuardIdle" />
+      <label kind="synchronisation">decision!</label>
+    </transition>
+  </template>
+  <template>
+    <name>Plant</name>
+    <location id="PlantIdle" x="0" y="0">
+      <name>Idle</name>
+    </location>
+    <location id="PlantExecute" x="0" y="0">
+      <name>Execute</name>
+      <committed />
+    </location>
+    <location id="PlantFinish" x="0" y="0">
+      <name>Finish</name>
+      <committed />
+    </location>
+    <init ref="PlantIdle" />
+    <transition>
+      <source ref="PlantIdle" />
+      <target ref="PlantExecute" />
+      <label kind="synchronisation">decision?</label>
+    </transition>
+    <transition>
+      <source ref="PlantExecute" />
+      <target ref="PlantFinish" />
+      <label kind="assignment">execute()</label>
+    </transition>
+    <transition>
+      <source ref="PlantFinish" />
+      <target ref="PlantIdle" />
+      <label kind="synchronisation">done!</label>
+    </transition>
+  </template>
+  <system>P=Proposer(); G=Guard(); E=Plant(); system P,G,E;</system>
+  <queries>
+    <query>
+      <formula>A[] not deadlock</formula>
+      <comment>No structural deadlock; does not prove scheduling fairness.</comment>
+    </query>
+    <query>
+      <formula>A[] !bad_conflict</formula>
+      <comment>No permitted AI request opens a conflicting device.</comment>
+    </query>
+    <query>
+      <formula>A[] !bad_cooldown</formula>
+      <comment>No permitted AI off-to-on request violates rest.</comment>
+    </query>
+    <query>
+      <formula>A[] !bad_block</formula>
+      <comment>Blocked proposal preserves device state.</comment>
+    </query>
+    <query>
+      <formula>E&lt;&gt; human_conflict_seen</formula>
+      <comment>Human override can reach both-on.</comment>
+    </query>
+    <query>
+      <formula>E&lt;&gt; ai_open_seen</formula>
+      <comment>Policy does not block all AI openings.</comment>
+    </query>
+    <query>
+      <formula>E&lt;&gt; block_seen</formula>
+      <comment>Blocking is reachable.</comment>
+    </query>
+    <query>
+      <formula>E&lt;&gt; expired_open_seen</formula>
+      <comment>Clock expiry and AI opening are reachable.</comment>
+    </query>
+  </queries>
+</nta>

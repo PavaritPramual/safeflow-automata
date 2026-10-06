@@ -1,0 +1,28 @@
+{
+  "type": "real_home_assistant_api_smoke",
+  "entities": [
+    "sensor.safeflow_temperature",
+    "sensor.safeflow_power",
+    "sensor.safeflow_energy",
+    "sensor.safeflow_simulation_time",
+    "sensor.safeflow_pending",
+    "sensor.safeflow_status",
+    "number.safeflow_target_temperature",
+    "switch.safeflow_light_required",
+    "switch.safeflow_air_conditioner",
+    "switch.safeflow_heater",
+    "switch.safeflow_ventilation_fan",
+    "switch.safeflow_light",
+    "button.safeflow_step",
+    "button.safeflow_reset",
+    "sensor.safeflow_decision",
+    "sensor.safeflow_decision_reason",
+    "sensor.safeflow_cooldown"
+  ],
+  "queued_without_execution": true,
+  "goal_update": true,
+  "human_replaces_ai_one_round": true,
+  "ai_resumes": true,
+  "simulation_time_s": 60.0,
+  "safety_enforcer": true
+}

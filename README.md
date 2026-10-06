@@ -2,85 +2,101 @@
 
 **A Formal Framework for Automata-Based AI Runtime Control**
 
-SafeFlow studies an automata interception layer that checks proposed commands
-before they affect an environment. The new case study is a simulated smart home,
-a small local LLM, and Home Assistant for state display and human requests.
-The framework is the research contribution; the model and home are the case study.
+SafeFlow places a policy automaton between an AI proposal and execution.
+The case study is a simulated home: AC, heater, ventilation fan and light,
+with a local LLM and Home Assistant. The environment permits conflicting modes;
+the automaton decides which **AI commands** may proceed.
 
-## Current status
+## Evidence first
 
-The stage-one prototype runs: RC physics, durable pre-execution JSONL, local Ollama
-proposals, and real Home Assistant entities/services. **It is unshielded.**
+| Evidence | Current result |
+|---|---|
+| Injected command sequence | 3 AI requests blocked in 15 rounds; blocked modes unchanged; replay passed |
+| Human override | Both-on state permitted, logged, observed; AI resumes under guards |
+| Automated tests | 33 passed, including real local HTTP fixture |
+| Home Assistant | 17 entities loaded; goals, human queue and AI resumption checked via actual services |
+| Qwen3-1.7B, revised prompt + tools | 40/40 valid, 10/40 expected actions â€” failed |
+| Qwen3-1.7B, structured JSON | 36/40 valid, 5/40 expected actions â€” failed |
+| UPPAAL | Model and queries prepared; verifier blocked by license â€” **not verified** |
+| RAM 8 GB | Target only; current host has 32 GB â€” **not certified** |
 
-The real model gate on 2026-10-06 failed: Qwen3-0.6B returned 0/40 valid commands;
-Qwen3-1.7B returned 40/40 valid commands but only 20/40 expected actions (32 required).
-Development pauses before Automata enforcement/UPPAAL until model selection is
-reviewed. Neither autonomous-control readiness nor 8 GB compatibility is claimed.
+[Read the traces and limitations](experiments/smart-home-stage2/README.md).
+Injected proposals are test inputs, not discoveries about the real model.
+Failed model gates remain evidence and do not stop independent Automata testing.
 
-See [recorded results and raw traces](experiments/smart-home-stage1/README.md).
+## How it works
 
-```mermaid
-flowchart LR
-    S[Home state and goals] --> A[Local LLM]
-    A --> P[Action proposal]
-    H[Human requests] --> P
-    P --> L[Durable trace]
-    L --> V[Current: format validation]
-    V --> B[Simulated home]
-    B --> S
-```
+![AI proposals are logged, checked by Automata, and executed only when allowed; human requests bypass safety guards but update the same observed state](assets/readme/workflow.svg)
 
-The planned Automata Enforcer will sit after logging and before execution.
-Format validation currently rejects malformed commands, not unsafe combinations.
+1. A local model proposes one `set_device(device, mode)` or `hold()`.
+2. SafeFlow records the raw response, proposal, source and state before execution.
+3. Automata evaluates the proposal and durably records its decision.
+4. Allowed commands execute. Blocked commands preserve device modes. Both advance simulated time by 30 seconds.
+5. Actual results update the automaton and trace. Replay checks the recorded decisions and effects.
 
-## Run the prototype
+Human requests replace AI for one round, bypass safety guards, and remain validated
+and logged. This means the whole house can reach a conflicting state; claims are
+limited to the AI commands admitted by these guards.
 
-Follow the [Windows setup, API and test guide](docs/guides/smart-home.md).
+## Two experimental rules
+
+- AI cannot request AC cooling while the heater is on, or heater on while AC is cooling.
+- After a real AC on-to-off transition, AI must wait **180 simulated seconds** before an off-to-on request.
+
+Repeated off does not reset the clock. Human commands update the same clock.
+A blocked request does not cause an automatic off command. Unknown input is
+rejected; inconsistent observed state halts the episode. The 180-second value is
+an experiment setting, not an appliance standard.
+
+[State mapping, transitions and formal assumptions](docs/guides/automata.md)
+
+## Run locally
+
+Prerequisites: Python 3.11+, Ollama, Docker Desktop for Home Assistant.
+From this repository:
 
 ```powershell
 ./scripts/setup-local.ps1 -Python python
-ollama pull qwen3:0.6b
-./.venv/Scripts/python.exe -m safeflow.server --trace logs/model-06b.jsonl
+ollama pull qwen3:1.7b
+./.venv/Scripts/python.exe -m safeflow.server --model qwen3:1.7b --output-mode json --trace logs/home.jsonl
 ```
 
-In a second terminal:
+In another terminal:
 
 ```powershell
 docker compose -f docker/compose.yaml up -d
-./.venv/Scripts/python.exe -m safeflow.evaluate --output logs/gate-06b.json
 ```
 
-Open Home Assistant at <http://localhost:8123>. The guide describes the 1.7B fallback,
-automatic-round option, human controls, local credentials and shutdown.
+Open Home Assistant at <http://localhost:8123>. Device toggles queue a human request;
+**Run one round** executes it or asks AI. `--interval 5` enables automatic rounds;
+`--unshielded` explicitly disables the policy for baseline experiments.
+Structured JSON is an experimental transport, not a successful model-selection result.
 
-## Implemented first-stage boundaries
+[Setup, authentication, API, physics and shutdown](docs/guides/smart-home.md)
 
-- Ollama `qwen3:0.6b`; try `qwen3:1.7b` if the first model fails the gate.
-- One room: air conditioner, heater, ventilation fan and light.
-- RC thermal physics and device power; 30 simulation seconds per round.
-- One `set_device(device, mode)` or `hold()` proposal per response.
-- Human goals and direct requests; direct requests replace AI for one round.
-- Invalid proposals never execute. Input validation is not a safety shield.
-- Low-memory target, no paid API, no training.
+## Validate and reproduce
 
-The friend's **8 GB RAM limit** remains an acceptance check. Recorded execution
-used a 32 GB host, with Docker/WSL limitations recorded explicitly.
+```powershell
+./.venv/Scripts/python.exe -m unittest discover -s tests -v
+./.venv/Scripts/python.exe scripts/run-stage2.py --output logs/injected-check
+./.venv/Scripts/python.exe scripts/build-formal-model.py
+```
 
-## Historical experiment
+Use an unused output directory: evidence is not overwritten. Model review uses
+`--models` and two bounded configurations, without answer repair or oracle leakage.
+The UPPAAL model requires a verifier license. No mathematical proof or full
+runtime/model equivalence is claimed by the Python tests.
 
-The Sinergym/PPO experiment remains in
-[archive/sinergym](archive/sinergym/README.md).
-Its ten-step trace is historical logging evidence, not proof of an equipment
-hazard or a working enforcer. The local external checkout is archived outside this
-repository, with its Git history retained.
+## Research boundaries
 
-## Repository boundaries
+No training, paid API, physical devices or 3D scene. All room parameters are
+synthetic; this prototype does not certify temperature, equipment or real-home
+safety. Hardware acceptance on a friend's 8 GB machine remains pending.
 
-`src/safeflow` separates simulation, agent, logging and control.
-`configs` holds public settings, `docker` holds Home Assistant setup,
-`experiments` holds curated evidence, and `logs` holds ignored runtime output.
+Historical [Sinergym/PPO evidence](archive/sinergym/README.md) and
+[stage-one results](experiments/smart-home-stage1/README.md) are retained.
+Old action IDs do not establish compressor short-cycling.
 
-`archive/sinergym` separates the retired approach from current experiments.
-Old local proposals and infographic artifacts are archived at workspace level;
-their contents are unchanged. Model selection remains an open research gate even
-when this prototype is merged into `main`.
+Source lives in `src/safeflow`, public configuration in `configs`, curated evidence
+in `experiments`, and ignored runtime output in `logs`. Tokens, model weights and
+Home Assistant storage stay local.

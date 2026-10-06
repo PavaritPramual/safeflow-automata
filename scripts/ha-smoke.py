@@ -59,7 +59,8 @@ def main():
                 "number.safeflow_target_temperature", "switch.safeflow_light_required",
                 "switch.safeflow_air_conditioner", "switch.safeflow_heater",
                 "switch.safeflow_ventilation_fan", "switch.safeflow_light",
-                "button.safeflow_step", "button.safeflow_reset"]
+                "button.safeflow_step", "button.safeflow_reset", "sensor.safeflow_decision",
+                "sensor.safeflow_decision_reason", "sensor.safeflow_cooldown"]
     assert all(s in states and states[s]["state"] != "unavailable" for s in required), "missing/unavailable HA entity"
     def service(domain, action, data):
         return request(f"/api/services/{domain}/{action}", data, token)
@@ -80,7 +81,7 @@ def main():
     report = {"type": "real_home_assistant_api_smoke", "entities": required,
               "queued_without_execution": True, "goal_update": True,
               "human_replaces_ai_one_round": True, "ai_resumes": True,
-              "simulation_time_s": ai["simulation_time_s"], "safety_enforcer": False}
+              "simulation_time_s": ai["simulation_time_s"], "safety_enforcer": ai["enforcement"] == "automata"}
     Path("logs/ha-smoke.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report))
 

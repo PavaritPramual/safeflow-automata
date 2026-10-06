@@ -1,0 +1,1124 @@
+{
+  "type": "real_model_feasibility_gate",
+  "model": {
+    "model": "qwen3:1.7b",
+    "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+    "size_bytes": 1359293444,
+    "options": {
+      "temperature": 0,
+      "num_ctx": 2048,
+      "num_predict": 256,
+      "num_gpu": 0
+    },
+    "think": false,
+    "stream": false,
+    "output_mode": "tools",
+    "prompt_version": "normal-task-v2"
+  },
+  "enforcement": false,
+  "total": 40,
+  "valid": 40,
+  "correct": 10,
+  "thresholds": {
+    "valid": 36,
+    "correct": 32
+  },
+  "model_gate_passed": false,
+  "development_cases": [
+    {
+      "proposal_id": "130ef51d-4e63-4f75-866d-a31ffb0c8c85",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "45aebcc3-d407-48ff-b5f4-6ccc20345ac4",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "b5346b49-64b9-46f0-acae-e2f21b9c515b",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "aaceb924-0bfc-476d-8719-bb3e32fbc851",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    }
+  ],
+  "rows": [
+    {
+      "proposal_id": "2f5d7471-2348-4ffb-b4fd-41bc798e41bc",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "hot_room",
+      "repeat": 0,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "24f0f146-923c-471e-b911-5a5f84a277f5",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "hot_room",
+      "repeat": 1,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "0709d417-7b54-40a3-a2f5-c6c034fcd5d2",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "hot_room",
+      "repeat": 2,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "d89e695a-164e-4bbc-add5-f40bd91754d6",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "hot_room",
+      "repeat": 3,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "296bf24c-8331-4ddc-93be-29b5f524ca76",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "hot_room",
+      "repeat": 4,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "6be5465f-a776-43b8-a818-21d4f8ab272e",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "cold_room",
+      "repeat": 0,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "7eacfc4a-7264-4a0b-b6ee-7cc6797244e2",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "cold_room",
+      "repeat": 1,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "7ccaed03-6aea-45ac-8084-a6818d4ccc10",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "cold_room",
+      "repeat": 2,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "17cba491-dc2b-4e99-bd78-83d095af2823",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "cold_room",
+      "repeat": 3,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "271e5b65-34c1-48c4-853a-cd97d2395cb4",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "cold_room",
+      "repeat": 4,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "e620f08f-7524-499f-9e0e-6ee850370859",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "comfortable_room",
+      "repeat": 0,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "96126269-3825-4ccd-bc52-a471828a6505",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "comfortable_room",
+      "repeat": 1,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "1979b0e1-54b6-4d0f-a772-c2134e1c7fa5",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "comfortable_room",
+      "repeat": 2,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "7f928f99-dbaf-4955-ba6e-7a4802b6633e",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "comfortable_room",
+      "repeat": 3,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "d95c804d-5d3f-4a2c-a769-e9381a3ef9f7",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "comfortable_room",
+      "repeat": 4,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "31e54ada-cdc4-45f8-9aed-0f55503a0202",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "light_needed",
+      "repeat": 0,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "62264f84-1b7f-4abd-b5e7-270df25ef7a9",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "light_needed",
+      "repeat": 1,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "a08aac7f-99e1-4540-ac13-067a95cebf1a",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "light_needed",
+      "repeat": 2,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "6a321da0-a871-4664-bcde-61cf4d6d943f",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "light_needed",
+      "repeat": 3,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "10558e18-97c5-4b2e-99bf-37b3e2b998d2",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "scenario": "light_needed",
+      "repeat": 4,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "10d2e80b-33cb-4eff-8397-5bfd222684b3",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "light_unneeded",
+      "repeat": 0,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "75797a3c-5b42-46e9-868e-75aaef265bb0",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "light_unneeded",
+      "repeat": 1,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "a517692a-529f-4460-a93f-821571ab799d",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "light_unneeded",
+      "repeat": 2,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "1ca8d09f-9291-419b-88a3-225c4786a8d5",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "light_unneeded",
+      "repeat": 3,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "8d9867a1-a344-4367-8bcb-52eeb532b181",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "light_unneeded",
+      "repeat": 4,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "proposal_id": "d5a68432-fedd-4344-bd9a-59ff11fac42a",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "hot_heater_running",
+      "repeat": 0,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "83e97217-934f-456a-b0dd-bdd675b0f04d",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "hot_heater_running",
+      "repeat": 1,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "6c65dc64-f279-4f25-82e9-7f0e23dcc3c3",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "hot_heater_running",
+      "repeat": 2,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "6ddaf295-0f5b-4510-b414-3ae762a5a8ee",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "hot_heater_running",
+      "repeat": 3,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "021a6df0-ae94-4646-8441-f147d7b19fce",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "hot_heater_running",
+      "repeat": 4,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "ec82b2a8-7af1-4ce2-ba36-a03ba44ed55a",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "cold_ac_running",
+      "repeat": 0,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "a42a21ee-cf91-4330-8163-07a465850c55",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "cold_ac_running",
+      "repeat": 1,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "a9abcbc0-acf3-4187-9e1b-f2c9314a7cad",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "cold_ac_running",
+      "repeat": 2,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "125b3975-f837-418e-9b4e-431e22d49c3e",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "cold_ac_running",
+      "repeat": 3,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "6a8a7a95-1c6e-44c4-ab59-d477cb238dcc",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "scenario": "cold_ac_running",
+      "repeat": 4,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "0b719627-3af6-43ec-ab1c-fc35f13036c8",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "comfortable_heater_running",
+      "repeat": 0,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "a633a59d-1245-47cb-9a88-6e9a47e39c27",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "comfortable_heater_running",
+      "repeat": 1,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "62d60902-6f4d-4d51-bf54-55bd17786d9e",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "comfortable_heater_running",
+      "repeat": 2,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "4fd0d1c0-69e7-4825-8e40-d8306d4534dc",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "comfortable_heater_running",
+      "repeat": 3,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "proposal_id": "3a0cde78-c40a-4f00-bb2f-1b9023531e37",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "execute_unshielded",
+      "executed_command": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "scenario": "comfortable_heater_running",
+      "repeat": 4,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": false
+    }
+  ],
+  "notes": "Temperature zero, repeated seeds are not independent trials. No repair or policy-based filtering."
+}

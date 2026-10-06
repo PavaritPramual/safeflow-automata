@@ -1,3 +1,4 @@
-# Enforcer module boundary
+# Automata runtime boundary
 
-Reserved for the future automata runtime enforcer. This directory intentionally contains no implementation yet.
+The current policy implementation is `../automata.py`, invoked by Controller before apply.
+See the policy specification in `docs/guides/automata.md`. This directory remains a historical package boundary.

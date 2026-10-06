@@ -1,8 +1,7 @@
-# Smart-home prototype: stage one
+# Smart-home prototype with Automata
 
-This is **unshielded**. Validation rejects malformed proposals but does not block
-heater/AC conflicts or cooldown violations. Never connect these simulated switches
-to real equipment. No Automata Enforcer or UPPAAL result is present in this stage.
+AI commands now pass two experimental guards; human commands bypass them but remain logged.
+UPPAAL verification and real-home safety are not established. See [policy specification](automata.md).
 
 ## Windows setup
 
@@ -15,8 +14,8 @@ From the repository root:
 
 ```powershell
 ./scripts/setup-local.ps1 -Python python
-ollama pull qwen3:0.6b
-./.venv/Scripts/python.exe -m safeflow.server --model qwen3:0.6b --trace logs/model-06b.jsonl
+ollama pull qwen3:1.7b
+./.venv/Scripts/python.exe -m safeflow.server --model qwen3:1.7b --output-mode json --trace logs/home.jsonl
 ```
 
 Keep that terminal running. In another terminal:
@@ -44,37 +43,17 @@ container connect, requires the key on every control/state endpoint, and exposes
 only a minimal unauthenticated health endpoint. The HA UI port is bound to loopback.
 Do not commit `.env`, secrets, HA storage, tokens or model weights.
 
-## Model gate and fallback
+## Model feasibility review
 
-Eight normal scenarios, five calls each, are declared **before** evaluation in
-`configs/scenarios.json`. The same system prompt and tool schemas are used for
-both model candidates. One `set_device` or `hold` must be returned. Multiple calls,
-prose-only replies, unknown devices, incorrect modes and malformed arguments do
-not execute. Invalid responses still advance the passive simulation by 30 seconds.
+The stage-two model configurations both failed the unchanged 36-valid/32-expected
+thresholds in 40 calls. See [results](../../experiments/smart-home-stage2/README.md).
+`--output-mode tools` uses one tool call; `--output-mode json` parses a strict JSON
+command without repair. Neither filters outputs by safety policy. Raw responses
+remain in the proposal record. The selected configuration is not certified for
+successful autonomous control.
 
-The gate requires 36/40 structurally valid and 32/40 expected actions. These are
-engineering thresholds, not statistical generalization claims. The prompt contains
-simple task guidance and the oracle checks adherence to that guidance. This is
-not an independent evaluation of sophisticated autonomous reasoning.
-
-If 0.6B fails, stop its backend and unload that model before trying 1.7B:
-
-```powershell
-ollama stop qwen3:0.6b
-ollama pull qwen3:1.7b
-./.venv/Scripts/python.exe -m safeflow.server --model qwen3:1.7b --trace logs/model-17b.jsonl
-```
-
-In a separate terminal, run:
-
-```powershell
-./.venv/Scripts/python.exe -m safeflow.evaluate --output logs/gate-17b.json
-```
-
-Do not tune the oracle after seeing outputs. Keep failed traces. If both candidates
-fail, pause agent selection; do not implement the next safety stage or silently
-switch to a larger, paid or trained model. The 2026-10-06 run failed this gate for
-both candidates; see [recorded results](../../experiments/smart-home-stage1/README.md).
+Safety enforcement is on by default. `--unshielded` is an explicit baseline mode.
+Model-quality evaluation and Automata evaluation have independent acceptance gates.
 
 ## API and trace
 
@@ -84,7 +63,7 @@ All endpoints except `GET /health` require `Authorization: Bearer <local-key>`.
 |---|---|
 | `GET /state` | Authoritative state, model metadata, queue count and stage |
 | `POST /human` | Queue `{device, mode}`; reply 202 with request ID |
-| `POST /goals` | Update `target_c` (10–40 °C) and/or boolean `light_required` |
+| `POST /goals` | Update `target_c` (10â€“40 Â°C) and/or boolean `light_required` |
 | `POST /step` | One round, optional integer seed; direct human command wins |
 | `POST /reset` | Reset scenario, trace a new episode, clear pending requests |
 

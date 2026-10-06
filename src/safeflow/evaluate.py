@@ -34,7 +34,7 @@ def main():
             print(f"{case['id']} {repeat + 1}/5: {result['validation']}, expected={match}", flush=True)
     valid = sum(x["validation"] == "valid" for x in rows)
     correct = sum(x["matches_expected"] for x in rows)
-    report = {"type": "real_model_feasibility_gate", "safety_enforcer": False,
+    report = {"type": "real_model_feasibility_gate", "safety_enforcer": state["enforcement"] == "automata",
               "model": state["model"], "total": len(rows), "valid": valid, "correct": correct,
               "thresholds": {"valid": 36, "correct": 32},
               "model_gate_passed": len(rows) == 40 and valid >= 36 and correct >= 32,
