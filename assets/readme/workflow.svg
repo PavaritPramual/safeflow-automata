@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" role="img" aria-labelledby="title desc">
+<title id="title">SafeFlow proposal interception</title><desc id="desc">AI proposals are logged and checked before execution. Humans bypass safety guards and both sources update observed state.</desc>
+<rect width="1200" height="500" fill="#101820"/>
+<g font-family="Segoe UI, sans-serif" fill="#f4f6f8">
+<text x="60" y="70" font-size="40" font-weight="700">SafeFlow • command boundary</text>
+<text x="60" y="110" font-size="24" fill="#a9b4bf">AI decides. Automata admits. Actual effects update state.</text>
+<path d="M130 210H1060 M1060 210V370H130V260" stroke="#6bd5ba" stroke-width="4" fill="none"/>
+<g fill="#101820" stroke="#a9b4bf" stroke-width="2"><rect x="60" y="165" width="230" height="100"/><rect x="345" y="165" width="230" height="100"/><rect x="630" y="165" width="230" height="100"/><rect x="915" y="165" width="230" height="100"/></g>
+<g text-anchor="middle" font-size="28"><text x="175" y="225">Proposal</text><text x="460" y="225">Durable log</text><text x="745" y="225" fill="#6bd5ba">Automata</text><text x="1030" y="225">Execute</text></g>
+<text x="600" y="355" text-anchor="middle" font-size="26">Observe device modes + simulated clock</text>
+<text x="60" y="440" font-size="24" fill="#a9b4bf">Human override: validated + logged, bypasses safety guards.</text>
+</g></svg>

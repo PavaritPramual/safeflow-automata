@@ -1,0 +1,226 @@
+{
+  "type": "real_model_closed_loop",
+  "model": {
+    "model": "qwen3:1.7b",
+    "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+    "size_bytes": 1359293444,
+    "options": {
+      "temperature": 0,
+      "num_ctx": 2048,
+      "num_predict": 256,
+      "num_gpu": 0
+    },
+    "think": false,
+    "stream": false,
+    "output_mode": "json",
+    "prompt_version": "normal-task-v2"
+  },
+  "steps": 12,
+  "blocked": 0,
+  "results": [
+    {
+      "proposal_id": "5771fe2b-b551-41f9-8eae-9a672081f215",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "0ddaa9fe-6bcc-4b4c-865b-72bf270a48be",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "6953d446-11ae-403b-b701-f740bcfa353a",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "a24634a6-9f65-48fd-80d7-e40b04f6a352",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "57bdb498-6b51-4ec8-ae53-dd04e64d2186",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "4261e532-3dd6-4f06-a872-61bce16cb303",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "2819785c-2692-4a79-97f2-1b0a9bf3f0e8",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "ac206414-b1c1-4203-847c-05351a3ec319",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "871d9115-f913-4cbf-b956-b100484ebf26",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "c1db516d-e220-4fa5-9c91-95415e2ca79c",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "ff3040df-2c71-40a3-b134-1c06573773bb",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    },
+    {
+      "proposal_id": "50c6ab48-8d13-4fd2-b398-df420d91af19",
+      "source": "ai",
+      "command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "validation": "valid",
+      "reason": null,
+      "decision": "allow",
+      "executed_command": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      }
+    }
+  ]
+}

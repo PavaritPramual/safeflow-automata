@@ -1,0 +1,287 @@
+{
+  "host_ram_bytes": 34085847040,
+  "target_ram_bytes": 8589934592,
+  "samples": [
+    {
+      "timestamp_utc": "2026-10-06T17:46:57.5757829Z",
+      "ollama": {
+        "models": [
+          {
+            "name": "qwen3:1.7b",
+            "model": "qwen3:1.7b",
+            "size": 1645446429,
+            "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "2.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-10-07T00:51:55.9168031+07:00",
+            "size_vram": 0,
+            "context_length": 2048
+          }
+        ]
+      },
+      "model_processes": [
+        {
+          "name": "ollama app",
+          "pid": 103836,
+          "working_set_bytes": 46374912
+        },
+        {
+          "name": "ollama",
+          "pid": 98980,
+          "working_set_bytes": 68956160
+        },
+        {
+          "name": "llama-server",
+          "pid": 114092,
+          "working_set_bytes": 1762783232
+        }
+      ],
+      "python_processes": [
+        {
+          "Id": 78836,
+          "WorkingSet64": 30945280
+        },
+        {
+          "Id": 103432,
+          "WorkingSet64": 5480448
+        }
+      ],
+      "docker": {
+        "BlockIO": "104MB / 106kB",
+        "CPUPerc": "0.00%",
+        "Container": "safeflow-homeassistant",
+        "ID": "97592e1c3223",
+        "MemPerc": "15.18%",
+        "MemUsage": "233.1MiB / 1.5GiB",
+        "Name": "safeflow-homeassistant",
+        "NetIO": "26.5kB / 25.4kB",
+        "PIDs": "33"
+      },
+      "wsl": [
+        {
+          "Id": 96596,
+          "WorkingSet64": 972333056
+        }
+      ]
+    },
+    {
+      "timestamp_utc": "2026-10-06T17:47:00.4918003Z",
+      "ollama": {
+        "models": [
+          {
+            "name": "qwen3:1.7b",
+            "model": "qwen3:1.7b",
+            "size": 1645446429,
+            "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "2.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-10-07T00:51:55.9168031+07:00",
+            "size_vram": 0,
+            "context_length": 2048
+          }
+        ]
+      },
+      "model_processes": [
+        {
+          "name": "ollama app",
+          "pid": 103836,
+          "working_set_bytes": 46374912
+        },
+        {
+          "name": "ollama",
+          "pid": 98980,
+          "working_set_bytes": 68956160
+        },
+        {
+          "name": "llama-server",
+          "pid": 114092,
+          "working_set_bytes": 1762783232
+        }
+      ],
+      "python_processes": [
+        {
+          "Id": 78836,
+          "WorkingSet64": 30986240
+        },
+        {
+          "Id": 103432,
+          "WorkingSet64": 5451776
+        }
+      ],
+      "docker": {
+        "BlockIO": "104MB / 106kB",
+        "CPUPerc": "0.57%",
+        "Container": "safeflow-homeassistant",
+        "ID": "97592e1c3223",
+        "MemPerc": "15.15%",
+        "MemUsage": "232.6MiB / 1.5GiB",
+        "Name": "safeflow-homeassistant",
+        "NetIO": "28.5kB / 26.3kB",
+        "PIDs": "33"
+      },
+      "wsl": [
+        {
+          "Id": 96596,
+          "WorkingSet64": 974098432
+        }
+      ]
+    },
+    {
+      "timestamp_utc": "2026-10-06T17:47:02.8649802Z",
+      "ollama": {
+        "models": [
+          {
+            "name": "qwen3:1.7b",
+            "model": "qwen3:1.7b",
+            "size": 1645446429,
+            "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "2.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-10-07T00:51:55.9168031+07:00",
+            "size_vram": 0,
+            "context_length": 2048
+          }
+        ]
+      },
+      "model_processes": [
+        {
+          "name": "ollama app",
+          "pid": 103836,
+          "working_set_bytes": 46374912
+        },
+        {
+          "name": "ollama",
+          "pid": 98980,
+          "working_set_bytes": 68956160
+        },
+        {
+          "name": "llama-server",
+          "pid": 114092,
+          "working_set_bytes": 1762783232
+        }
+      ],
+      "python_processes": [
+        {
+          "Id": 78836,
+          "WorkingSet64": 30986240
+        },
+        {
+          "Id": 103432,
+          "WorkingSet64": 5451776
+        }
+      ],
+      "docker": {
+        "BlockIO": "104MB / 106kB",
+        "CPUPerc": "0.00%",
+        "Container": "safeflow-homeassistant",
+        "ID": "97592e1c3223",
+        "MemPerc": "15.15%",
+        "MemUsage": "232.6MiB / 1.5GiB",
+        "Name": "safeflow-homeassistant",
+        "NetIO": "28.5kB / 26.3kB",
+        "PIDs": "33"
+      },
+      "wsl": [
+        {
+          "Id": 96596,
+          "WorkingSet64": 974163968
+        }
+      ]
+    },
+    {
+      "timestamp_utc": "2026-10-06T17:47:05.2325674Z",
+      "ollama": {
+        "models": [
+          {
+            "name": "qwen3:1.7b",
+            "model": "qwen3:1.7b",
+            "size": 1645446429,
+            "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "2.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-10-07T00:51:55.9168031+07:00",
+            "size_vram": 0,
+            "context_length": 2048
+          }
+        ]
+      },
+      "model_processes": [
+        {
+          "name": "ollama app",
+          "pid": 103836,
+          "working_set_bytes": 46374912
+        },
+        {
+          "name": "ollama",
+          "pid": 98980,
+          "working_set_bytes": 68956160
+        },
+        {
+          "name": "llama-server",
+          "pid": 114092,
+          "working_set_bytes": 1762783232
+        }
+      ],
+      "python_processes": [
+        {
+          "Id": 78836,
+          "WorkingSet64": 30986240
+        },
+        {
+          "Id": 103432,
+          "WorkingSet64": 5451776
+        }
+      ],
+      "docker": {
+        "BlockIO": "104MB / 106kB",
+        "CPUPerc": "0.00%",
+        "Container": "safeflow-homeassistant",
+        "ID": "97592e1c3223",
+        "MemPerc": "15.15%",
+        "MemUsage": "232.6MiB / 1.5GiB",
+        "Name": "safeflow-homeassistant",
+        "NetIO": "30.2kB / 27kB",
+        "PIDs": "33"
+      },
+      "wsl": [
+        {
+          "Id": 96596,
+          "WorkingSet64": 974168064
+        }
+      ]
+    }
+  ],
+  "note": "Sampled process/container memory, not a hard limit or proof of 8 GB compatibility. WSL includes shared overhead; do not add container RAM to WSL RAM as independent allocations."
+}

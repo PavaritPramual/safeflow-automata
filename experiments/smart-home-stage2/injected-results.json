@@ -1,0 +1,521 @@
+{
+  "type": "injected_commands_not_model_outputs",
+  "runs": [
+    {
+      "enforcement": false,
+      "steps": 15,
+      "blocked": 0,
+      "human_bypass": 0,
+      "replay_passed": true,
+      "results": [
+        {
+          "proposal_id": "ba2f8208-a04b-4334-b717-803180d9d351",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "proposal_id": "7bc002e2-6251-4e59-9ed9-81882b7dc2b3",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          }
+        },
+        {
+          "proposal_id": "b2e4ebf0-6c5f-49c4-9e47-605e31b01bf0",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          }
+        },
+        {
+          "proposal_id": "53ae51f4-fb4b-4679-ad4e-ba086964937b",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "proposal_id": "94b0da29-8fa2-462e-aa17-f57a52da3a73",
+          "source": "human",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "proposal_id": "bc942076-7f5a-4ac1-a93e-f61de208b043",
+          "source": "human",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          }
+        },
+        {
+          "proposal_id": "40cdee18-2e63-4862-9300-dfd642389d27",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          }
+        },
+        {
+          "proposal_id": "86cc0d57-8593-449c-8291-8e856f1f7cd3",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "off"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "off"
+          }
+        },
+        {
+          "proposal_id": "97b4be33-3eb0-4a2f-b4ec-70f8052e8129",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          }
+        },
+        {
+          "proposal_id": "c5211103-cb1d-48ea-b412-cd8fa3e2a494",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "314d214b-80e7-4c90-8089-5c5c9f31cc35",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "cb0aebc5-83f8-4d3e-8f91-780f1f526ee6",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "fe93a843-de6f-495e-9025-1117371c0ffa",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "82870564-0bc3-48db-b5d7-c55d0dc408fe",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "e3f4afe4-82e9-46d8-a0be-48831768935d",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "execute_unshielded",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        }
+      ]
+    },
+    {
+      "enforcement": true,
+      "steps": 15,
+      "blocked": 3,
+      "human_bypass": 2,
+      "replay_passed": true,
+      "results": [
+        {
+          "proposal_id": "29218ff5-529a-4454-b154-d4d33a2e4a3f",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "proposal_id": "f63bd7df-398b-4cdd-99ad-20a42eb43bd4",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          },
+          "validation": "valid",
+          "reason": "ac_heater_conflict",
+          "decision": "block",
+          "executed_command": null
+        },
+        {
+          "proposal_id": "4dce61e7-fc56-450e-b7d0-c0d3f3e79be3",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          }
+        },
+        {
+          "proposal_id": "cb890e4b-abf0-48ee-b1bf-daa92727b0f6",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "validation": "valid",
+          "reason": "ac_cooldown",
+          "decision": "block",
+          "executed_command": null
+        },
+        {
+          "proposal_id": "d2679a2e-34b0-4c9d-966f-365a9baa029e",
+          "source": "human",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "human_bypass",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "proposal_id": "85a6df08-5f6e-4a66-8159-5e44281c9778",
+          "source": "human",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "human_bypass",
+          "executed_command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          }
+        },
+        {
+          "proposal_id": "6a2bb633-a713-4219-b73b-4297dc9efbb8",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "on"
+          },
+          "validation": "valid",
+          "reason": "ac_heater_conflict",
+          "decision": "block",
+          "executed_command": null
+        },
+        {
+          "proposal_id": "72db689a-5b4c-4a11-8e43-7a71704c5ff0",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "off"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "off"
+          }
+        },
+        {
+          "proposal_id": "766ffff0-3226-4560-9e21-fa216b0e50b0",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          }
+        },
+        {
+          "proposal_id": "f5e42275-131f-4bde-aad6-1765306d59ab",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "ce10c96f-d25e-40cf-b7e3-6f656512370d",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "f0f283b2-a355-4488-807b-a3bb31e9c61a",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "bd0770f9-9d6e-4e2d-8546-c226818e4da2",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "76184806-f0e1-4ffa-83df-6fd40bbe0a97",
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "proposal_id": "4bfbcf68-00a1-4beb-899b-96ee3e9b0a07",
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "validation": "valid",
+          "reason": null,
+          "decision": "allow",
+          "executed_command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        }
+      ]
+    }
+  ]
+}

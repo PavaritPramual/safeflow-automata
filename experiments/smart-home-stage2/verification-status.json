@@ -1,0 +1,8 @@
+{
+  "tool": "UPPAAL 5.0.0 verifyta",
+  "attempted": true,
+  "verified": false,
+  "exit_code": 1,
+  "output": "License does not cover verifier.",
+  "model_sha256": "7d9a4da72374d1e6b5ad6ee2e6bcf5057ee6690360974623e0fc219c7455e58b"
+}

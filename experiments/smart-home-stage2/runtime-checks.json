@@ -1,0 +1,20 @@
+{
+  "replay_passed": true,
+  "check_duration_samples": [
+    {
+      "trace": "injected-shielded.jsonl",
+      "n": 15,
+      "min_ms": 0.011400086805224419,
+      "max_ms": 0.039899954572319984,
+      "mean_ms": 0.01763334342588981
+    },
+    {
+      "trace": "real-ha-and-loop.jsonl",
+      "n": 14,
+      "min_ms": 0.029099988751113415,
+      "max_ms": 0.049900030717253685,
+      "mean_ms": 0.03799998999706337
+    }
+  ],
+  "note": "Observed checks excluding disk fsync, not latency guarantee or benchmark"
+}

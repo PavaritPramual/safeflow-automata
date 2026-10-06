@@ -47,7 +47,7 @@ def make_server(controller, key, host="127.0.0.1", port=8765):
 
         def do_GET(self):
             if self.path == "/health":
-                self.reply(200, {"status": "ok", "stage": "unshielded"})
+                self.reply(200, {"status": "ok", "stage": "automata" if controller.enforcement else "unshielded"})
             elif not self.authenticated():
                 self.reply(401, {"error": "unauthorized"})
             elif self.path == "/state":
@@ -100,7 +100,9 @@ def main():
     parser.add_argument("--config", default="configs/home.json")
     parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--port", type=int, default=8765)
-    parser.add_argument("--model", default="qwen3:0.6b")
+    parser.add_argument("--model", default="qwen3:1.7b")
+    parser.add_argument("--unshielded", action="store_true", help="Explicit baseline: disable safety guards")
+    parser.add_argument("--output-mode", choices=("tools", "json"), default="tools")
     parser.add_argument("--ollama-url", default="http://127.0.0.1:11434")
     parser.add_argument("--trace", default="logs/home.jsonl")
     parser.add_argument("--interval", type=float, default=0,
@@ -110,7 +112,8 @@ def main():
         parser.error("interval cannot be negative")
     settings = load_settings(args.config)
     controller = Controller(Home(Physics(**settings["physics"])),
-                            OllamaAgent(args.model, args.ollama_url), Trace(args.trace))
+                            OllamaAgent(args.model, args.ollama_url, output_mode=args.output_mode), Trace(args.trace),
+                            enforcement=not args.unshielded)
     server = make_server(controller, load_key(), args.host, args.port)
     stop = threading.Event()
     if args.interval:
@@ -122,7 +125,7 @@ def main():
                     controller.halted = True
                     break
         threading.Thread(target=loop, daemon=True).start()
-    print(f"SafeFlow unshielded API on port {args.port}; model={args.model}; trace={args.trace}", flush=True)
+    print(f"SafeFlow API on port {args.port}; model={args.model}; trace={args.trace}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

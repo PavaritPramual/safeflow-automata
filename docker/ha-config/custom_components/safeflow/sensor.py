@@ -9,6 +9,9 @@ SENSORS = [
     ("simulation_time", "simulation_time_s", "s"),
     ("pending", "pending_requests", None),
     ("status", "halted", None),
+    ("decision", "last_result.decision", None),
+    ("decision_reason", "last_result.reason", None),
+    ("cooldown", "automata.cooldown", None),
 ]
 
 
@@ -27,8 +30,11 @@ class SafeFlowSensor(CoordinatorEntity, SensorEntity):
 
     @property
     def native_value(self):
-        value = (self.coordinator.data or {}).get(self.field)
-        return ("halted" if value else "unshielded") if self.field == "halted" else value
+        data = self.coordinator.data or {}
+        value = data
+        for part in self.field.split("."):
+            value = value.get(part) if isinstance(value, dict) else None
+        return ("halted" if value else data.get("enforcement", "unknown")) if self.field == "halted" else value
 
     @property
     def extra_state_attributes(self):
@@ -36,4 +42,4 @@ class SafeFlowSensor(CoordinatorEntity, SensorEntity):
             return None
         data = self.coordinator.data or {}
         return {"enforcement": data.get("enforcement"), "last_result": data.get("last_result"),
-                "model": data.get("model", {}).get("model")}
+                "model": data.get("model", {}).get("model"), "automata": data.get("automata")}
