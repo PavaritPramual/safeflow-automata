@@ -32,14 +32,14 @@ docker run --rm sinergym:latest python -c "import sinergym, stable_baselines3; p
 รันจาก root ของ `safeflow-ai`:
 
 ```powershell
-docker run --rm -v "${PWD}:/workspace" -w /workspace sinergym:latest python scripts/experiments/real_ai_unshielded.py
+docker run --rm -v "${PWD}:/workspace" -w /workspace sinergym:latest python experiments/legacy-sinergym/real_ai_unshielded.py
 ```
 
 การ mount ทำให้ตำแหน่งภายใน container เชื่อมกับ host ดังนี้:
 
 | Container | Host |
 |---|---|
-| `/workspace/scripts/experiments/real_ai_unshielded.py` | `scripts/experiments/real_ai_unshielded.py` |
+| `/workspace/experiments/legacy-sinergym/real_ai_unshielded.py` | `experiments/legacy-sinergym/real_ai_unshielded.py` |
 | `/workspace/logs/execution_logs.json` | `logs/execution_logs.json` |
 | `/workspace/Eplus-*-res*/` | `Eplus-*-res*/` |
 
@@ -57,3 +57,4 @@ runtime with extras="drl"    Sinergym + EnergyPlus + PPO dependencies
 
 การเพิ่ม `drl` เป็นการเตรียม dependency ของ environment ไม่ใช่การเพิ่ม algorithm
 ใหม่ใน SafeFlow
+
