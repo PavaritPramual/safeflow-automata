@@ -9,12 +9,5 @@ description = "Trace-first smart-home case study for automata runtime control"
 requires-python = ">=3.11"
 dependencies = []
 
-[project.optional-dependencies]
-test = ["pytest>=8,<9"]
-
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["src"]

@@ -1,0 +1,828 @@
+{
+  "type": "real_model_feasibility_gate",
+  "safety_enforcer": false,
+  "model": {
+    "model": "qwen3:1.7b",
+    "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+    "size_bytes": 1359293444,
+    "options": {
+      "temperature": 0,
+      "num_ctx": 2048,
+      "num_predict": 256,
+      "num_gpu": 0
+    },
+    "think": false,
+    "stream": false
+  },
+  "total": 40,
+  "valid": 40,
+  "correct": 20,
+  "thresholds": {
+    "valid": 36,
+    "correct": 32
+  },
+  "model_gate_passed": false,
+  "notes": "Checks eight declared normal-task oracles, not general intelligence or safety. Resource and HA checks are separate.",
+  "rows": [
+    {
+      "scenario": "hot_room",
+      "repeat": 0,
+      "episode_id": "f3673020-8db3-4f3d-acf0-a1f9672840c1",
+      "proposal_id": "b7f81d28-6872-4551-ae9c-a80b86b785e5",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "hot_room",
+      "repeat": 1,
+      "episode_id": "2b4ada6f-10c0-4d2f-8a12-5e9d6e8c6b62",
+      "proposal_id": "eeed8f8b-7872-4233-bc20-e838ad936d2a",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "hot_room",
+      "repeat": 2,
+      "episode_id": "e7607a6a-8d8a-409e-810c-f6f57d539529",
+      "proposal_id": "c0eb019b-fcbb-4bdc-a2e6-5b707470ac4d",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "hot_room",
+      "repeat": 3,
+      "episode_id": "d61e1598-982f-4bea-82a7-ed2242450ff9",
+      "proposal_id": "e5c3a680-b0dd-477e-ad76-070b8d0e9e6d",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "hot_room",
+      "repeat": 4,
+      "episode_id": "9e5c38e5-7370-41d5-9334-238ba83240cd",
+      "proposal_id": "794173e2-8f97-43c2-bc48-5237b7455ab0",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "cool"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_room",
+      "repeat": 0,
+      "episode_id": "c8155222-0488-4336-b797-c76977b1ab24",
+      "proposal_id": "985b9e66-f103-44c9-939a-2528ab07e01d",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_room",
+      "repeat": 1,
+      "episode_id": "bc2f4cf8-ecb2-4240-bcf4-5a19dcba18e8",
+      "proposal_id": "0364bab8-805b-4843-bb7b-26d8fab4a134",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_room",
+      "repeat": 2,
+      "episode_id": "aec0b9dc-86d0-4d2a-93c5-21c522d31986",
+      "proposal_id": "e4330b9d-652d-4d00-a604-75781c9a7886",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_room",
+      "repeat": 3,
+      "episode_id": "f471df70-85fd-432f-87ed-5d584946e694",
+      "proposal_id": "3837705d-30ff-465c-b37b-f77f6ed8d4c4",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_room",
+      "repeat": 4,
+      "episode_id": "d5640e6c-9478-4491-8639-949a2a1bcdbd",
+      "proposal_id": "0307de40-df29-4a54-9024-6060dba2d862",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "on"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "comfortable_room",
+      "repeat": 0,
+      "episode_id": "7fac29e9-c9db-4e54-a16a-63394190fc69",
+      "proposal_id": "938fa202-e79a-4f2b-965b-6fdef3a4263d",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "comfortable_room",
+      "repeat": 1,
+      "episode_id": "c0420f3f-1151-421a-be1b-826f34279c70",
+      "proposal_id": "7bcdd9a0-f130-432b-8537-904003fcad9b",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "comfortable_room",
+      "repeat": 2,
+      "episode_id": "903c1cc0-2398-49dc-b459-805609a64bb1",
+      "proposal_id": "a16c3b8b-b3bb-4cfb-b05f-a349f636fffb",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "comfortable_room",
+      "repeat": 3,
+      "episode_id": "8c879674-2610-448e-aeb9-53b164748613",
+      "proposal_id": "2511e914-39ca-4478-9ccb-ee3fa0be7221",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "comfortable_room",
+      "repeat": 4,
+      "episode_id": "5ee88dad-c95e-485b-9e7d-cfce39d3d674",
+      "proposal_id": "1700f63b-c8a5-41f2-b1e3-831c3af54758",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "hold",
+        "device": null,
+        "mode": null
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "light_needed",
+      "repeat": 0,
+      "episode_id": "412b64b3-3c5b-4ed8-a53b-ed1e4b4d9dad",
+      "proposal_id": "59178cd6-2bab-4198-ad1d-30b61ce5825b",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_needed",
+      "repeat": 1,
+      "episode_id": "26dcedd5-e5d8-48d8-bbda-75763d56bad1",
+      "proposal_id": "6236b4d7-1580-4741-9f73-d335e40f6559",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_needed",
+      "repeat": 2,
+      "episode_id": "1045361c-3281-4d86-a539-97a799170465",
+      "proposal_id": "87cb1034-d36f-4535-b8a0-7bfdcb2050d0",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_needed",
+      "repeat": 3,
+      "episode_id": "6cbc430b-1354-479d-a1fe-d95d03e8823d",
+      "proposal_id": "192e3a26-1f38-4f64-9d90-3cc132da0deb",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_needed",
+      "repeat": 4,
+      "episode_id": "d6a67576-a66d-4626-92e1-03ca468c540b",
+      "proposal_id": "8adab60a-877d-4be8-8b05-8c343cee74c7",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_unneeded",
+      "repeat": 0,
+      "episode_id": "6ac9c3d0-20d7-4e1d-b7b2-fb1a944638fb",
+      "proposal_id": "639f67f8-6794-4648-97e0-8039ac298e52",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_unneeded",
+      "repeat": 1,
+      "episode_id": "d2a84d25-da04-4258-82ab-f62d9c05fc42",
+      "proposal_id": "8f1991ad-3ad4-4128-ba04-4153f8c14161",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_unneeded",
+      "repeat": 2,
+      "episode_id": "2a80877a-1967-479b-9871-b4a8c3ab1ea9",
+      "proposal_id": "d9ddbcac-a2ff-4da0-80bb-05f62c9b2c62",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_unneeded",
+      "repeat": 3,
+      "episode_id": "d2e43857-a976-419a-8c54-dda31ad90f8f",
+      "proposal_id": "77b169b1-605e-42a9-989c-ff32d30d7bef",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "light_unneeded",
+      "repeat": 4,
+      "episode_id": "f84ca003-2c96-4813-a692-5db42e08cf02",
+      "proposal_id": "431cde09-7276-42f9-ba78-8c2d41eb65b3",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "hot_heater_running",
+      "repeat": 0,
+      "episode_id": "8c9eb60f-0fa2-4117-a983-30046967a96b",
+      "proposal_id": "fa5eee4b-bc88-4226-9527-6ca8f298328c",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "hot_heater_running",
+      "repeat": 1,
+      "episode_id": "0b8558f8-d4d4-4dea-b57c-072e5c95b0ae",
+      "proposal_id": "fb6f04f3-f8f9-4c37-8a90-b9dc9a31a95d",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "hot_heater_running",
+      "repeat": 2,
+      "episode_id": "10e6d53b-1eee-437d-b880-a716e268f843",
+      "proposal_id": "383b5053-844d-4b33-b820-103ef9c7e775",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "hot_heater_running",
+      "repeat": 3,
+      "episode_id": "c7677673-7874-49cf-9fe7-4f4ca6d1bf21",
+      "proposal_id": "cb737fd0-36c0-4b61-999f-05241e662549",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "hot_heater_running",
+      "repeat": 4,
+      "episode_id": "a3e9d2cf-001c-4680-8057-625aa17fe60b",
+      "proposal_id": "0c7407ce-d65c-48c9-a6d2-d90c97f05a30",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "cold_ac_running",
+      "repeat": 0,
+      "episode_id": "fb6e33c0-0e77-454e-b87a-05784cdc8966",
+      "proposal_id": "ad5fe4c6-cf03-4239-bd02-50486f20ee08",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_ac_running",
+      "repeat": 1,
+      "episode_id": "5d275dae-cbf2-49dc-bf7d-a05f46c16c7e",
+      "proposal_id": "57c6083f-403a-4952-8ecc-35837085b4de",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_ac_running",
+      "repeat": 2,
+      "episode_id": "f126f3a7-8eb0-40d5-8f14-563215998fa6",
+      "proposal_id": "82b445eb-d2c2-4cf1-8d44-94f85db02d3a",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_ac_running",
+      "repeat": 3,
+      "episode_id": "dacbb630-bd3d-45c8-b8d4-3814e2807d74",
+      "proposal_id": "18d196b6-96f0-4445-963b-d63a50f7379c",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "cold_ac_running",
+      "repeat": 4,
+      "episode_id": "71c018bc-4a92-4bc1-bd7e-627a386c12b7",
+      "proposal_id": "d053c7bd-2eb7-4333-b39c-dec0c12737a3",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "light",
+        "mode": "on"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "air_conditioner",
+        "mode": "off"
+      },
+      "matches_expected": false
+    },
+    {
+      "scenario": "comfortable_heater_running",
+      "repeat": 0,
+      "episode_id": "ef49cb82-4e9d-4c05-a1d2-058ff2797c76",
+      "proposal_id": "6c38823d-844f-4046-9cb3-e2e9944e8488",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "comfortable_heater_running",
+      "repeat": 1,
+      "episode_id": "adf9e6d0-cb4f-4995-bdc3-19339a54bc8d",
+      "proposal_id": "e12a48b0-381a-4e14-ad8b-9ee7c29d5e7a",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "comfortable_heater_running",
+      "repeat": 2,
+      "episode_id": "bc33eba5-99ef-47ed-b6ef-6b1a395f786e",
+      "proposal_id": "697e7e0f-d759-479a-a056-52d7671c936f",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "comfortable_heater_running",
+      "repeat": 3,
+      "episode_id": "11d1cbfe-6e77-4280-b7e3-214b47b81ce9",
+      "proposal_id": "58f0a5e7-cd12-4a39-af6f-4aa5006291bb",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    },
+    {
+      "scenario": "comfortable_heater_running",
+      "repeat": 4,
+      "episode_id": "0110792f-969c-4a8c-a747-fc6c1c8ab75a",
+      "proposal_id": "cf5ad9bf-3b04-4650-aa21-1da1933207d4",
+      "source": "ai",
+      "command": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "validation": "valid",
+      "reason": null,
+      "expected": {
+        "name": "set_device",
+        "device": "heater",
+        "mode": "off"
+      },
+      "matches_expected": true
+    }
+  ]
+}

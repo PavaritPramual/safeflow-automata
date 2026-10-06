@@ -1,0 +1,23 @@
+homeassistant:
+  name: SafeFlow Lab
+  time_zone: Asia/Bangkok
+frontend:
+config:
+history:
+logbook:
+api:
+http:
+recorder:
+  purge_keep_days: 2
+safeflow:
+  url: http://host.docker.internal:8765
+  api_key: !secret safeflow_api_key
+lovelace:
+  mode: yaml
+  dashboards:
+    safeflow-lab:
+      mode: yaml
+      title: SafeFlow Lab
+      icon: mdi:home-shield
+      show_in_sidebar: true
+      filename: dashboard.yaml

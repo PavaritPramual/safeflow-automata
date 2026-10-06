@@ -1,0 +1,14 @@
+{
+  "physics": {
+    "thermal_capacity_j_per_k": 3000000,
+    "envelope_conductance_w_per_k": 120,
+    "fan_conductance_w_per_k": 80,
+    "cooling_heat_w": 3000,
+    "heating_heat_w": 2000,
+    "ac_electrical_w": 1000,
+    "heater_electrical_w": 2000,
+    "fan_electrical_w": 50,
+    "light_electrical_w": 20
+  },
+  "provenance": "Synthetic demonstration parameters, not fitted or validated against a real home. See docs/guides/smart-home.md."
+}

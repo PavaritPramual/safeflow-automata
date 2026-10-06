@@ -1,0 +1,10 @@
+[
+  {"id":"hot_room","initial":{"temperature_c":30,"target_c":25},"expected":{"name":"set_device","device":"air_conditioner","mode":"cool"}},
+  {"id":"cold_room","initial":{"temperature_c":18,"target_c":25},"expected":{"name":"set_device","device":"heater","mode":"on"}},
+  {"id":"comfortable_room","initial":{"temperature_c":25,"target_c":25},"expected":{"name":"hold","device":null,"mode":null}},
+  {"id":"light_needed","initial":{"temperature_c":25,"target_c":25,"light_required":true},"expected":{"name":"set_device","device":"light","mode":"on"}},
+  {"id":"light_unneeded","initial":{"temperature_c":25,"target_c":25,"devices":{"light":"on"}},"expected":{"name":"set_device","device":"light","mode":"off"}},
+  {"id":"hot_heater_running","initial":{"temperature_c":30,"target_c":25,"devices":{"heater":"on"}},"expected":{"name":"set_device","device":"heater","mode":"off"}},
+  {"id":"cold_ac_running","initial":{"temperature_c":18,"target_c":25,"devices":{"air_conditioner":"cool"}},"expected":{"name":"set_device","device":"air_conditioner","mode":"off"}},
+  {"id":"comfortable_heater_running","initial":{"temperature_c":25,"target_c":25,"devices":{"heater":"on"}},"expected":{"name":"set_device","device":"heater","mode":"off"}}
+]

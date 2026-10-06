@@ -1,0 +1,87 @@
+{
+  "measured_at": "2026-10-06T12:21:42.4304461Z",
+  "host_ram_bytes": 34085847040,
+  "target_ram_bytes": 8589934592,
+  "tested_on_8gb_host": false,
+  "home_assistant": {
+    "BlockIO": "0B / 32.9MB",
+    "CPUPerc": "0.00%",
+    "Container": "safeflow-homeassistant",
+    "ID": "97592e1c3223",
+    "MemPerc": "18.02%",
+    "MemUsage": "276.8MiB / 1.5GiB",
+    "Name": "safeflow-homeassistant",
+    "NetIO": "105kB / 60.5kB",
+    "PIDs": "32"
+  },
+  "ollama": {
+    "models": [
+      {
+        "name": "qwen3:1.7b",
+        "model": "qwen3:1.7b",
+        "size": 1645446429,
+        "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "2.0B",
+          "quantization_level": "Q4_K_M"
+        },
+        "expires_at": "2026-10-06T19:25:47.5072072+07:00",
+        "size_vram": 0,
+        "context_length": 2048
+      },
+      {
+        "name": "qwen3:0.6b",
+        "model": "qwen3:0.6b",
+        "size": 781556119,
+        "digest": "7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "751.63M",
+          "quantization_level": "Q4_K_M"
+        },
+        "expires_at": "2026-10-06T19:22:39.1565778+07:00",
+        "size_vram": 0,
+        "context_length": 2048
+      }
+    ]
+  },
+  "process_samples": [
+    {
+      "ProcessName": "ollama",
+      "Id": 98980,
+      "WorkingSet64": 70475776
+    },
+    {
+      "ProcessName": "ollama app",
+      "Id": 103836,
+      "WorkingSet64": 46682112
+    },
+    {
+      "ProcessName": "python",
+      "Id": 91236,
+      "WorkingSet64": 5451776
+    },
+    {
+      "ProcessName": "python",
+      "Id": 98640,
+      "WorkingSet64": 30924800
+    },
+    {
+      "ProcessName": "vmmemWSL",
+      "Id": 96596,
+      "WorkingSet64": 6771650560
+    }
+  ],
+  "note": "Point-in-time samples, not peak RAM. Docker VM overhead and host OS must also fit. This is a 32 GB host, not an 8 GB validation."
+}
