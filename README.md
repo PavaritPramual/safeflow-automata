@@ -69,9 +69,10 @@ used a 32 GB host, with Docker/WSL limitations recorded explicitly.
 ## Historical experiment
 
 The Sinergym/PPO experiment remains in
-[experiments/legacy-sinergym](experiments/legacy-sinergym/README.md).
+[archive/sinergym](archive/sinergym/README.md).
 Its ten-step trace is historical logging evidence, not proof of an equipment
-hazard or a working enforcer. The external Sinergym checkout remains untouched.
+hazard or a working enforcer. The local external checkout is archived outside this
+repository, with its Git history retained.
 
 ## Repository boundaries
 
@@ -79,5 +80,7 @@ hazard or a working enforcer. The external Sinergym checkout remains untouched.
 `configs` holds public settings, `docker` holds Home Assistant setup,
 `experiments` holds curated evidence, and `logs` holds ignored runtime output.
 
-Proposal documents and the infographic are outside this change. Development
-happens on a draft pull request; `main` is unchanged.
+`archive/sinergym` separates the retired approach from current experiments.
+Old local proposals and infographic artifacts are archived at workspace level;
+their contents are unchanged. Model selection remains an open research gate even
+when this prototype is merged into `main`.

@@ -15,5 +15,5 @@ do not use these as verified semantics.
 
 There is no trained checkpoint, enforcer or UPPAAL proof in this run.
 See [historical Docker instructions](docker-workflow.md). Run the retained script
-from the repository root with `python experiments/legacy-sinergym/real_ai_unshielded.py`.
+from the repository root with `python archive/sinergym/real_ai_unshielded.py`.
 Reruns write ignored `logs/execution_logs.json`, not this preserved trace.

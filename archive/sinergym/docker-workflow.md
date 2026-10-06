@@ -1,4 +1,9 @@
-# Docker workflow
+# Historical Docker workflow (retired)
+
+These instructions describe the previous Sinergym experiment. They assume a
+separate reconstructed `external/sinergym` checkout at the pinned revision.
+The current local checkout is stored at `Seminar/archive/external-sinergym`.
+Current SafeFlow uses the Home Assistant setup in `docker/compose.yaml`.
 
 SafeFlow ใช้ Sinergym และ EnergyPlus ผ่าน external Docker image โดยไม่ vendor
 source code ของ Sinergym เข้ามาใน repository นี้
@@ -32,14 +37,14 @@ docker run --rm sinergym:latest python -c "import sinergym, stable_baselines3; p
 รันจาก root ของ `safeflow-ai`:
 
 ```powershell
-docker run --rm -v "${PWD}:/workspace" -w /workspace sinergym:latest python experiments/legacy-sinergym/real_ai_unshielded.py
+docker run --rm -v "${PWD}:/workspace" -w /workspace sinergym:latest python archive/sinergym/real_ai_unshielded.py
 ```
 
 การ mount ทำให้ตำแหน่งภายใน container เชื่อมกับ host ดังนี้:
 
 | Container | Host |
 |---|---|
-| `/workspace/experiments/legacy-sinergym/real_ai_unshielded.py` | `experiments/legacy-sinergym/real_ai_unshielded.py` |
+| `/workspace/archive/sinergym/real_ai_unshielded.py` | `archive/sinergym/real_ai_unshielded.py` |
 | `/workspace/logs/execution_logs.json` | `logs/execution_logs.json` |
 | `/workspace/Eplus-*-res*/` | `Eplus-*-res*/` |
 

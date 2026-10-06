@@ -8,5 +8,5 @@ This dedicated simulated-home container is bound to localhost:8123, capped at
 tracked custom components call SafeFlow. Switches queue commands without directly
 mutating the home. See [the guide](../docs/guides/smart-home.md).
 
-Historical Sinergym instructions are [archived](../experiments/legacy-sinergym/docker-workflow.md).
+Historical Sinergym instructions are [archived](../archive/sinergym/docker-workflow.md).
 The container cap does not certify whole-system operation on an 8 GB host.
