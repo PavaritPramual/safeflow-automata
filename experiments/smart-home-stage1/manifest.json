@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-06",
+  "python": "3.12.14",
+  "ollama": "0.35.1",
+  "home_assistant": "2026.9.4",
+  "sha256": {
+    "gate-06b.json": "4313dcc2c8e66d33dfb4e4df2153fc39f57eb790b3800857ec4bdef94678a940",
+    "gate-17b.json": "2dfffe434e81e1898d13a84291e5724ed912b085f53bddf63f7ab131914c7253",
+    "ha-smoke.json": "b92355ac4e45b286a5dee351aeea77553464b51e2cbedd250b832fb82accf3a6",
+    "resource-samples.json": "56946cbe838de9d3db1eca7928fa0434fb4a70205b917dfb82cadcc31581e58c",
+    "resources.json": "0a4e93d7ad7ce58cca781f959e1ce9ae6c6e2297e1220789ffbf92e534484162",
+    "trace-06b.jsonl": "4e9e69596608544b2c539d56ccea3a45bbbff310bc6a2984f5dd09bfa668e0b6",
+    "trace-17b.jsonl": "6e3c03dfcce95a4ab487c1240758e7ce6afbfaefd27a3c5e6d570012deb54e6f",
+    "trace-autonomous17.jsonl": "e0fbcc15c582eda1a2b83debd7664c05a6efa8a748252f4d4308c811f8578fff"
+  }
+}

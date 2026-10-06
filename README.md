@@ -2,228 +2,85 @@
 
 **A Formal Framework for Automata-Based AI Runtime Control**
 
-Repository นี้เป็นพื้นที่เก็บ source code, เอกสาร และหลักฐานการทดลองของโครงงาน
-SafeFlow AI โดยแยกออกจาก source code ของ Sinergym อย่างชัดเจน
+SafeFlow studies an automata interception layer that checks proposed commands
+before they affect an environment. The new case study is a simulated smart home,
+a small local LLM, and Home Assistant for state display and human requests.
+The framework is the research contribution; the model and home are the case study.
 
-> **สถานะปัจจุบัน:** มีเฉพาะการทดลองพื้นฐานแบบ **Unshielded Baseline**
-> สำหรับเก็บพฤติกรรมของ PPO ก่อนมีเกราะความปลอดภัย ส่วน Automata Enforcer,
-> safe fallback, policy parser และ environment wrapper **ยังไม่ได้ implement**
+## Current status
 
-## SafeFlow AI คืออะไร
+The stage-one prototype runs: RC physics, durable pre-execution JSONL, local Ollama
+proposals, and real Home Assistant entities/services. **It is unshielded.**
 
-SafeFlow AI ศึกษาการวาง Automata Runtime Enforcer ระหว่าง AI agent กับ environment
-เพื่อให้กฎความปลอดภัยมีสิทธิ์ตรวจสอบ action ก่อนส่งให้ `env.step()`
+The real model gate on 2026-10-06 failed: Qwen3-0.6B returned 0/40 valid commands;
+Qwen3-1.7B returned 40/40 valid commands but only 20/40 expected actions (32 required).
+Development pauses before Automata enforcement/UPPAAL until model selection is
+reviewed. Neither autonomous-control readiness nor 8 GB compatibility is claimed.
 
-การทดลองที่มีอยู่ใน repository ตอนนี้ยังไม่ใช้ Enforcer และมีลำดับการทำงานดังนี้:
-
-```mermaid
-flowchart LR
-    A[PPO Agent] -->|proposed action| B[real_ai_unshielded.py]
-    B -->|env.step action| C[Sinergym]
-    C --> D[EnergyPlus]
-    B -->|10-step trace| E[logs/execution_logs.json]
-```
-
-สถาปัตยกรรมที่งานวิจัยตั้งใจศึกษาในขั้นถัดไปคือ:
+See [recorded results and raw traces](experiments/smart-home-stage1/README.md).
 
 ```mermaid
 flowchart LR
-    A[PPO Agent] -->|proposed action| B[Automata Enforcer]
-    B -->|allowed action or safe fallback| C[Sinergym / EnergyPlus]
+    S[Home state and goals] --> A[Local LLM]
+    A --> P[Action proposal]
+    H[Human requests] --> P
+    P --> L[Durable trace]
+    L --> V[Current: format validation]
+    V --> B[Simulated home]
+    B --> S
 ```
 
-แผนภาพที่สองเป็นขอบเขตงานวิจัย ไม่ใช่ฟีเจอร์ที่มีอยู่แล้วใน branch ปัจจุบัน
+The planned Automata Enforcer will sit after logging and before execution.
+Format validation currently rejects malformed commands, not unsafe combinations.
 
-## สิ่งที่รันได้ในปัจจุบัน
+## Run the prototype
 
-- Environment: `Eplus-5zone-hot-discrete-v1`
-- Action space: `Discrete(10)` หรือ action ID 0 ถึง 9
-- AI agent: Stable-Baselines3 PPO (`MlpPolicy`)
-- จำนวน step ต่อการรัน: 10
-- ผลลัพธ์: JSON execution trace
-- Container runtime: Docker Desktop หรือ Docker Engine แบบ Linux container
-
-ชุดที่ผ่านการทดสอบแล้ว:
-
-- Sinergym `v3.12.2`
-- Sinergym commit `4bb1b3f856af491f9b55f8a0d1b0baeaff44a6a0`
-- Docker image ที่ build พร้อม `SINERGYM_EXTRAS="drl"`
-
-## Quick start สำหรับ Windows PowerShell
-
-### 1. เตรียมโปรแกรม
-
-ต้องมี Git, Docker Desktop ที่เปิดใช้งาน Linux containers และพื้นที่ว่างสำหรับ
-Docker image กับ EnergyPlus output
-
-ตรวจว่า Docker Engine พร้อมใช้งาน:
+Follow the [Windows setup, API and test guide](docs/guides/smart-home.md).
 
 ```powershell
-docker version
+./scripts/setup-local.ps1 -Python python
+ollama pull qwen3:0.6b
+./.venv/Scripts/python.exe -m safeflow.server --trace logs/model-06b.jsonl
 ```
 
-หาก PowerShell แจ้งว่าไม่พบคำสั่ง `docker` ให้ปิดและเปิด terminal ใหม่ก่อน
-หรือเรียก Docker CLI จากตำแหน่งติดตั้งมาตรฐาน:
+In a second terminal:
 
 ```powershell
-& "$env:LOCALAPPDATA\Programs\DockerDesktop\resources\bin\docker.exe" version
+docker compose -f docker/compose.yaml up -d
+./.venv/Scripts/python.exe -m safeflow.evaluate --output logs/gate-06b.json
 ```
 
-### 2. Clone SafeFlow และ Sinergym
+Open Home Assistant at <http://localhost:8123>. The guide describes the 1.7B fallback,
+automatic-round option, human controls, local credentials and shutdown.
 
-สร้าง workspace ใหม่ แล้ว clone สอง repository แยกจากกัน:
+## Implemented first-stage boundaries
 
-```powershell
-mkdir safeflow-workspace
-cd safeflow-workspace
+- Ollama `qwen3:0.6b`; try `qwen3:1.7b` if the first model fails the gate.
+- One room: air conditioner, heater, ventilation fan and light.
+- RC thermal physics and device power; 30 simulation seconds per round.
+- One `set_device(device, mode)` or `hold()` proposal per response.
+- Human goals and direct requests; direct requests replace AI for one round.
+- Invalid proposals never execute. Input validation is not a safety shield.
+- Low-memory target, no paid API, no training.
 
-git clone https://github.com/PavaritPramual/safeflow-automata.git safeflow-ai
+The friend's **8 GB RAM limit** remains an acceptance check. Recorded execution
+used a 32 GB host, with Docker/WSL limitations recorded explicitly.
 
-mkdir external
-git clone https://github.com/ugr-sail/sinergym.git external/sinergym
-git -C external/sinergym checkout 4bb1b3f856af491f9b55f8a0d1b0baeaff44a6a0
-```
+## Historical experiment
 
-หลัง clone จะได้โครงสร้าง:
+The Sinergym/PPO experiment remains in
+[archive/sinergym](archive/sinergym/README.md).
+Its ten-step trace is historical logging evidence, not proof of an equipment
+hazard or a working enforcer. The local external checkout is archived outside this
+repository, with its Git history retained.
 
-```text
-safeflow-workspace/
-├── safeflow-ai/         Repository งานวิจัยของเรา
-└── external/
-    └── sinergym/        External simulator repository
-```
+## Repository boundaries
 
-### 3. Build Sinergym image พร้อม PPO dependency
+`src/safeflow` separates simulation, agent, logging and control.
+`configs` holds public settings, `docker` holds Home Assistant setup,
+`experiments` holds curated evidence, and `logs` holds ignored runtime output.
 
-รันจาก `safeflow-workspace/`:
-
-```powershell
-docker build --target runtime -t sinergym:latest --build-arg SINERGYM_EXTRAS="drl" .\external\sinergym
-```
-
-ห้ามใช้ image แบบ runtime minimal ที่ไม่ได้เปิด `drl` extra เพราะสคริปต์ต้อง import
-`stable_baselines3`
-
-ตรวจสอบ dependency ภายใน image:
-
-```powershell
-docker run --rm sinergym:latest python -c "import sinergym, stable_baselines3; print('Dependencies OK')"
-```
-
-ผลที่คาดหวัง:
-
-```text
-Dependencies OK
-```
-
-### 4. รัน Unshielded Baseline
-
-เข้า repository SafeFlow ก่อนรันเสมอ เพราะ `${PWD}` จะถูก mount เป็น `/workspace`
-ใน container:
-
-```powershell
-cd .\safeflow-ai
-
-docker run --rm -v "${PWD}:/workspace" -w /workspace sinergym:latest python scripts/experiments/real_ai_unshielded.py
-```
-
-เมื่อสำเร็จจะเห็นข้อความ:
-
-```text
-[SUCCESS] Exported logs to logs/execution_logs.json successfully!
-```
-
-### 5. ตรวจผลลัพธ์
-
-ตรวจว่าไฟล์ถูกสร้างและมี 10 records:
-
-```powershell
-Test-Path .\logs\execution_logs.json
-(Get-Content .\logs\execution_logs.json -Raw | ConvertFrom-Json).Count
-```
-
-ผลที่คาดหวัง:
-
-```text
-True
-10
-```
-
-เปิดดู JSON:
-
-```powershell
-notepad .\logs\execution_logs.json
-```
-
-Action trace อาจเปลี่ยนทุกครั้ง เพราะสคริปต์ใช้ `deterministic=False`
-
-## ไฟล์ผลลัพธ์อยู่ที่ไหน
-
-| ตำแหน่ง | ความหมาย | เก็บใน Git |
-|---|---|---|
-| `logs/execution_logs.json` | ผลจากการรันล่าสุด เขียนทับได้ | ไม่เก็บ |
-| `experiments/unshielded-baseline/execution_logs.json` | หลักฐาน baseline ที่คัดเลือกแล้ว | เก็บ |
-| `Eplus-*-res*/` | Working directory ที่ Sinergym/EnergyPlus สร้างทุกครั้ง | ไม่เก็บ |
-
-`docker run --rm` ลบเฉพาะ container แต่ไฟล์ใน `/workspace` ยังคงอยู่บนเครื่อง
-เนื่องจากเป็น bind mount โฟลเดอร์ `Eplus-*-res*/` จึงเพิ่มหมายเลขเป็น `res1`,
-`res2`, `res3` ตามลำดับเพื่อไม่เขียนทับรอบก่อนหน้า สามารถลบได้หลังตรวจว่า
-การจำลองสำเร็จแล้ว
-
-## โครงสร้าง Repository
-
-```text
-configs/       ขอบเขตสำหรับ policy/config ในอนาคต; ยังไม่มี policy จริง
-docker/        รายละเอียดการเตรียม Docker image
-docs/          บริบทงานวิจัย สไลด์ และคู่มือ
-experiments/   หลักฐานการทดลองที่คัดเลือกและต้องการ version control
-logs/          Runtime output ชั่วคราว; Git ignore
-scripts/       Experiment entrypoints ที่รันได้
-src/           ขอบเขต implementation ของ SafeFlow ในอนาคต
-tests/         ขอบเขตการทดสอบ component ของ SafeFlow ในอนาคต
-```
-
-Sinergym และ EnergyPlus เป็น external dependencies จึงต้องอยู่นอก repository นี้
-และไม่ควรคัดลอก source code เข้ามาใน `safeflow-ai/`
-
-## Baseline ที่เก็บเป็นหลักฐาน
-
-หลักฐานเริ่มต้นอยู่ที่:
-
-```text
-experiments/unshielded-baseline/execution_logs.json
-```
-
-ไฟล์นี้เก็บ trace 10 steps:
-
-```text
-6 -> 7 -> 3 -> 1 -> 4 -> 9 -> 4 -> 0 -> 4 -> 3
-```
-
-คู่ `0 -> 4` ที่ step 8 และ 9 ถูกเก็บไว้เป็น short-cycling hazard candidate
-สำหรับนำไปประเมินกับ policy ในขั้นถัดไป แต่ยังไม่ใช่ผลพิสูจน์จาก Automata Enforcer
-
-## ปัญหาที่พบบ่อย
-
-### `ModuleNotFoundError: No module named 'stable_baselines3'`
-
-Docker image ถูก build โดยไม่มี `drl` extra ให้กลับไปทำขั้นตอนที่ 3 ใหม่
-
-### `docker` is not recognized
-
-ตรวจว่า Docker Desktop เปิดอยู่ เปิด PowerShell ใหม่ หรือใช้ Docker CLI path ที่ระบุในขั้นตอนที่ 1
-
-### เกิด `Eplus-*-res*/` ใหม่ทุกรอบ
-
-เป็นพฤติกรรมปกติของ Sinergym ไม่ใช่ error โฟลเดอร์เหล่านี้ถูก `.gitignore`
-และลบได้หลังใช้งาน
-
-### ไม่พบ `logs/execution_logs.json`
-
-ตรวจว่ารันคำสั่งจาก root ของ `safeflow-ai` และดู error ก่อนบรรทัด `[SUCCESS]`
-
-## เอกสารเพิ่มเติม
-
-- [บริบทงานวิจัย](docs/research/project-context.md)
-- [รายละเอียด Docker workflow](docker/README.md)
-- [คำอธิบาย Unshielded baseline](experiments/unshielded-baseline/README.md)
+`archive/sinergym` separates the retired approach from current experiments.
+Old local proposals and infographic artifacts are archived at workspace level;
+their contents are unchanged. Model selection remains an open research gate even
+when this prototype is merged into `main`.

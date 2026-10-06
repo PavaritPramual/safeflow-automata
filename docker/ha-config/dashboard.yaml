@@ -1,0 +1,31 @@
+title: SafeFlow Lab
+views:
+  - title: Simulated home
+    path: home
+    cards:
+      - type: markdown
+        content: |
+          ## SafeFlow AI — stage one
+          Simulated devices only. **Unshielded**, with input validation and proposal logs.
+          Device toggles queue a request; **Run one round** executes it before AI.
+          Automatic control is enabled by the backend's --interval option.
+      - type: entities
+        title: Room and goals
+        entities:
+          - sensor.safeflow_temperature
+          - sensor.safeflow_power
+          - sensor.safeflow_energy
+          - sensor.safeflow_simulation_time
+          - sensor.safeflow_pending
+          - sensor.safeflow_status
+          - number.safeflow_target_temperature
+          - switch.safeflow_light_required
+      - type: entities
+        title: Propose device commands
+        entities:
+          - switch.safeflow_air_conditioner
+          - switch.safeflow_heater
+          - switch.safeflow_ventilation_fan
+          - switch.safeflow_light
+          - button.safeflow_step
+          - button.safeflow_reset

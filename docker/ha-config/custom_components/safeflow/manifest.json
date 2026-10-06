@@ -1,0 +1,9 @@
+{
+  "domain": "safeflow",
+  "name": "SafeFlow simulated home",
+  "version": "0.1.0",
+  "documentation": "https://github.com/PavaritPramual/safeflow-automata",
+  "codeowners": ["@PavaritPramual"],
+  "iot_class": "local_polling",
+  "requirements": []
+}

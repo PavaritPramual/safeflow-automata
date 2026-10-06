@@ -1,0 +1,18 @@
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:2026.9.4@sha256:3e6710a7ab2a61311d9d899b719f6c3657791c63e8f4942cec4ebc42401d6b76
+    container_name: safeflow-homeassistant
+    ports:
+      - "127.0.0.1:8123:8123"
+    environment:
+      TZ: Asia/Bangkok
+    volumes:
+      - ./ha-data:/config
+      - ./ha-config/configuration.yaml:/config/configuration.yaml:ro
+      - ./ha-config/dashboard.yaml:/config/dashboard.yaml:ro
+      - ./ha-config/custom_components:/config/custom_components:ro
+      - ./ha-config/secrets.yaml:/config/secrets.yaml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    mem_limit: 1536m
+    restart: "no"
