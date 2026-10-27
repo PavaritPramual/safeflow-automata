@@ -1,0 +1,11 @@
+{
+  "format_version": 1,
+  "rest_s": 90,
+  "facts": {
+    "ac": "cooling_unit"
+  },
+  "actions": {
+    "ac_cool": "cooling_on",
+    "ac_off": "cooling_off"
+  }
+}
