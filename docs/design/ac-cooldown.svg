@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">SafeFlow draft AC cooldown automaton</title>
+  <desc id="desc">Ready, Cooling and Resting. Actual off resets the clock. AI must wait 180 simulated seconds and pass the heater conflict guard. Human opening bypasses the guards. Draft, not verified.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#304457"/></marker>
+    <marker id="human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#975b14"/></marker>
+  </defs>
+  <rect width="1200" height="720" fill="#f7fafc"/>
+  <g font-family="Segoe UI, sans-serif" fill="#152d40">
+    <text x="55" y="62" font-size="38" font-weight="700">SafeFlow — AC cooldown states</text>
+    <text x="55" y="102" font-size="23" fill="#5a6874">DESIGN DRAFT · Not UPPAAL verified · Simulation time</text>
+    <g stroke="#304457" stroke-width="3" fill="none" marker-end="url(#arrow)">
+      <path d="M350 300H465"/>
+      <path d="M735 300H850"/>
+      <path d="M985 365V470H215V365"/>
+    </g>
+    <path d="M925 235V155H645V235" fill="none" stroke="#975b14" stroke-width="3" stroke-dasharray="10 6" marker-end="url(#human)"/>
+    <g stroke="#304457" stroke-width="2">
+      <rect x="80" y="235" width="270" height="130" rx="14" fill="#e8f5ef"/>
+      <rect x="465" y="235" width="270" height="130" rx="14" fill="#e9f1fa"/>
+      <rect x="850" y="235" width="270" height="130" rx="14" fill="#fff1dc"/>
+    </g>
+    <g text-anchor="middle">
+      <text x="215" y="285" font-size="32" font-weight="700">READY</text>
+      <text x="215" y="325" font-size="23">AC off · may open</text>
+      <text x="600" y="285" font-size="32" font-weight="700">COOLING</text>
+      <text x="600" y="325" font-size="23">AC on</text>
+      <text x="985" y="285" font-size="32" font-weight="700">RESTING</text>
+      <text x="985" y="325" font-size="23">AC off · x &lt; 180</text>
+      <text x="600" y="438" font-size="25">Time reaches x ≥ 180 while AC is off</text>
+      <text x="785" y="143" font-size="23" fill="#975b14">Human open: bypass</text>
+    </g>
+    <text x="365" y="208" font-size="22">Allowed open</text>
+    <text x="767" y="208" font-size="22">Actual off: x := 0</text>
+    <text x="55" y="550" font-size="24">AI opening requires BOTH: rest complete + heater off.</text>
+    <text x="55" y="593" font-size="24">Blocked request: no device change; time still advances.</text>
+    <text x="55" y="636" font-size="24">Repeated off does not reset x. Human off does reset x.</text>
+    <text x="55" y="684" font-size="21" fill="#5a6874">Conflict states and full transition table are in automata-state-diagram.md.</text>
+  </g>
+</svg>

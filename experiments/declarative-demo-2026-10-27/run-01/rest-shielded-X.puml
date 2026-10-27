@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam padding 12
+title X: recorded path (not all possible behavior)
+rectangle "Observed episode" {
+state "Initial" as S0
+[*] --> S0
+state "Cooling / FirstUse" as S1
+S0 --> S1 : 1. ai: set_device\nallow; t=30s
+state "BothOff / Resting" as S2
+S1 --> S2 : 2. ai: set_device\nallow; t=60s
+state "BothOff / Resting" as S3
+S2 --> S3 : 3. ai: hold\nallow; t=90s
+state "BothOff / Resting" as S4
+S3 --> S4 : 4. ai: hold\nallow; t=120s
+state "BothOff / Resting" as S5
+S4 --> S5 : 5. ai: hold\nallow; t=150s
+state "BothOff / Resting" as S6
+S5 --> S6 : 6. ai: set_device\nblock; t=180s
+state "BothOff / Ready" as S7
+S6 --> S7 : 7. ai: hold\nallow; t=210s
+state "Cooling / Ready" as S8
+S7 --> S8 : 8. ai: set_device\nallow; t=240s
+}
+@enduml

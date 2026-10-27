@@ -1,0 +1,19 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam ArrowFontSize 16
+skinparam padding 14
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam linetype polyline
+title R1 proposals in BothOn
+rectangle "Proposal check (state unchanged)" {
+state "BothOn" as S
+[*] --> S
+S --> S : [(source == "human")]\n/ human_bypass
+S --> S : [((source == "ai") && (((event.device == "air_conditioner") && (event.mode == "cool") && heater) || ((event.device == "heater") && (event.mode == "on") && ac)))]\n/ block: ac_heater_conflict
+S --> S : [((source == "ai") && !((((event.device == "air_conditioner") && (event.mode == "cool") && heater) || ((event.device == "heater") && (event.mode == "on") && ac))))]\n/ allow
+}
+@enduml

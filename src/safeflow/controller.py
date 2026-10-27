@@ -4,26 +4,31 @@ import uuid
 from collections import deque
 from dataclasses import asdict
 from .commands import decode_response
-from .automata import Automata, POLICY_VERSION
+from .automata import Automata
+from .policy import Policy
 import time
 
 
 class Controller:
-    def __init__(self, home, agent, trace, enforcement=True):
+    def __init__(self, home, agent, trace, enforcement=True, policy=None):
         self.home, self.agent, self.trace = home, agent, trace
         self.enforcement = enforcement
-        self.automata = Automata()
+        self.automata = Automata(policy or Policy.load())
         self.lock = threading.RLock()
         self.queue = deque()
         self.run_id = str(uuid.uuid4())
+        self.event_seq = 0
         self.halted = False
         self.metadata = agent.metadata()
+        if hasattr(trace, "archive_policy"):
+            trace.archive_policy(self.automata.policy)
         self.reset()
 
     def log(self, event, **fields):
         try:
+            self.event_seq += 1
             self.trace.write({"event": event, "run_id": self.run_id,
-                              "episode_id": self.episode_id, **fields})
+                              "episode_id": self.episode_id, "event_seq": self.event_seq, **fields})
         except Exception:
             self.halted = True
             raise
@@ -35,14 +40,25 @@ class Controller:
             Home(self.home.physics).reset(scenario)
             self.episode_id = str(uuid.uuid4())
             self.log("reset", scenario=scenario or {}, model=self.metadata,
-                     physics=asdict(self.home.physics), schema_version=2,
-                     enforcement=self.enforcement, policy_version=POLICY_VERSION)
+                     physics=asdict(self.home.physics), schema_version=3,
+                     enforcement=self.enforcement, policy_version=self.automata.policy.version,
+                     policy_sha256=self.automata.policy.sha256, policy=self.automata.policy.definition)
             self.home.reset(scenario)
             self.automata.reset(self.home.snapshot())
             self.queue.clear()
             self.halted = False
             self.last_result = None
+            self.step_count = 0
             return self.snapshot()
+
+    def finish(self):
+        """Seal a completed episode; an open live log cannot certify its own tail."""
+        with self.lock:
+            if self.halted or self.queue:
+                raise RuntimeError("cannot_finish_halted_or_pending_episode")
+            self.log("episode_end", steps=self.step_count, after=self.home.snapshot(),
+                     automata_after=self.automata.state, policy_sha256=self.automata.policy.sha256)
+            self.halted = True
 
     def snapshot(self):
         with self.lock:
@@ -50,7 +66,8 @@ class Controller:
                     "episode_id": self.episode_id, "pending_requests": len(self.queue),
                     "halted": self.halted, "last_result": self.last_result,
                     "model": self.metadata, "enforcement": "automata" if self.enforcement else "validation_only",
-                    "automata": self.automata.state, "policy_version": POLICY_VERSION}
+                    "automata": self.automata.state, "policy_version": self.automata.policy.version,
+                    "policy_sha256": self.automata.policy.sha256}
 
     def enqueue(self, call):
         with self.lock:
@@ -75,7 +92,7 @@ class Controller:
             validator.set_goals(**values)
             self.log("goals", goals=values)
             self.home.set_goals(**values)
-            self.automata.expected = self.home.snapshot()
+            self.automata._sync(self.home.snapshot())
             return self.snapshot()
 
     def step(self, seed=0):
@@ -95,13 +112,16 @@ class Controller:
                     result = {"raw": None, "prompt": before, "latency_ms": None,
                               "error": type(exc).__name__}
             command, error = None, result.get("error")
-            if not error:
-                try:
-                    command = decode_response(result["raw"], result.get("output_mode", "tools"))
-                except ValueError as exc:
-                    error = str(exc)
             proposal_id = str(uuid.uuid4())
             try:
+                self.log("received", proposal_id=proposal_id, request_id=request_id, source=source,
+                         before=before, seed=seed, model=self.metadata,
+                         command_origin="human" if source == "human" else self.metadata.get("command_origin", "model"), **result)
+                if not error:
+                    try:
+                        command = decode_response(result["raw"], result.get("output_mode", "tools"))
+                    except ValueError as exc:
+                        error = str(exc)
                 self.log("proposal", proposal_id=proposal_id, request_id=request_id, source=source,
                          before=before, model=self.metadata, seed=seed, **result,
                          validation="valid" if command else "invalid", reason=error,
@@ -112,7 +132,9 @@ class Controller:
                 decision_reason = error or (checked.reason if self.enforcement else None)
                 executed = command if outcome in ("allow", "human_bypass", "execute_unshielded") else None
                 self.log("decision", proposal_id=proposal_id, source=source,
-                         decision=outcome, reason=decision_reason, policy_version=POLICY_VERSION,
+                         decision=outcome, reason=decision_reason, policy_version=self.automata.policy.version,
+                         policy_sha256=self.automata.policy.sha256, reasons=list(checked.reasons),
+                         transitions=list(checked.transitions),
                          automata_before=self.automata.state, check_ms=(time.perf_counter()-started)*1000,
                          command=executed.to_dict() if executed else None)
             except Exception:
@@ -124,10 +146,10 @@ class Controller:
                 if executed:
                     self.home.apply(executed)
                 after = self.home.advance(30)
-                self.automata.observe(before, executed, after, 30)
+                transitions = self.automata.observe(before, executed, after, 30, source)
                 self.log("execution", proposal_id=proposal_id, source=source,
                          command=executed.to_dict() if executed else None, advance_s=30, after=after,
-                         automata_after=self.automata.state)
+                         automata_after=self.automata.state, transitions=list(transitions))
             except Exception as exc:
                 self.halted = True
                 try:
@@ -140,4 +162,5 @@ class Controller:
                                 "command": command.to_dict() if command else None,
                                 "validation": "valid" if command else "invalid", "reason": decision_reason,
                                 "decision": outcome, "executed_command": executed.to_dict() if executed else None}
+            self.step_count += 1
             return self.snapshot()

@@ -1,0 +1,44 @@
+@startuml ac-cooldown-state-machine
+title SafeFlow — UML State Machine: พักแอร์
+caption แบบร่าง · ยังไม่ผ่าน UPPAAL · ต้องตรวจ conflict แอร์–ฮีเตอร์ร่วมด้วย
+top to bottom direction
+skinparam defaultFontName Tahoma
+skinparam defaultFontSize 18
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam nodesep 45
+skinparam ranksep 55
+skinparam ArrowColor #304457
+skinparam state {
+  BackgroundColor #EFF5FA
+  BorderColor #304457
+  FontColor #152D40
+}
+hide empty description
+state "พร้อมเปิด\nแอร์ปิด" as Ready #E8F5EF
+state "กำลังทำความเย็น\nแอร์เปิด" as Cooling
+state "กำลังพัก\nแอร์ปิด · x < 180" as Resting #FFF1DC
+[*] --> Ready : reset ค่าเริ่มต้น
+Ready --> Cooling : ac_on [คน หรือ (AI และฮีเตอร์ปิด)]\n/ apply
+Cooling --> Resting : ac_off [AI หรือคน] / apply, x := 0
+Resting --> Ready : time_advance [x >= 180]
+Resting -[#975B14,dashed]-> Cooling : ac_on [คน] / bypass
+Resting --> Resting : ac_on [AI และ x < 180] / block
+note bottom of Resting
+  การ block คง mode แต่เวลาเดินต่อ
+  ปิดซ้ำไม่ reset clock
+  คนปิดเริ่ม clock เช่นเดียวกับ AI
+end note
+note bottom of Cooling
+  รูปนี้แสดงเฉพาะกฎเวลา
+  เปิดซ้ำยังต้องตรวจ conflict
+  reset ที่แอร์เปิดเริ่ม Cooling
+end note
+legend bottom
+  event [guard] / effect
+  x = วินาทีจำลองนับจากเปิด → ปิดจริง
+  180 วินาทีเป็นค่าทดลอง ไม่ใช่มาตรฐานอุปกรณ์
+  ลูกศรคำสั่งแสดงหลัง apply ก่อนเวลาเดินอีก 30 วินาที
+  การ time_advance อาจเปลี่ยน Resting → Ready ในรอบที่ถูกบล็อกได้
+endlegend
+@enduml

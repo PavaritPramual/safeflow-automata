@@ -1,0 +1,72 @@
+@startuml safeflow-states
+title SafeFlow AI — UML State Machine (แบบร่าง)
+caption สถานะร่วมของแอร์ ฮีเตอร์ และ clock พักแอร์ · ยังไม่ผ่าน UPPAAL
+top to bottom direction
+skinparam defaultFontName Tahoma
+skinparam defaultFontSize 16
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam nodesep 45
+skinparam ranksep 55
+skinparam ArrowColor #304457
+skinparam state {
+  BackgroundColor #EFF5FA
+  BorderColor #304457
+  FontColor #152D40
+}
+hide empty description
+
+state "R0\nแอร์ปิด · ฮีเตอร์ปิด\nพร้อมเปิดแอร์" as R0 #E8F5EF
+state "R1\nแอร์ปิด · ฮีเตอร์เปิด\nพร้อมเปิดแอร์ด้านเวลา" as R1 #E8F5EF
+state "W0\nแอร์ปิด · ฮีเตอร์ปิด\nพักแอร์ x < 180" as W0 #FFF1DC
+state "W1\nแอร์ปิด · ฮีเตอร์เปิด\nพักแอร์ x < 180" as W1 #FFF1DC
+state "C0\nแอร์เปิด · ฮีเตอร์ปิด" as C0
+state "C1\nแอร์เปิด · ฮีเตอร์เปิด\nรองรับคำสั่งคน" as C1 #FBE9E7
+
+[*] --> R0 : reset ค่าเริ่มต้น / ไม่มีประวัติปิด
+
+' Transition notation: event [guard] / effect.
+' A = AI, H = human. Solid arrows are available to either source.
+R0 --> R1 : heater_on [A/H]\n/ apply
+R1 --> R0 : heater_off [A/H]\n/ apply
+W0 --> W1 : heater_on [A/H]\n/ apply
+W1 --> W0 : heater_off [A/H]\n/ apply
+C1 --> C0 : heater_off [A/H]\n/ apply
+
+R0 --> C0 : ac_on [A/H]\n/ apply
+C0 --> W0 : ac_off [A/H]\n/ apply, x := 0
+C1 --> W1 : ac_off [A/H]\n/ apply, x := 0
+W0 --> R0 : time_advance [x >= 180]
+W1 --> R1 : time_advance [x >= 180]
+
+' Human-only transitions explicitly bypass conflict and/or cooldown.
+W0 -[#975B14,dashed]-> C0 : ac_on [H] / bypass
+R1 -[#975B14,dashed]-> C1 : ac_on [H] / bypass
+W1 -[#975B14,dashed]-> C1 : ac_on [H] / bypass
+C0 -[#975B14,dashed]-> C1 : heater_on [H] / bypass
+
+note bottom of W0
+  AI ac_on ถูกบล็อกเมื่อ x < 180
+  mode คงเดิม แต่เวลาเดินต่อ
+end note
+note bottom of R1
+  AI ac_on ถูกบล็อกเพราะฮีเตอร์เปิด
+  เงื่อนไขเดียวกันใช้กับ W1 และ C1
+end note
+note bottom of C0
+  AI heater_on ถูกบล็อกเพราะแอร์เปิด
+  เงื่อนไขเดียวกันใช้กับ C1
+end note
+
+legend bottom
+  |= สัญลักษณ์ |= ความหมาย |
+  | A / H | AI / คน |
+  | เส้นทึบ | คำสั่งที่ใช้ได้ทั้ง AI และคนในสถานะต้นทาง |
+  | เส้นประสีน้ำตาล | เฉพาะคนที่ข้ามกฎได้ |
+  | x | วินาทีจำลองตั้งแต่แอร์เปลี่ยนเปิด → ปิดจริง |
+  ไม่วาดทุก self-loop เพื่อให้อ่านง่าย: hold, ไฟ, พัดลม, คำสั่งซ้ำ และ block
+  ทั้งหมดอ้างตาราง transition ใน automata-state-diagram.md และเดินเวลา 30 วินาทีต่อรอบ
+  reset แบบกำหนดอุปกรณ์เลือก R0/R1/C0/C1 ตาม scenario; รูปแสดง initial ค่าเริ่มต้นเท่านั้น
+  ลูกศรคำสั่งแสดงผลหลัง apply ก่อนเดินเวลา; time_advance แสดงการเปลี่ยนเมื่อพักครบ
+endlegend
+@enduml

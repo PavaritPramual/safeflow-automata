@@ -9,6 +9,21 @@ class Trace:
     def __init__(self, path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        if self.path.exists() and self.path.stat().st_size:
+            raise ValueError("refusing_to_append_another_run_use_new_trace_path")
+
+    def archive_policy(self, policy):
+        from .policy import canonical
+        directory = self.path.parent / "policies"
+        directory.mkdir(exist_ok=True)
+        path = directory / (policy.sha256 + ".json")
+        content = canonical(policy.definition) + "\n"
+        if path.exists():
+            if path.read_text(encoding="utf-8") != content:
+                raise ValueError("archived_policy_mismatch")
+        else:
+            with path.open("x", encoding="utf-8", newline="\n") as stream:
+                stream.write(content); stream.flush(); os.fsync(stream.fileno())
 
     def write(self, event):
         record = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), **event}
@@ -21,6 +36,17 @@ class Trace:
 
 def replay(records, home):
     """Reproduce executed commands and goal changes; never call a model."""
+    records = list(records)
+    versions = {r.get("schema_version") for r in records if r.get("event") == "reset"}
+    if 3 in versions:
+        from .behavior import check_records
+        if versions != {3}: raise ValueError("mixed_trace_schema")
+        report = check_records(records, home, require_seal=False)
+        if report["integrity"] != "complete" or report.get("replay_error"):
+            raise ValueError("invalid_v3_trace:" + str(report.get("issue")))
+        if report["status"] != "conforms" and all(r.get("enforcement", True) for r in records if r.get("event") == "reset"):
+            raise ValueError("policy_trace_mismatch:" + str(report.get("issue")))
+        return home.snapshot()
     from .commands import Command
     pending = {}
     decisions = {}
@@ -35,7 +61,7 @@ def replay(records, home):
             home.reset(record["scenario"])
             pending.clear(); decisions.clear()
             if record.get("schema_version") == 2:
-                from .automata import Automata, POLICY_VERSION
+                from .legacy_automata import Automata, POLICY_VERSION
                 if record.get("policy_version") != POLICY_VERSION:
                     raise ValueError("unsupported_policy_version")
                 guard = Automata(); guard.reset(home.snapshot())

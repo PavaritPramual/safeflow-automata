@@ -1,0 +1,158 @@
+{
+  "format_version": 1,
+  "command_origin": "prepared_test_not_model_output",
+  "scenarios": [
+    {
+      "id": "conflict",
+      "title": "ความขัดแย้งแอร์–ฮีเตอร์",
+      "initial": {
+        "devices": {
+          "heater": "on"
+        }
+      },
+      "steps": [
+        {
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        }
+      ],
+      "expected_shielded": [
+        "block"
+      ]
+    },
+    {
+      "id": "rest",
+      "title": "เวลาพักแอร์ 120 และ 180 วินาที",
+      "initial": {},
+      "steps": [
+        {
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "off"
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "hold",
+            "device": null,
+            "mode": null
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        }
+      ],
+      "expected_shielded": [
+        "allow",
+        "allow",
+        "allow",
+        "allow",
+        "allow",
+        "block",
+        "allow",
+        "allow"
+      ]
+    },
+    {
+      "id": "human",
+      "title": "คำสั่งคนและการกลับสู่ AI",
+      "initial": {
+        "devices": {
+          "heater": "on"
+        }
+      },
+      "steps": [
+        {
+          "source": "human",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "off"
+          }
+        },
+        {
+          "source": "ai",
+          "command": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          }
+        }
+      ],
+      "expected_shielded": [
+        "human_bypass",
+        "block",
+        "allow",
+        "allow"
+      ]
+    }
+  ]
+}

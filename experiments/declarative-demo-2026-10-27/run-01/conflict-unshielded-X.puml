@@ -1,0 +1,14 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam padding 12
+title X: recorded path (not all possible behavior)
+rectangle "Observed episode" {
+state "Initial" as S0
+[*] --> S0
+state "BothOn / FirstUse" as S1
+S0 --> S1 : 1. ai: set_device\nexecute_unshielded; t=30s
+}
+@enduml

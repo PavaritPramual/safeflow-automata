@@ -1,0 +1,23 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+hide empty description
+skinparam stateBackgroundColor white
+skinparam stateBorderColor black
+skinparam stateBorderThickness 1
+title X: recorded path (not all possible behavior)
+state "Observed episode" as Scope {
+state "Initial" as S0
+[*] --> S0
+state "BothOn / FirstUse" as S1
+S0 --> S1 : 1. human: air_conditioner.cool\nhuman_bypass; t=30s
+state "BothOn / FirstUse" as S2
+S1 --> S2 : 2. ai: air_conditioner.cool\nblock; t=60s
+state "Cooling / FirstUse" as S3
+S2 --> S3 : 3. ai: heater.off\nallow; t=90s
+state "Cooling / FirstUse" as S4
+S3 --> S4 : 4. ai: air_conditioner.cool\nallow; t=120s
+}
+@enduml

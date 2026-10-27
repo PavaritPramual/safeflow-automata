@@ -1,0 +1,22 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam ArrowFontSize 16
+skinparam shadowing false
+hide empty description
+skinparam stateBackgroundColor white
+skinparam stateBorderColor black
+skinparam stateBorderThickness 1
+skinparam roundcorner 0
+skinparam linetype polyline
+title R1 proposals in Heating
+state "Proposal check (state unchanged)" as Scope {
+state "Heating" as S
+[*] --> S
+S -left-> S : [(source == "human")]\n/ human_bypass
+S -right-> S : [((source == "ai") && (((event.device ==\n"air_conditioner") && (event.mode == "cool") &&\nheater) || ((event.device == "heater") &&\n(event.mode == "on") && ac)))]\n/ block: ac_heater_conflict
+S -down-> S : [((source == "ai") && !((((event.device ==\n"air_conditioner") && (event.mode == "cool") &&\nheater) || ((event.device == "heater") &&\n(event.mode == "on") && ac))))]\n/ allow
+}
+@enduml

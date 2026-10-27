@@ -1,0 +1,32 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam ArrowFontSize 16
+skinparam shadowing false
+hide empty description
+skinparam stateBackgroundColor white
+skinparam stateBorderColor black
+skinparam stateBorderThickness 1
+skinparam roundcorner 0
+skinparam linetype polyline
+title R2: observed state changes
+state "Actual observations" as Scope {
+state "FirstUse" as FirstUse
+state "Resting" as Resting
+state "Ready" as Ready
+[*] --> FirstUse : default reset
+FirstUse --> Resting : observe\n[((elapsed != null) && (elapsed < rest_s))]
+FirstUse --> Ready : observe\n[((elapsed != null) && (elapsed >= rest_s))]
+Resting --> Ready : observe\n[((elapsed != null) && (elapsed >= rest_s))]
+Ready --> Resting : observe\n[((elapsed != null) && (elapsed < rest_s))]
+}
+legend bottom
+Only observed state changes are drawn.
+Self-transitions and proposal decisions: see transition-table.md.
+A scenario reset selects its actual observed state.
+Reset elapsed := 0 when (before.ac && !(after.ac)).
+Then advance by simulation dt; rest_s = 180 seconds.
+endlegend
+@enduml

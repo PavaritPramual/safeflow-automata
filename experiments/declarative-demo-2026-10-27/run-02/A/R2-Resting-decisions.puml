@@ -1,0 +1,19 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam ArrowFontSize 16
+skinparam padding 14
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam linetype polyline
+title R2 proposals in Resting
+state "Proposal check (state unchanged)" as Scope {
+state "Resting" as S
+[*] --> S
+S --> S : [(source == "human")]\n/ human_bypass
+S --> S : [((source == "ai") && ((event.device == "air_conditioner") && (event.mode == "cool") && !(ac) && (elapsed != null) && (elapsed < rest_s)))]\n/ block: ac_cooldown
+S --> S : [((source == "ai") && !(((event.device == "air_conditioner") && (event.mode == "cool") && !(ac) && (elapsed != null) && (elapsed < rest_s))))]\n/ allow
+}
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+hide empty description
+skinparam stateBackgroundColor white
+skinparam stateBorderColor black
+skinparam stateBorderThickness 1
+title X: recorded path (not all possible behavior)
+state "Observed episode" as Scope {
+state "Initial" as S0
+[*] --> S0
+state "BothOn / FirstUse" as S1
+S0 --> S1 : 1. ai: air_conditioner.cool\nexecute_unshielded; t=30s
+}
+@enduml

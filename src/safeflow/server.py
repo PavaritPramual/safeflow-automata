@@ -10,6 +10,7 @@ from .commands import MODES
 from .controller import Controller
 from .environment import Home, Physics
 from .trace import Trace
+from .policy import Policy, DEFAULT_POLICY
 
 
 def load_settings(path):
@@ -105,6 +106,7 @@ def main():
     parser.add_argument("--output-mode", choices=("tools", "json"), default="tools")
     parser.add_argument("--ollama-url", default="http://127.0.0.1:11434")
     parser.add_argument("--trace", default="logs/home.jsonl")
+    parser.add_argument("--policy", default=str(DEFAULT_POLICY), help="Load one immutable policy at startup")
     parser.add_argument("--interval", type=float, default=0,
                         help="Wall-clock pause between automatic rounds; 0 means manual stepping")
     args = parser.parse_args()
@@ -113,7 +115,7 @@ def main():
     settings = load_settings(args.config)
     controller = Controller(Home(Physics(**settings["physics"])),
                             OllamaAgent(args.model, args.ollama_url, output_mode=args.output_mode), Trace(args.trace),
-                            enforcement=not args.unshielded)
+                            enforcement=not args.unshielded, policy=Policy.load(args.policy))
     server = make_server(controller, load_key(), args.host, args.port)
     stop = threading.Event()
     if args.interval:
@@ -133,6 +135,8 @@ def main():
     finally:
         stop.set()
         server.server_close()
+        if not controller.halted and not controller.queue:
+            controller.finish()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,246 @@
+{
+  "status": "conforms",
+  "integrity": "complete",
+  "issue": null,
+  "replay_error": null,
+  "episodes": [
+    {
+      "episode_id": "0a256304-3858-4464-bb86-812413fd68fd",
+      "reset_line": 1,
+      "policy_sha256": "eebde030b13ac0ad43dfc9b941345ec062058e34d284d18129d2ad91d76248da",
+      "enforcement": true,
+      "model": {
+        "model": "prepared-demo-commands",
+        "command_origin": "prepared_test",
+        "not_real_ai": true
+      },
+      "path": []
+    },
+    {
+      "episode_id": "b472382a-62b2-4d09-beba-150223edb116",
+      "reset_line": 2,
+      "policy_sha256": "eebde030b13ac0ad43dfc9b941345ec062058e34d284d18129d2ad91d76248da",
+      "enforcement": true,
+      "model": {
+        "model": "prepared-demo-commands",
+        "command_origin": "prepared_test",
+        "not_real_ai": true
+      },
+      "path": [
+        {
+          "index": 1,
+          "proposal_id": "d48d7dad-0738-41e3-bad6-7bfce60d0c14",
+          "lines": {
+            "received": 4,
+            "proposal": 5,
+            "decision": 6,
+            "execution": 7
+          },
+          "source": "human",
+          "before": {
+            "ac": false,
+            "heater": true,
+            "elapsed": null,
+            "time_s": 0.0
+          },
+          "command_origin": "human",
+          "event": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "decision": "human_bypass",
+          "reason": null,
+          "reasons": [],
+          "executed": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "after": {
+            "ac": true,
+            "heater": true,
+            "elapsed": null,
+            "time_s": 30.0
+          },
+          "states_before": {
+            "R1": "Heating",
+            "R2": "FirstUse"
+          },
+          "states_after": {
+            "R1": "BothOn",
+            "R2": "FirstUse"
+          },
+          "proposal_transitions": [
+            "R1.Heating.human",
+            "R2.FirstUse.human"
+          ],
+          "observed_transitions": [
+            "R1.Heating.observed.BothOn",
+            "R2.FirstUse.observed.FirstUse"
+          ]
+        },
+        {
+          "index": 2,
+          "proposal_id": "efeb04cc-17b2-472a-a470-7efff91874b8",
+          "lines": {
+            "received": 8,
+            "proposal": 9,
+            "decision": 10,
+            "execution": 11
+          },
+          "source": "ai",
+          "before": {
+            "ac": true,
+            "heater": true,
+            "elapsed": null,
+            "time_s": 30.0
+          },
+          "command_origin": "prepared_test",
+          "event": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "decision": "block",
+          "reason": "ac_heater_conflict",
+          "reasons": [
+            "ac_heater_conflict"
+          ],
+          "executed": null,
+          "after": {
+            "ac": true,
+            "heater": true,
+            "elapsed": null,
+            "time_s": 60.0
+          },
+          "states_before": {
+            "R1": "BothOn",
+            "R2": "FirstUse"
+          },
+          "states_after": {
+            "R1": "BothOn",
+            "R2": "FirstUse"
+          },
+          "proposal_transitions": [
+            "R1.BothOn.deny",
+            "R2.FirstUse.allow"
+          ],
+          "observed_transitions": [
+            "R1.BothOn.observed.BothOn",
+            "R2.FirstUse.observed.FirstUse"
+          ]
+        },
+        {
+          "index": 3,
+          "proposal_id": "4f0818fe-dfd6-492d-902a-43ea5fc9323a",
+          "lines": {
+            "received": 12,
+            "proposal": 13,
+            "decision": 14,
+            "execution": 15
+          },
+          "source": "ai",
+          "before": {
+            "ac": true,
+            "heater": true,
+            "elapsed": null,
+            "time_s": 60.0
+          },
+          "command_origin": "prepared_test",
+          "event": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "off"
+          },
+          "decision": "allow",
+          "reason": null,
+          "reasons": [],
+          "executed": {
+            "name": "set_device",
+            "device": "heater",
+            "mode": "off"
+          },
+          "after": {
+            "ac": true,
+            "heater": false,
+            "elapsed": null,
+            "time_s": 90.0
+          },
+          "states_before": {
+            "R1": "BothOn",
+            "R2": "FirstUse"
+          },
+          "states_after": {
+            "R1": "Cooling",
+            "R2": "FirstUse"
+          },
+          "proposal_transitions": [
+            "R1.BothOn.allow",
+            "R2.FirstUse.allow"
+          ],
+          "observed_transitions": [
+            "R1.BothOn.observed.Cooling",
+            "R2.FirstUse.observed.FirstUse"
+          ]
+        },
+        {
+          "index": 4,
+          "proposal_id": "52f31057-15dc-4c83-a895-3f5a3e92c14a",
+          "lines": {
+            "received": 16,
+            "proposal": 17,
+            "decision": 18,
+            "execution": 19
+          },
+          "source": "ai",
+          "before": {
+            "ac": true,
+            "heater": false,
+            "elapsed": null,
+            "time_s": 90.0
+          },
+          "command_origin": "prepared_test",
+          "event": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "decision": "allow",
+          "reason": null,
+          "reasons": [],
+          "executed": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "after": {
+            "ac": true,
+            "heater": false,
+            "elapsed": null,
+            "time_s": 120.0
+          },
+          "states_before": {
+            "R1": "Cooling",
+            "R2": "FirstUse"
+          },
+          "states_after": {
+            "R1": "Cooling",
+            "R2": "FirstUse"
+          },
+          "proposal_transitions": [
+            "R1.Cooling.allow",
+            "R2.FirstUse.allow"
+          ],
+          "observed_transitions": [
+            "R1.Cooling.observed.Cooling",
+            "R2.FirstUse.observed.FirstUse"
+          ]
+        }
+      ],
+      "end_line": 20
+    }
+  ],
+  "steps": 4,
+  "scope": "Only the recorded paths; not exhaustive model verification."
+}

@@ -1,0 +1,14 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam padding 12
+title X: recorded path (not all possible behavior)
+state "Observed episode" as Scope {
+state "Initial" as S0
+[*] --> S0
+state "Heating / FirstUse" as S1
+S0 --> S1 : 1. ai: set_device\nblock; t=30s
+}
+@enduml

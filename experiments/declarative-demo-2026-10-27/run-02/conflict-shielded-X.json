@@ -1,0 +1,87 @@
+{
+  "status": "conforms",
+  "integrity": "complete",
+  "issue": null,
+  "replay_error": null,
+  "episodes": [
+    {
+      "episode_id": "87bf6836-e708-4877-8115-71c20a6acf37",
+      "reset_line": 1,
+      "policy_sha256": "584de7f3ad5ef96477dfe86ab68d8eaad0eb37ca245ea08065924e2f3518f1dc",
+      "enforcement": true,
+      "model": {
+        "model": "prepared-demo-commands",
+        "command_origin": "prepared_test",
+        "not_real_ai": true
+      },
+      "path": []
+    },
+    {
+      "episode_id": "053fe578-f896-4575-bbfd-f4b8d2f1b156",
+      "reset_line": 2,
+      "policy_sha256": "584de7f3ad5ef96477dfe86ab68d8eaad0eb37ca245ea08065924e2f3518f1dc",
+      "enforcement": true,
+      "model": {
+        "model": "prepared-demo-commands",
+        "command_origin": "prepared_test",
+        "not_real_ai": true
+      },
+      "path": [
+        {
+          "index": 1,
+          "proposal_id": "e1ccafc9-3c33-4e3e-9ded-752fdef6dd02",
+          "lines": {
+            "received": 3,
+            "proposal": 4,
+            "decision": 5,
+            "execution": 6
+          },
+          "source": "ai",
+          "before": {
+            "ac": false,
+            "heater": true,
+            "elapsed": null,
+            "time_s": 0.0
+          },
+          "command_origin": "prepared_test",
+          "event": {
+            "name": "set_device",
+            "device": "air_conditioner",
+            "mode": "cool"
+          },
+          "decision": "block",
+          "reason": "ac_heater_conflict",
+          "reasons": [
+            "ac_heater_conflict"
+          ],
+          "executed": null,
+          "after": {
+            "ac": false,
+            "heater": true,
+            "elapsed": null,
+            "time_s": 30.0
+          },
+          "states_before": {
+            "R1": "Heating",
+            "R2": "FirstUse"
+          },
+          "states_after": {
+            "R1": "Heating",
+            "R2": "FirstUse"
+          },
+          "proposal_transitions": [
+            "R1.Heating.deny",
+            "R2.FirstUse.allow"
+          ],
+          "observed_transitions": [
+            "R1.Heating.observed.Heating",
+            "R2.FirstUse.observed.FirstUse"
+          ]
+        }
+      ],
+      "end_line": 7
+    }
+  ],
+  "steps": 1,
+  "scope": "Only the recorded paths; not exhaustive model verification."
+}

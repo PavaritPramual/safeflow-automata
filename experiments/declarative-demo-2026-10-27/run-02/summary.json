@@ -1,0 +1,67 @@
+{
+  "type": "prepared_test_commands_not_model_outputs",
+  "policy_version": "smart-home-declarative-v1",
+  "policy_sha256": "584de7f3ad5ef96477dfe86ab68d8eaad0eb37ca245ea08065924e2f3518f1dc",
+  "runs": [
+    {
+      "id": "conflict",
+      "title": "ความขัดแย้งแอร์–ฮีเตอร์",
+      "enforcement": false,
+      "trace": "conflict-unshielded.jsonl",
+      "report_path": "conflict-unshielded-X.json",
+      "replay_passed": true,
+      "status": "nonconforming",
+      "steps": 1
+    },
+    {
+      "id": "conflict",
+      "title": "ความขัดแย้งแอร์–ฮีเตอร์",
+      "enforcement": true,
+      "trace": "conflict-shielded.jsonl",
+      "report_path": "conflict-shielded-X.json",
+      "replay_passed": true,
+      "status": "conforms",
+      "steps": 1
+    },
+    {
+      "id": "rest",
+      "title": "เวลาพักแอร์ 120 และ 180 วินาที",
+      "enforcement": false,
+      "trace": "rest-unshielded.jsonl",
+      "report_path": "rest-unshielded-X.json",
+      "replay_passed": true,
+      "status": "nonconforming",
+      "steps": 8
+    },
+    {
+      "id": "rest",
+      "title": "เวลาพักแอร์ 120 และ 180 วินาที",
+      "enforcement": true,
+      "trace": "rest-shielded.jsonl",
+      "report_path": "rest-shielded-X.json",
+      "replay_passed": true,
+      "status": "conforms",
+      "steps": 8
+    },
+    {
+      "id": "human",
+      "title": "คำสั่งคนและการกลับสู่ AI",
+      "enforcement": false,
+      "trace": "human-unshielded.jsonl",
+      "report_path": "human-unshielded-X.json",
+      "replay_passed": true,
+      "status": "nonconforming",
+      "steps": 4
+    },
+    {
+      "id": "human",
+      "title": "คำสั่งคนและการกลับสู่ AI",
+      "enforcement": true,
+      "trace": "human-shielded.jsonl",
+      "report_path": "human-shielded-X.json",
+      "replay_passed": true,
+      "status": "conforms",
+      "steps": 4
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam padding 12
+title X: recorded path (not all possible behavior)
+rectangle "Observed episode" {
+state "Initial" as S0
+[*] --> S0
+state "BothOn / FirstUse" as S1
+S0 --> S1 : 1. human: set_device\nexecute_unshielded; t=30s
+state "BothOn / FirstUse" as S2
+S1 --> S2 : 2. ai: set_device\nexecute_unshielded; t=60s
+state "Cooling / FirstUse" as S3
+S2 --> S3 : 3. ai: set_device\nexecute_unshielded; t=90s
+state "Cooling / FirstUse" as S4
+S3 --> S4 : 4. ai: set_device\nexecute_unshielded; t=120s
+}
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam ArrowFontSize 16
+skinparam shadowing false
+hide empty description
+skinparam stateBackgroundColor white
+skinparam stateBorderColor black
+skinparam stateBorderThickness 1
+skinparam roundcorner 0
+skinparam linetype polyline
+title R1: observed state changes
+state "Actual observations" as Scope {
+state "BothOff" as BothOff
+state "Cooling" as Cooling
+state "Heating" as Heating
+state "BothOn" as BothOn
+[*] --> BothOff : default reset
+BothOff --> Cooling : observe air_conditioner.cool\n[(ac && !(heater))]
+BothOff --> Heating : observe heater.on\n[(!(ac) && heater)]
+Cooling --> BothOff : observe air_conditioner.off\n[(!(ac) && !(heater))]
+Cooling --> BothOn : observe heater.on\n[(ac && heater)]
+Heating --> BothOn : observe air_conditioner.cool\n[(ac && heater)]
+Heating --> BothOff : observe heater.off\n[(!(ac) && !(heater))]
+BothOn --> Heating : observe air_conditioner.off\n[(!(ac) && heater)]
+BothOn --> Cooling : observe heater.off\n[(ac && !(heater))]
+}
+legend bottom
+Only observed state changes are drawn.
+Self-transitions and proposal decisions: see transition-table.md.
+A scenario reset selects its actual observed state.
+endlegend
+@enduml
