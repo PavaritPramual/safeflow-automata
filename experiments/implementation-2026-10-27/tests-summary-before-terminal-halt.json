@@ -1,0 +1,8 @@
+{
+  "tests_run": 97,
+  "passed": 97,
+  "failures": 0,
+  "errors": 0,
+  "skipped": [],
+  "scope": "Unit, actual local HTTP, compatibility, independent requirement oracle, concrete generated-XML paths, actual UPPAAL and independent-property mutation."
+}

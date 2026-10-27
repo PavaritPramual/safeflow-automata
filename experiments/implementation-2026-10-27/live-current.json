@@ -1,0 +1,42 @@
+{
+  "type": "real_ollama_autonomous_loop_with_real_home_assistant_request",
+  "session_id": "c5529bd7-fbba-4a0c-9ead-b7b938e4177d",
+  "baseline_steps": 3,
+  "final_steps": 11,
+  "simulation_time_s": 330.0,
+  "human_request": {
+    "device": "heater",
+    "mode": "on"
+  },
+  "goals": {
+    "target_c": 24,
+    "light_required": true
+  },
+  "final_result": {
+    "outcome": "allow",
+    "reason": "permitted",
+    "transition": "permitted",
+    "next_state": "Monitoring",
+    "event_id": "d98a6935-72a8-46b1-a253-889c54c23265",
+    "definition_sha256": "d5b5eedb2f4769517cd4f864c17d901e665c280ae648248f6f5ea59f08b80037",
+    "decision": "allow",
+    "source": "ai",
+    "action": "light_on",
+    "validation": "valid"
+  },
+  "provider": {
+    "provider": "ollama",
+    "model": "qwen3:1.7b",
+    "url": "http://127.0.0.1:11434",
+    "options": {
+      "temperature": 0,
+      "num_ctx": 2048,
+      "num_predict": 128,
+      "num_gpu": 0
+    },
+    "command_origin": "model"
+  },
+  "definition_sha256": "d5b5eedb2f4769517cd4f864c17d901e665c280ae648248f6f5ea59f08b80037",
+  "home_assistant_readiness": "ready",
+  "not_prepared_ai_commands": true
+}

@@ -216,13 +216,13 @@ class BehaviorTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as tmp:
             a, b = Path(tmp) / 'a', Path(tmp) / 'b'
-            results = [run_demo(p, root / 'configs/demo-scenarios.json', Policy.load()) for p in (a,b)]
+            results = [run_demo(p, root / 'tools/prepared_demo/scenarios.json', Policy.load()) for p in (a,b)]
             self.assertEqual(results[0], results[1])
             for left in a.glob('*-X.json'):
                 x, y = [json.loads(p.read_text(encoding='utf-8')) for p in (left, b / left.name)]
                 normalize = lambda report: [(s['event'], s['decision'], s['before'], s['after']) for e in report['episodes'] for s in e['path']]
                 self.assertEqual(normalize(x), normalize(y))
-            with self.assertRaises(FileExistsError): run_demo(a, root / 'configs/demo-scenarios.json', Policy.load())
+            with self.assertRaises(FileExistsError): run_demo(a, root / 'tools/prepared_demo/scenarios.json', Policy.load())
 
 
 if __name__ == '__main__': unittest.main()

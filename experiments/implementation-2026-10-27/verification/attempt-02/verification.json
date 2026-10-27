@@ -1,0 +1,68 @@
+{
+  "definition_sha256": "d5b5eedb2f4769517cd4f864c17d901e665c280ae648248f6f5ea59f08b80037",
+  "ir_sha256": "c0a3f56e0381e3253ec4a874b52b11d0a42214f673e2c47915c7bd0c426355dd",
+  "ir_version": "safeflow-ir-1",
+  "converter_version": "safeflow-uppaal-1",
+  "implementation_sha256": "cb73a9dc1ca1d4c9e6d392f8da7927cd3de85f9be188726006d7fd1164d8b239",
+  "model_sha256": "16be9a92d3f32f7c37fbf2b115749bf57285b190929f3fbe15b35dff68486f82",
+  "properties_sha256": "76ea7f6287f16ab30ee313e7675fe1f4003dc07214d40e6d8b7521cf656c5996",
+  "origin": "uppaal_subprocess",
+  "verifier_executable": "D:\\673380278-9\\2569\\Seminar\\tools\\uppaal\\uppaal-5.0.0-win64\\bin\\verifyta.exe",
+  "verifier_sha256": "4c8af2716ff61f3cf35c6d1dc408ccf306d44bb22478e104548a8f0f7a3febe5",
+  "results": [
+    {
+      "id": "no_deadlock",
+      "status": "unavailable",
+      "exit_code": 1,
+      "output_file": "verifier-000.txt",
+      "output_sha256": "4911392613fd1520e95c0be86faacb97b85d04f18a978cef157d16153a4aee6d",
+      "elapsed_s": 0.028508700081147254
+    },
+    {
+      "id": "complete_decisions",
+      "status": "not_run"
+    },
+    {
+      "id": "no_ai_conflict",
+      "status": "not_run"
+    },
+    {
+      "id": "no_early_restart",
+      "status": "not_run"
+    },
+    {
+      "id": "invalid_never_executed",
+      "status": "not_run"
+    },
+    {
+      "id": "blocked_preserves_state",
+      "status": "not_run"
+    },
+    {
+      "id": "no_unnecessary_block",
+      "status": "not_run"
+    },
+    {
+      "id": "human_proposal_permitted",
+      "status": "not_run"
+    },
+    {
+      "id": "human_conflict_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "ai_open_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "blocking_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "expired_open_reachable",
+      "status": "not_run"
+    }
+  ],
+  "status": "not_ready",
+  "verifier_version": "UPPAAL 5.0.0 (rev. 714BA9DB36F49691), June 2023\nCopyright (c) 2011 - 2023, Aalborg University.\nCopyright (c) 1995 - 2011, Uppsala University and Aalborg University.\nAll rights reserved.\nCompiled using -DENABLE_TIGA -DMULTI_TERMINAL -DENABLE_TIGA_SMC -DENABLE_STORE_MINGRAPH -DTIGA_OTF_BUCHI -DENABLE_LSC \nBuilt with Boost-1.79.0, LibXml2-2.9.14, xxHash-0.8.1, UTAP-1.1.6, UUtils-1.2.0, UDBM-2.0.11, and UCDD-0.2.1\nlicense key is not set\nFailed to retrieve licensee."
+}

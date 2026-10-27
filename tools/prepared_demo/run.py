@@ -108,7 +108,7 @@ def run_demo(output, scenarios, policy):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', required=True, help='New directory only; evidence is never overwritten')
-    parser.add_argument('--scenarios', default='configs/demo-scenarios.json')
+    parser.add_argument('--scenarios', default='tools/prepared_demo/scenarios.json')
     parser.add_argument('--policy', default=str(DEFAULT_POLICY))
     args = parser.parse_args()
     summary = run_demo(args.output, args.scenarios, Policy.load(args.policy))

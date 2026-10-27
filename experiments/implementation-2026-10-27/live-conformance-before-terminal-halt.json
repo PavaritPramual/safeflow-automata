@@ -1,0 +1,66 @@
+[
+  {
+    "trace": "live-traces/session-89e5b04e-7caf-4d13-9cc1-e71e2281de9a.jsonl",
+    "session_id": "89e5b04e-7caf-4d13-9cc1-e71e2281de9a",
+    "status": "conforms",
+    "integrity": "complete",
+    "steps": 0,
+    "ai_proposals": 0,
+    "human_proposals": 0,
+    "ai_blocked": 0,
+    "invalid_output": 0,
+    "raw_observation_snapshots": 0,
+    "actions": {},
+    "issue": null
+  },
+  {
+    "trace": "live-traces/session-b45ad734-0d1e-4dc2-9e1d-05d9b29aadfb.jsonl",
+    "session_id": "b45ad734-0d1e-4dc2-9e1d-05d9b29aadfb",
+    "status": "conforms",
+    "integrity": "complete",
+    "steps": 2,
+    "ai_proposals": 1,
+    "human_proposals": 1,
+    "ai_blocked": 0,
+    "invalid_output": 0,
+    "raw_observation_snapshots": 0,
+    "actions": {
+      "light_on": 2
+    },
+    "issue": null
+  },
+  {
+    "trace": "autonomous-traces/session-75db0a30-bbc7-4e14-a4b9-de70f365b7bf.jsonl",
+    "session_id": "75db0a30-bbc7-4e14-a4b9-de70f365b7bf",
+    "status": "conforms",
+    "integrity": "complete",
+    "steps": 15,
+    "ai_proposals": 14,
+    "human_proposals": 1,
+    "ai_blocked": 0,
+    "invalid_output": 0,
+    "raw_observation_snapshots": 0,
+    "actions": {
+      "light_on": 14,
+      "heater_on": 1
+    },
+    "issue": null
+  },
+  {
+    "trace": "current-traces/session-c5529bd7-fbba-4a0c-9ead-b7b938e4177d.jsonl",
+    "session_id": "c5529bd7-fbba-4a0c-9ead-b7b938e4177d",
+    "status": "conforms",
+    "integrity": "complete",
+    "steps": 11,
+    "ai_proposals": 10,
+    "human_proposals": 1,
+    "ai_blocked": 0,
+    "invalid_output": 0,
+    "raw_observation_snapshots": 11,
+    "actions": {
+      "light_on": 10,
+      "heater_on": 1
+    },
+    "issue": null
+  }
+]

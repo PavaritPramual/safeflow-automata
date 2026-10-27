@@ -1,0 +1,8 @@
+{
+  "type": "deterministic_home_replay_of_actual_run",
+  "session_id": "c5529bd7-fbba-4a0c-9ead-b7b938e4177d",
+  "matched_prompt_snapshots": 10,
+  "matched_native_observations": 11,
+  "status": "passed",
+  "scope": "Same simulator re-execution from recorded initial context, goals and admitted actions; not a physical-model validation."
+}

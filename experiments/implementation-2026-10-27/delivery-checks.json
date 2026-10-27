@@ -1,0 +1,10 @@
+{
+  "documentation_links_checked": 9,
+  "broken_links": [],
+  "default_configuration_ready": true,
+  "implementation_commit": "95df7b493182a3d5ac299337612e16a4fb2a8e0b",
+  "python": "3.12.14",
+  "pyyaml": "6.0.3",
+  "verification_bundle": "verification/attempt-07",
+  "note": "Final docs/evidence commit follows; core implementation is pinned above."
+}

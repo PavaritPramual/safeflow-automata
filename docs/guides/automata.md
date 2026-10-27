@@ -1,72 +1,86 @@
-# Automata policy smart-home-v1
+# Site definition and timed-automata semantics
 
-## State and input mapping
+Start from [the commented home policy](../../examples/smart-home/policy.yaml).
+The source format is YAML version 1; `on`/`off` remain strings (YAML 1.2 boolean
+rules). Duplicate keys, aliases and executable YAML tags are rejected.
 
-`devices.air_conditioner` maps off/cool to AC false/true; heater off/on maps
-false/true. Fan and light are observed and checked for valid modes but have no
-safety restriction. `ac_off_elapsed_s` maps null or >=180 to ready, otherwise
-resting. The numeric clock remains available for boundary checks. Times are
-simulation seconds, not inference duration or JSONL wall timestamps.
+## Supported definition
 
-Input is `(source, Command, state_before, simulation_time_s)`. Unknown proposals
-are rejected; unknown observed modes, nonfinite/backward clocks, or unobserved
-state changes halt the episode. An unknown state is not an accepting safe state.
+- `parameters`: nonnegative bounded integers; the example rest time is 180 seconds.
+- `variables`: boolean, finite enum, or bounded integer, each with an initial value.
+  Device modes are enum variables; measurements such as temperature may be passed
+  to the model and logged without entering the formal state.
+- `clocks`: clocks with a not-yet-reset flag and `reset_when` predicates over `before`,
+  `after`, and parameters. `clock.NAME` advances from session start until reset, then measures elapsed
+  environment seconds since reset. `active.NAME` distinguishes first use from cooldown.
+- `sources` and `event_kinds`: finite input domains. `proposal` carries a declared
+  action ID. Other kinds carry no action; the example declares invalid output,
+  timeout and adapter error.
+- `actions`: opaque IDs with literal assignments to declared variables. Empty
+  assignments represent hold. The home adapter requires at most one device per
+  action; the core does not know native device names.
+- `states`, `initial`, `transitions`: explicit control locations. The home example
+  uses Monitoring plus device-mode data variables, an extended timed automaton.
+  Each transition declares from/to, event kinds, a guard, outcome and reason.
+- `properties`: named `invariant` or `reachable` assertions at `decision` or
+  `observation`; independent from the transition guards.
 
-## Transition table
+Expressions allow True/False, integer and enum literals, declared references,
+`and`, `or`, `not`, and ==, !=, <, <=, >, >=. Calls, indexing, arithmetic, floats,
+custom Python, arbitrary TCTL and unsupported constructs are rejected. Guards
+cannot read future observations or their own outcome. No eval/exec is used.
 
-| Source/event | Guard | Decision/effect |
-|---|---|---|
-| AI AC cool | Heater on | block; modes unchanged |
-| AI heater on | AC cool | block; modes unchanged |
-| AI AC off-to-cool | Rest not complete | block; modes unchanged |
-| AI other valid command | Previous guards false | allow |
-| Human valid command | Any known state | human_bypass; apply and observe |
-| Invalid proposal | Any known state | reject_invalid; no device command |
-| AC actual cool-to-off | AI or human | Clock reset to zero |
-| Duplicate AC off | Already off | Clock unchanged |
-| Duplicate AC cool | Already cool | No restart; conflict guard still applies |
-| Round completion | Any decision | Advance 30 s; observe actual results |
+A declared halt is terminal: no command, observation, clock advance or state
+change follows it, so its to location must equal from. A sealed session_halt
+record distinguishes this normal policy stop from an undefined transition or
+runtime fault. Queued requests are abandoned by a terminal stop.
 
-Human-induced both-on is a supported state. AI hold and off requests may proceed;
-opening requests that conflict remain blocked. Initial AC off is ready, even if
-no off timestamp exists. Reset clears the episode and restores readiness.
+Exactly one outgoing transition must match an event. Missing/ambiguous matches
+halt rather than choosing an order-dependent fallback. In the example, malformed
+and timeout events block and advance time; editing that transition to halt changes
+the behavior without editing the engine (and requires re-verification).
 
-## Runtime contract and failure handling
+## Observation and clock contract
 
-`Automata.reset(snapshot)` establishes observed state; `evaluate(command, source,
-snapshot)` returns a decision without changing it; `observe(before, executed,
-after, advance_s)` checks modes/time/clock against actual execution and commits
-new observed state. Goals can change between rounds without advancing clocks.
+Sessions start from the initial facts covered by their bundle. An allowed action
+has an atomic declared effect at the decision timestamp. The caller reports the
+actual resulting facts, `applied_at_s` equal to that timestamp, and `time_s` after
+an explicit nonnegative delay. The example adapter advances exactly 30 seconds.
+Only then do state and elapsed clocks commit. Wrong references, backwards time,
+unexpected effects and invariant violations cannot advance the session.
 
-Schema v2 adds policy version, decision, Automata states and check duration to
-JSONL; existing proposal and execution IDs remain. Decision command means the
-command to execute, while proposal command means the command requested.
-`last_result` includes both `command` and `executed_command`. `/state` exposes
-`automata`, `enforcement`, `policy_version`. Existing endpoints are retained.
+AC-off reset uses an actual cool-to-off change. Repeated off does not reset it;
+first use has no artificial rest period. Human commands use the same observation
+path and reset clocks identically, but their permit exception is in the policy.
+Both-on is reachable by a human, so a global invariant banning both-on would be
+incorrect for this case study. The properties constrain AI admissions instead.
 
-Proposal and decision are fsynced before apply. Log failures halt, including human
-queue/goal records. A post-apply failure may leave the environment changed; never
-retry it automatically. Fault logging is best-effort when logging itself fails.
-Replay verifies v2 decisions and actual effects, and accepts historical unshielded
-v1 logs without pretending they contain policy evidence.
+## UPPAAL and readiness
 
-## Formal model and correspondence limits
+Run `python -m safeflow verify --definition FILE --output NEW_DIRECTORY --verifyta EXECUTABLE`.
+The same typed IR feeds the exporter and runtime. Each new bundle stores a
+canonical definition, IR, XML, individual query files, manifest, raw verifier
+outputs and the per-property report. No existing bundle is overwritten.
 
-`formal/smart-home.xml` separates nondeterministic Proposer, Guard and Plant,
-with committed check/apply stages and a real-valued clock. Requests may occur
-at arbitrary times, a superset of the runtime's 30-second rounds. The model
-covers all nine valid commands and two sources; physical temperatures, malformed
-input and I/O failures are outside the formal model and covered by runtime tests.
+The generated model explores finite proposals and arbitrary nonnegative delays;
+thermal physics and arbitrary physical failures are not part of it. Committed
+locations make decision and declared application instantaneous. Each decision
+must be unique; explicit fault branches expose missing/ambiguous transitions.
+Boolean expressions are lowered to committed decision graphs so clock guards
+remain in the conjunction form required by UPPAAL; clocks cannot advance inside
+those graphs.
+Properties are checked at the selected phase, not at unrelated intermediate
+committed locations.
 
-Queries cover AI conflict/cooldown, blocked-state preservation, structural
-non-deadlock, reachable human conflict, blocking and post-rest AI opening.
-Global `A[] !(ac && heater)` is intentionally not a requirement.
-Deadlock freedom is not a fairness or no-Zeno proof.
+Activation checks every property result, hashes, converter version, exact output
+files and the verifier executable. An unavailable tool, timeout, false property,
+modified source/query/model or missing result keeps the service not ready.
+The current home definition passes all 12 properties; see the
+[actual results](../../experiments/implementation-2026-10-27/verification/attempt-07/verification.json). Earlier license and generated-model errors
+remain in preceding attempts, and cannot activate the service.
 
-Verification status: **pending**. UPPAAL 5.0.0 attempted verification but returned
-`License does not cover verifier.` The XML has been parsed locally, but verifier
-syntax/semantics and all queries still require actual UPPAAL acceptance.
-
-Python tests cover 360 finite state/source/command combinations at selected clock
-representatives and multi-step traces. This does not constitute full equivalence
-between XML and Python; no such proof is claimed before verifier-based checks.
+During operation SafeFlow monitors each event/effect against A; it does not call
+UPPAAL per request. `python -m safeflow check TRACE` checks the ordered recorded X.
+A sealed complete path can conform, a mismatch reports the first line with
+expected/found, and an unfinished tail is inconclusive. `--live-prefix` explicitly
+checks only an observed prefix. None of these proves all future AI behavior.

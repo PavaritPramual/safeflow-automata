@@ -1,102 +1,95 @@
 # SafeFlow AI
 
-**A Formal Framework for Automata-Based AI Runtime Control**
+A formal framework for automata-based runtime control of AI proposals.
 
-SafeFlow places a policy automaton between an AI proposal and execution.
-The case study is a simulated home: AC, heater, ventilation fan and light,
-with a local LLM and Home Assistant. The environment permits conflicting modes;
-the automaton decides which **AI commands** may proceed.
+SafeFlow loads a site definition, checks it with UPPAAL, and evaluates incoming
+proposal events before an environment executes them. The first case study uses
+Ollama, a synthetic one-room home, and Home Assistant. Model intelligence is not
+an acceptance gate for the supervisor.
 
-## Evidence first
+## Current status — 2026-10-27
 
-| Evidence | Current result |
-|---|---|
-| Injected command sequence | 3 AI requests blocked in 15 rounds; blocked modes unchanged; replay passed |
-| Human override | Both-on state permitted, logged, observed; AI resumes under guards |
-| Automated tests | 33 passed, including real local HTTP fixture |
-| Home Assistant | 17 entities loaded; goals, human queue and AI resumption checked via actual services |
-| Qwen3-1.7B, revised prompt + tools | 40/40 valid, 10/40 expected actions â€” failed |
-| Qwen3-1.7B, structured JSON | 36/40 valid, 5/40 expected actions â€” failed |
-| UPPAAL | Model and queries prepared; verifier blocked by license â€” **not verified** |
-| RAM 8 GB | Target only; current host has 32 GB â€” **not certified** |
+The YAML/IR engine, versioned session API, observation monitoring, Ollama and
+OpenAI-compatible adapters are implemented. The production entry point requires
+a complete, matching UPPAAL verification bundle.
 
-[Read the traces and limitations](experiments/smart-home-stage2/README.md).
-Injected proposals are test inputs, not discoveries about the real model.
-Failed model gates remain evidence and do not stop independent Automata testing.
+**UPPAAL passes all 12 properties** for the current home definition. An independent
+mutated-guard test fails the conflict/cooldown properties as expected. Actual
+Ollama + Home Assistant runs include human intervention and autonomous resumption,
+with sealed traces conforming to the pinned definition. See the
+[acceptance report](experiments/implementation-2026-10-27/README.md) for exact test
+results, raw outputs, observed limits and earlier unsuccessful attempts.
 
-## How it works
+The successful [verification bundle](experiments/implementation-2026-10-27/verification/attempt-07/verification.json) binds to
+this implementation and the local verifier binary. Other installations or changed
+code/definitions must generate a matching bundle before activation.
 
-![AI proposals are logged, checked by Automata, and executed only when allowed; human requests bypass safety guards but update the same observed state](assets/readme/workflow.svg)
+## Start here
 
-1. A local model proposes one `set_device(device, mode)` or `hold()`.
-2. SafeFlow records the raw response, proposal, source and state before execution.
-3. Automata evaluates the proposal and durably records its decision.
-4. Allowed commands execute. Blocked commands preserve device modes. Both advance simulated time by 30 seconds.
-5. Actual results update the automaton and trace. Replay checks the recorded decisions and effects.
+- [Editable site definition and adapter settings](examples/smart-home/README.md)
+- [Setup and Home Assistant operation](docs/guides/smart-home.md)
+- [Definition language, automata and formal assumptions](docs/guides/automata.md)
+- [API request/response examples](docs/guides/api.md)
+- [Architecture and SOLID boundaries](docs/development/architecture.md)
 
-Human requests replace AI for one round, bypass safety guards, and remain validated
-and logged. This means the whole house can reach a conflicting state; claims are
-limited to the AI commands admitted by these guards.
+## Verify, then run
 
-## Two experimental rules
-
-- AI cannot request AC cooling while the heater is on, or heater on while AC is cooling.
-- After a real AC on-to-off transition, AI must wait **180 simulated seconds** before an off-to-on request.
-
-Repeated off does not reset the clock. Human commands update the same clock.
-A blocked request does not cause an automatic off command. Unknown input is
-rejected; inconsistent observed state halts the episode. The 180-second value is
-an experiment setting, not an appliance standard.
-
-[State mapping, transitions and formal assumptions](docs/guides/automata.md)
-
-## Run locally
-
-Prerequisites: Python 3.11+, Ollama, Docker Desktop for Home Assistant.
-From this repository:
+From the repository root, install the package into a virtual environment:
 
 ```powershell
 ./scripts/setup-local.ps1 -Python python
-ollama pull qwen3:1.7b
-./.venv/Scripts/python.exe -m safeflow.server --model qwen3:1.7b --output-mode json --trace logs/home.jsonl
 ```
 
-In another terminal:
+Use a verifier executable with appropriate license rights. Each output directory
+must be new; do not overwrite evidence:
 
 ```powershell
-docker compose -f docker/compose.yaml up -d
+./.venv/Scripts/python.exe -m safeflow verify --definition examples/smart-home/policy.yaml --output logs/verified-home-01 --verifyta /path/to/verifyta
+./.venv/Scripts/python.exe -m safeflow serve --config examples/smart-home/lab.yaml --verification logs/verified-home-01
 ```
 
-Open Home Assistant at <http://localhost:8123>. Device toggles queue a human request;
-**Run one round** executes it or asks AI. `--interval 5` enables automatic rounds;
-`--unshielded` explicitly disables the policy for baseline experiments.
-Structured JSON is an experimental transport, not a successful model-selection result.
-
-[Setup, authentication, API, physics and shutdown](docs/guides/smart-home.md)
-
-## Validate and reproduce
+A failed verification keeps the control API unavailable. `/health`, `/state` and
+`/v1/verification` explain readiness; no bypass flag is provided by this entry
+point. For automatic rounds add `--interval 5`; each completed home round advances
+30 simulated seconds. People use the Home Assistant dashboard at
+[localhost:8123](http://localhost:8123). CLI administration starts and configures
+the service; the API is the integration boundary for other programs.
 
 ```powershell
 ./.venv/Scripts/python.exe -m unittest discover -s tests -v
-./.venv/Scripts/python.exe scripts/run-stage2.py --output logs/injected-check
-./.venv/Scripts/python.exe scripts/build-formal-model.py
+./.venv/Scripts/python.exe -m safeflow check logs/session-ID.jsonl
 ```
 
-Use an unused output directory: evidence is not overwritten. Model review uses
-`--models` and two bounded configurations, without answer repair or oracle leakage.
-The UPPAAL model requires a verifier license. No mathematical proof or full
-runtime/model equivalence is claimed by the Python tests.
+Set `SAFEFLOW_VERIFYTA` when running tests to include real verification and a
+mutated-guard check. That integration test is explicitly skipped if the verifier
+is unavailable. Unit subprocess fixtures are not formal evidence.
 
-## Research boundaries
+## Repository map
 
-No training, paid API, physical devices or 3D scene. All room parameters are
-synthetic; this prototype does not certify temperature, equipment or real-home
-safety. Hardware acceptance on a friend's 8 GB machine remains pending.
+| Directory | Purpose |
+|---|---|
+| `src/safeflow` | Core, application service, API, verification and adapters |
+| `tests` | Requirement oracles, adapter contracts, API and compatibility tests |
+| `examples` | Editable definitions and site bindings |
+| `docs` | Durable operator/developer documentation and research context |
+| `formal` | Formal semantics and verification instructions |
+| `experiments` | Curated evidence with provenance and limitations |
+| `scripts` | Current setup, integration and resource tools |
+| `tools` | Development-only prepared experiment utilities |
+| `docker` | Home Assistant deployment and integration |
+| `logs` | Ignored local runtime and build output |
+| `archive` | Retired approaches and historical generators |
 
-Historical [Sinergym/PPO evidence](archive/sinergym/README.md) and
-[stage-one results](experiments/smart-home-stage1/README.md) are retained.
-Old action IDs do not establish compressor short-cycling.
+No presentation folder is reserved inside the package. The empty slide and module
+placeholders were removed; the [migration table](docs/development/layout-migration.csv)
+records moves. Earlier stage-one/stage-two results and prepared-command runs are
+retained as historical evidence, not acceptance of this new architecture.
 
-Source lives in `src/safeflow`, public configuration in `configs`, curated evidence
-in `experiments`, and ignored runtime output in `logs`. Tokens, model weights and
-Home Assistant storage stay local.
+## Boundaries
+
+Only the declared finite variables, actions, effects and timing abstraction are
+verified. Thermal constants are synthetic. Trace conformance is limited to the
+recorded path; interpreter replay is not an independent proof. Physical homes,
+continuous RL actions, arbitrary UPPAAL syntax and 8 GB hardware acceptance are
+not established. Credentials, model weights and Home Assistant storage remain
+local and ignored by Git.

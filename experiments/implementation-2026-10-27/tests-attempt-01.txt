@@ -1,0 +1,114 @@
+test_all_device_states_sources_and_commands (test_automata.AutomataTests.test_all_device_states_sources_and_commands) ... ok
+test_bad_execution_clock_halts (test_automata.AutomataTests.test_bad_execution_clock_halts) ... ok
+test_block_keeps_devices_advances_and_replays (test_automata.AutomataTests.test_block_keeps_devices_advances_and_replays) ... ok
+test_boundaries_and_off_noop (test_automata.AutomataTests.test_boundaries_and_off_noop) ... ok
+test_external_state_change_halts (test_automata.AutomataTests.test_external_state_change_halts) ... ok
+test_goal_change_cannot_hide_state_tamper (test_automata.AutomataTests.test_goal_change_cannot_hide_state_tamper) ... ok
+test_human_conflict_and_ai_resumption (test_automata.AutomataTests.test_human_conflict_and_ai_resumption) ... ok
+test_human_off_and_immediate_reopen_updates_clock (test_automata.AutomataTests.test_human_off_and_immediate_reopen_updates_clock) ... ok
+test_incomplete_trace_not_reported_as_replayed (test_automata.AutomataTests.test_incomplete_trace_not_reported_as_replayed) ... ok
+test_json_is_parsed_without_repair (test_automata.AutomataTests.test_json_is_parsed_without_repair) ... ok
+test_post_execution_log_failure_halts_without_retry (test_automata.AutomataTests.test_post_execution_log_failure_halts_without_retry) ... ok
+test_tampered_block_execution_rejected (test_automata.AutomataTests.test_tampered_block_execution_rejected) ... ok
+test_bundle_hashes_and_no_receipt_cannot_activate (test_core.CompilerTests.test_bundle_hashes_and_no_receipt_cannot_activate) ... ok
+test_changed_property_or_definition_invalidates_bundle (test_core.CompilerTests.test_changed_property_or_definition_invalidates_bundle) ... ok
+test_compiler_is_deterministic_and_clocks_are_guards (test_core.CompilerTests.test_compiler_is_deterministic_and_clocks_are_guards) ... ok
+test_mutation_keeps_independent_property (test_core.CompilerTests.test_mutation_keeps_independent_property) ... ok
+test_bool_integer_actions_and_explicit_control_states (test_core.DefinitionTests.test_bool_integer_actions_and_explicit_control_states) ... ok
+test_enum_and_integer_contracts (test_core.DefinitionTests.test_enum_and_integer_contracts) ... ok
+test_generic_domain_rename_and_parameter_change (test_core.DefinitionTests.test_generic_domain_rename_and_parameter_change) ... ok
+test_no_executable_or_untyped_expressions (test_core.DefinitionTests.test_no_executable_or_untyped_expressions) ... ok
+test_readable_yaml_and_no_shared_mutation (test_core.DefinitionTests.test_readable_yaml_and_no_shared_mutation) ... ok
+test_reject_duplicate_yaml_unsafe_tags_and_aliases (test_core.DefinitionTests.test_reject_duplicate_yaml_unsafe_tags_and_aliases) ... ok
+test_completed_path_and_first_mismatch (test_core.MonitoringTests.test_completed_path_and_first_mismatch) ... ok
+test_observation_write_failure_keeps_pending_without_committing_state (test_core.MonitoringTests.test_observation_write_failure_keeps_pending_without_committing_state) ... ok
+test_partial_tail_is_incomplete_but_corrupt_complete_line_is_invalid (test_core.MonitoringTests.test_partial_tail_is_incomplete_but_corrupt_complete_line_is_invalid) ... ok
+test_truncated_and_live_prefix_are_explicit (test_core.MonitoringTests.test_truncated_and_live_prefix_are_explicit) ... ok
+test_actual_off_reset_repeat_off_and_boundary (test_core.RuntimeTests.test_actual_off_reset_repeat_off_and_boundary) ... ok
+test_backwards_or_delayed_application_halts (test_core.RuntimeTests.test_backwards_or_delayed_application_halts) ... ok
+test_effect_mismatch_halts_and_keeps_old_state (test_core.RuntimeTests.test_effect_mismatch_halts_and_keeps_old_state) ... ok
+test_human_override_and_ai_resumes_from_actual (test_core.RuntimeTests.test_human_override_and_ai_resumes_from_actual) ... ok
+test_independent_requirement_oracle (test_core.RuntimeTests.test_independent_requirement_oracle)
+Expected answers computed independently, without legacy/engine helpers. ... ok
+test_invalid_and_timeout_are_policy_transitions (test_core.RuntimeTests.test_invalid_and_timeout_are_policy_transitions) ... ok
+test_log_failure_prevents_permission_and_state_commit (test_core.RuntimeTests.test_log_failure_prevents_permission_and_state_commit) ... ok
+test_single_pending_order_and_idempotence (test_core.RuntimeTests.test_single_pending_order_and_idempotence) ... ok
+test_unknown_or_ambiguous_events_halt (test_core.RuntimeTests.test_unknown_or_ambiguous_events_halt) ... ok
+test_complete_demo_is_repeatable_and_never_overwrites (test_declarative.BehaviorTests.test_complete_demo_is_repeatable_and_never_overwrites) ... ok
+test_failure_before_raw_capture_prevents_decode_and_execution (test_declarative.BehaviorTests.test_failure_before_raw_capture_prevents_decode_and_execution) ... ok
+test_fault_is_inconclusive_and_no_retry (test_declarative.BehaviorTests.test_fault_is_inconclusive_and_no_retry) ... ok
+test_historical_v2_trace_still_replays (test_declarative.BehaviorTests.test_historical_v2_trace_still_replays) ... ok
+test_human_both_on_then_ai_and_several_episodes (test_declarative.BehaviorTests.test_human_both_on_then_ai_and_several_episodes) ... ok
+test_incomplete_deleted_and_reordered_records (test_declarative.BehaviorTests.test_incomplete_deleted_and_reordered_records) ... ok
+test_invalid_raw_and_model_error_are_preserved (test_declarative.BehaviorTests.test_invalid_raw_and_model_error_are_preserved) ... ok
+test_mutated_decision_time_state_policy_and_raw_are_detected (test_declarative.BehaviorTests.test_mutated_decision_time_state_policy_and_raw_are_detected) ... ok
+test_raw_recorded_before_decode_and_apply (test_declarative.BehaviorTests.test_raw_recorded_before_decode_and_apply) ... ok
+test_sealed_path_has_source_lines_and_policy_copy (test_declarative.BehaviorTests.test_sealed_path_has_source_lines_and_policy_copy) ... ok
+test_trace_refuses_reusing_evidence_filename (test_declarative.BehaviorTests.test_trace_refuses_reusing_evidence_filename) ... ok
+test_unshielded_violation_replays_but_does_not_conform (test_declarative.BehaviorTests.test_unshielded_violation_replays_but_does_not_conform) ... ok
+test_all_block_reasons_retained (test_declarative.DeclarativeTests.test_all_block_reasons_retained) ... ok
+test_ambiguous_missing_and_unknown_state_stop (test_declarative.DeclarativeTests.test_ambiguous_missing_and_unknown_state_stop) ... ok
+test_changed_file_changes_behavior_without_python_edit (test_declarative.DeclarativeTests.test_changed_file_changes_behavior_without_python_edit) ... ok
+test_engine_has_no_home_specific_references (test_declarative.DeclarativeTests.test_engine_has_no_home_specific_references) ... ok
+test_malformed_policy_shapes_stop_before_running (test_declarative.DeclarativeTests.test_malformed_policy_shapes_stop_before_running) ... ok
+test_matches_legacy_and_oracle (test_declarative.DeclarativeTests.test_matches_legacy_and_oracle) ... ok
+test_policy_duplicate_keys_and_mutation (test_declarative.DeclarativeTests.test_policy_duplicate_keys_and_mutation) ... ok
+test_policy_rejects_unknown_operations_references_and_targets (test_declarative.DeclarativeTests.test_policy_rejects_unknown_operations_references_and_targets) ... ok
+test_constant_heat_without_conduction (test_runtime.PhysicsTests.test_constant_heat_without_conduction) ... ok
+test_fan_warms_room_when_outdoors_hotter (test_runtime.PhysicsTests.test_fan_warms_room_when_outdoors_hotter) ... ok
+test_no_shield_claim (test_runtime.PhysicsTests.test_no_shield_claim) ... ok
+test_passive_analytic_solution (test_runtime.PhysicsTests.test_passive_analytic_solution) ... ok
+test_physics_parameter_validation (test_runtime.PhysicsTests.test_physics_parameter_validation) ... ok
+test_reject_nonfinite_and_negative_time (test_runtime.PhysicsTests.test_reject_nonfinite_and_negative_time) ... ok
+test_repeated_off_does_not_reset_clock (test_runtime.PhysicsTests.test_repeated_off_does_not_reset_clock) ... ok
+test_time_partition_invariant (test_runtime.PhysicsTests.test_time_partition_invariant) ... ok
+test_decision_log_failure_also_prevents_execution (test_runtime.RuntimeTests.test_decision_log_failure_also_prevents_execution) ... ok
+test_environment_failure_halts (test_runtime.RuntimeTests.test_environment_failure_halts) ... ok
+test_execution_without_proposal_rejected (test_runtime.RuntimeTests.test_execution_without_proposal_rejected) ... ok
+test_goals_and_reset_replay (test_runtime.RuntimeTests.test_goals_and_reset_replay) ... ok
+test_human_fifo_then_ai_resumes (test_runtime.RuntimeTests.test_human_fifo_then_ai_resumes) ... ok
+test_invalid_proposal_never_changes_device (test_runtime.RuntimeTests.test_invalid_proposal_never_changes_device) ... ok
+test_invalid_reset_does_not_change_home_or_trace (test_runtime.RuntimeTests.test_invalid_reset_does_not_change_home_or_trace) ... ok
+test_log_failure_prevents_execution_and_halts (test_runtime.RuntimeTests.test_log_failure_prevents_execution_and_halts) ... ok
+test_model_failure_is_logged_as_invalid (test_runtime.RuntimeTests.test_model_failure_is_logged_as_invalid) ... ok
+test_nondefault_physics_is_recorded_for_replay (test_runtime.RuntimeTests.test_nondefault_physics_is_recorded_for_replay) ... ok
+test_proposal_and_decision_precede_apply (test_runtime.RuntimeTests.test_proposal_and_decision_precede_apply) ... ok
+test_real_http_auth_and_queue (test_runtime.RuntimeTests.test_real_http_auth_and_queue) ... ok
+test_reject_multiple_calls_and_prose (test_runtime.RuntimeTests.test_reject_multiple_calls_and_prose) ... ok
+test_both_real_provider_decoders_follow_same_contract (test_service_api.AdapterTests.test_both_real_provider_decoders_follow_same_contract) ... ok
+test_environment_is_only_place_with_native_device_mapping (test_service_api.AdapterTests.test_environment_is_only_place_with_native_device_mapping) ... ok
+test_ollama_records_actual_request_without_executing_action (test_service_api.AdapterTests.test_ollama_records_actual_request_without_executing_action) ... ok
+test_provider_failure_is_an_event_and_key_is_not_logged (test_service_api.AdapterTests.test_provider_failure_is_an_event_and_key_is_not_logged) ... ok
+test_unknown_and_duplicate_actions_do_not_get_repaired (test_service_api.AdapterTests.test_unknown_and_duplicate_actions_do_not_get_repaired) ... ok
+test_lab_reset_creates_new_trace_and_fixed_verified_initial_facts (test_service_api.ApplicationTests.test_lab_reset_creates_new_trace_and_fixed_verified_initial_facts) ... ok
+test_unverified_application_is_read_only_not_ready (test_service_api.ApplicationTests.test_unverified_application_is_read_only_not_ready) ... ok
+test_versioned_http_auth_sessions_and_not_ready_gate (test_service_api.HttpTests.test_versioned_http_auth_sessions_and_not_ready_gate) ... ok
+test_human_one_round_then_ai_and_trace_path (test_service_api.LoopTests.test_human_one_round_then_ai_and_trace_path) ... ok
+test_malformed_proposer_is_controlled_by_definition (test_service_api.LoopTests.test_malformed_proposer_is_controlled_by_definition) ... ok
+test_numeric_model_adapter_can_replace_llm_without_core_changes (test_service_api.LoopTests.test_numeric_model_adapter_can_replace_llm_without_core_changes) ... ok
+test_raw_is_durable_before_normalization_and_failure_prevents_execution (test_service_api.LoopTests.test_raw_is_durable_before_normalization_and_failure_prevents_execution) ... ok
+test_step_request_id_does_not_repeat_execution (test_service_api.LoopTests.test_step_request_id_does_not_repeat_execution) ... ok
+test_stop_during_model_call_logs_without_operating_environment (test_service_api.LoopTests.test_stop_during_model_call_logs_without_operating_environment) ... ok
+test_real_queries_and_mutated_guard (test_verifier.RealUppaalTests.test_real_queries_and_mutated_guard) ... FAIL
+test_complete_results_are_bound_to_outputs_and_queries (test_verifier.VerifierContractTests.test_complete_results_are_bound_to_outputs_and_queries) ... ok
+test_incomplete_results_and_changed_binary_are_rejected (test_verifier.VerifierContractTests.test_incomplete_results_and_changed_binary_are_rejected) ... ok
+test_model_syntax_error_is_an_error_not_a_license_skip (test_verifier.VerifierContractTests.test_model_syntax_error_is_an_error_not_a_license_skip) ... ok
+test_nonzero_license_error_and_timeout_never_pass (test_verifier.VerifierContractTests.test_nonzero_license_error_and_timeout_never_pass) ... ok
+test_all_two_action_paths_from_verified_initial_state (test_xml_conformance.XmlConformanceTests.test_all_two_action_paths_from_verified_initial_state) ... ok
+test_generated_xml_matches_runtime_clock_boundaries_and_humans (test_xml_conformance.XmlConformanceTests.test_generated_xml_matches_runtime_clock_boundaries_and_humans) ... ok
+
+======================================================================
+FAIL: test_real_queries_and_mutated_guard (test_verifier.RealUppaalTests.test_real_queries_and_mutated_guard)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\673380278-9\2569\Seminar\project\safeflow-ai\tests\test_verifier.py", line 78, in test_real_queries_and_mutated_guard
+    self.assertEqual(report['status'], 'passed')
+AssertionError: 'not_ready' != 'passed'
+- not_ready
++ passed
+
+
+----------------------------------------------------------------------
+Ran 97 tests in 11.175s
+
+FAILED (failures=1)

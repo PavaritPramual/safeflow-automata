@@ -1,0 +1,10 @@
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[25]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[26]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[27]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[28]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[29]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[30]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[33]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[34]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[38]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.
+D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\verification-2026-10-27-04\model.xml:/nta/template[1]/transition[44]/label[1]:1: [error] Expression of type (constraint) cannot be used as a guard.

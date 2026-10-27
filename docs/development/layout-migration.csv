@@ -5,3 +5,9 @@ src/safeflow/legacy_automata.py,src/safeflow/compat/automata_v2.py,v2 log compat
 docs/slides/README.md,removed,unused presentation placeholder
 src/safeflow/enforcer/README.md,removed,obsolete placeholder
 src/safeflow/env_wrapper/README.md,removed,obsolete placeholder
+formal/smart-home.xml,archive/prototype-v3/formal/smart-home.xml,retired hardcoded formal model
+scripts/build-formal-model.py,archive/prototype-v3/scripts/build-formal-model.py,retired duplicate-rule generator
+scripts/run-stage2.py,archive/prototype-v3/scripts/run-stage2.py,historical stage-two experiment
+configs/demo-scenarios.json,tools/prepared_demo/scenarios.json,prepared experiment inputs
+experiments/verification-2026-10-27*,experiments/implementation-2026-10-27/verification/attempt-01..06,group development and actual verification evidence
+assets/readme/workflow.svg,archive/prototype-v3/assets/workflow.svg,unused historical README diagram

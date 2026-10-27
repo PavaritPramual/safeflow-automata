@@ -1,0 +1,50 @@
+[
+  {
+    "id": "no_deadlock",
+    "formula": "A[] not deadlock"
+  },
+  {
+    "id": "complete_decisions",
+    "formula": "A[] !bad_complete"
+  },
+  {
+    "id": "no_ai_conflict",
+    "formula": "A[] !bad_0"
+  },
+  {
+    "id": "no_early_restart",
+    "formula": "A[] !bad_1"
+  },
+  {
+    "id": "invalid_never_executed",
+    "formula": "A[] !bad_2"
+  },
+  {
+    "id": "blocked_preserves_state",
+    "formula": "A[] !bad_3"
+  },
+  {
+    "id": "no_unnecessary_block",
+    "formula": "A[] !bad_4"
+  },
+  {
+    "id": "human_proposal_permitted",
+    "formula": "A[] !bad_5"
+  },
+  {
+    "id": "human_conflict_reachable",
+    "formula": "E<> seen_6"
+  },
+  {
+    "id": "ai_open_reachable",
+    "formula": "E<> seen_7"
+  },
+  {
+    "id": "blocking_reachable",
+    "formula": "E<> seen_8"
+  },
+  {
+    "id": "expired_open_reachable",
+    "formula": "E<> seen_9"
+  }
+]

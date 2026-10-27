@@ -1,5 +1,7 @@
 # SafeFlow — แบบร่างแผนภาพ Automata
 
+> Historical design: predates the YAML/IR service. Current architecture: ../development/architecture.md.
+
 บันทึกวันที่ 7 ตุลาคม 2569 เพื่อใช้ตรวจแบบออกแบบร่วมกันก่อนพัฒนาหรือทวนสอบต่อ
 
 **สถานะ: แบบร่าง ยังไม่ผ่าน UPPAAL และยังไม่ใช่หลักฐานว่าโค้ดตรงกับแบบจำลองทุกกรณี**
@@ -107,7 +109,7 @@ R0/R1/W0/W1/C0/C1 เป็นชื่อสำหรับอธิบาย�
 - [ภาพสถานะพักแอร์ SVG](ac-cooldown-state-machine.svg)
 - [ข้อกำหนดและสถานะการทวนสอบ](../guides/automata.md)
 - [ตัวตรวจต้นแบบ](../../src/safeflow/automata.py)
-- [แบบจำลอง UPPAAL ฉบับร่าง](../../formal/smart-home.xml)
+- [แบบจำลอง UPPAAL ฉบับร่าง](../../archive/prototype-v3/formal/smart-home.xml)
 
 รอบนี้เก็บแบบร่างแผนภาพเท่านั้น ไม่แก้กฎ runtime ไม่แก้เค้าโครง และไม่อ้างผลพิสูจน์เพิ่ม
 

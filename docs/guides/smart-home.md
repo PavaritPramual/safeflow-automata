@@ -1,138 +1,91 @@
-# Smart-home prototype with Automata
+# Run the verified one-room case study
 
-AI commands now pass two experimental guards; human commands bypass them but remain logged.
-UPPAAL verification and real-home safety are not established. See [policy specification](automata.md).
+## Setup
 
-## Windows setup
-
-Prerequisites: Python 3.11+, Git, Docker Desktop (Linux containers), Ollama.
-The first recorded run used Python 3.12, Ollama 0.35.1 and Home Assistant 2026.9.4.
-Home Assistant's image digest is pinned in `docker/compose.yaml`. No runtime Python
-dependencies are required by the backend; its networking and tests use stdlib.
-
-From the repository root:
+Use Python 3.11+, a licensed UPPAAL verifier, Ollama and Docker Desktop for the
+Home Assistant lab. From the repository root:
 
 ```powershell
 ./scripts/setup-local.ps1 -Python python
 ollama pull qwen3:1.7b
-./.venv/Scripts/python.exe -m safeflow.server --model qwen3:1.7b --output-mode json --trace logs/home.jsonl
 ```
 
-Keep that terminal running. In another terminal:
+Setup creates a random ignored local API key and supplies it to the ignored HA
+secrets file. It installs the editable Python package, including PyYAML. Never
+commit `.env`, secrets, tokens, model weights or persistent HA storage.
+
+Edit `examples/smart-home/policy.yaml` for automata and
+`examples/smart-home/lab.yaml` for bindings/provider settings. Bindings map each
+formal variable to a native simulator device; each allowed action maps to a
+native command. The lab reads synthetic physics from `configs/home.json`.
+
+## Verify and start
+
+Use a new output directory and your licensed verifyta executable:
+
+```powershell
+./.venv/Scripts/python.exe -m safeflow verify --definition examples/smart-home/policy.yaml --output logs/verified-home-01 --verifyta /path/to/verifyta
+./.venv/Scripts/python.exe -m safeflow serve --verification logs/verified-home-01
+```
+
+The current retained home bundle passes all 12 properties and is the default in
+lab.yaml on this workstation. Early attempts with a license error and exporter
+errors are retained as unsuccessful development evidence. A different executable,
+implementation, definition or property needs a new matching bundle. Until a bundle
+passes, the process exposes readiness but cannot call the model or execute a home
+step; there is no ordinary unverified-control option.
+
+In a separate terminal start only the configured lab:
 
 ```powershell
 docker compose -f docker/compose.yaml up -d
-./.venv/Scripts/python.exe -m safeflow.evaluate --output logs/gate-06b.json
 ```
 
-Open <http://localhost:8123>, create your **local lab** account, and choose the
-SafeFlow Lab sidebar dashboard. Toggles queue a request, not an immediate device
-change. Run one round executes the next human request, or asks AI if the queue is
-empty. Reset episode clears the queue. Goal updates do not advance simulated time.
+Open [Home Assistant](http://localhost:8123) and select SafeFlow Lab. If this is a
+fresh instance, create its local account normally. Existing accounts/storage are
+preserved. The dashboard shows readiness, decisions and device state. Human
+switches queue one command; Run one round uses that request before asking AI.
+Adding `--interval 5` to the service enables automatic rounds with a five-second
+wall-clock pause. Each completed round advances 30 simulation seconds regardless
+of model latency. Ctrl+C requests stop; a response arriving after stop is logged
+without a new environment operation.
 
-For automatic rounds, stop the backend and restart with `--interval 5`. That is a
-five-second wall-clock pause between rounds; every completed round advances the
-home exactly 30 simulation seconds. Use manual mode for gate evaluation to avoid
-concurrent rounds. The model gets the latest goals and state every round, with no
-chat history. Human goals are structured fields; natural-language user chat is not
-part of this first scope.
+Choose another model with `--model NAME`, or edit proposer settings. The
+OpenAI-compatible adapter supports a compatible /v1 URL and an api_key_env field
+containing only an environment-variable name. No remote provider is invoked by
+the test suite and no paid call was made during implementation.
 
-The setup generates a random API key in ignored `.env` and writes it to ignored
-`docker/ha-config/secrets.yaml`. The server binds all host interfaces to let the
-container connect, requires the key on every control/state endpoint, and exposes
-only a minimal unauthenticated health endpoint. The HA UI port is bound to loopback.
-Do not commit `.env`, secrets, HA storage, tokens or model weights.
+## Trace and recovery
 
-## Model feasibility review
-
-The stage-two model configurations both failed the unchanged 36-valid/32-expected
-thresholds in 40 calls. See [results](../../experiments/smart-home-stage2/README.md).
-`--output-mode tools` uses one tool call; `--output-mode json` parses a strict JSON
-command without repair. Neither filters outputs by safety policy. Raw responses
-remain in the proposal record. The selected configuration is not certified for
-successful autonomous control.
-
-Safety enforcement is on by default. `--unshielded` is an explicit baseline mode.
-Model-quality evaluation and Automata evaluation have independent acceptance gates.
-
-## API and trace
-
-All endpoints except `GET /health` require `Authorization: Bearer <local-key>`.
-
-| Endpoint | Behavior |
-|---|---|
-| `GET /state` | Authoritative state, model metadata, queue count and stage |
-| `POST /human` | Queue `{device, mode}`; reply 202 with request ID |
-| `POST /goals` | Update `target_c` (10â€“40 Â°C) and/or boolean `light_required` |
-| `POST /step` | One round, optional integer seed; direct human command wins |
-| `POST /reset` | Reset scenario, trace a new episode, clear pending requests |
-
-Unknown human commands enter the same logged validation path as AI. An invalid
-goal never changes state. Reset is a lab operation, not an AI tool. The server is
-a single-writer prototype: while a model call is pending, state/request operations
-wait for that round's lock. It is not a concurrent real-time device controller.
-
-JSONL records `reset`, `goals`, `human_request`, `proposal`, `decision` and
-`execution`, with run/episode/proposal IDs. Proposal and decision are flushed and
-fsynced before execution. If either write fails, the episode halts without applying
-the command. If the simulator or execution-result write fails, the episode halts;
-the preceding proposal/decision remains as evidence of the pending operation.
-Do not retry such an episode without an explicit reset. No crash-transaction or
-physical-device acknowledgement guarantee is claimed.
-
-## Physics and provenance
-
-The one-room energy balance is
-
-`C dT/dt = UA (T_out - T) + Q_heater - Q_cooling + Q_light`.
-
-Fan operation adds outdoor-air exchange conductance; it can warm the room when
-outside air is hotter. Constant inputs use the analytic exponential solution; zero
-conductance uses the linear solution. Power is summed in watts and integrated in
-watt-hours. RC model structure is informed by the
-[Modelica Buildings reduced-order documentation](https://simulationresearch.lbl.gov/modelica/releases/latest/help/Buildings_ThermalZones_ReducedOrder_RC_UsersGuide.html).
-**Every numerical value in `configs/home.json` is synthetic**. None is fitted to a
-real building or validated as an appliance specification. Weather is a fixed
-scenario input. No humidity, air-quality, electrical-circuit or 3D model is claimed.
-
-## Testing and actual integration
+Each session gets a new JSONL file. It contains pinned definition/verification,
+raw provider request/response, normalized events, decisions, observations and
+closure. Observations retain raw simulator measurements alongside the mapped
+formal facts, so device, temperature and energy data can be traced back to C.
+Decision writes flush/fsync before the adapter may execute. A write or
+observation failure halts the session. If the operation may already have happened,
+inspect the actual environment before starting a new session; do not blindly retry.
 
 ```powershell
-./.venv/Scripts/python.exe -m unittest discover -s tests -v
+./.venv/Scripts/python.exe -m safeflow check logs/session-ID.jsonl
 ```
 
-The tests include analytic physics, replay, strict decoding, a real local HTTP
-fixture, FIFO human requests and log/simulator failure injection. Fixture-agent
-tests are not real-model evidence.
+The check is limited to X and uses the runtime interpreter; requirement-oracle and
+UPPAAL tests supply separate checks. Historical v2/v3 logs remain readable through
+their compatibility paths. They are not converted or relabelled as new evidence.
 
-`scripts/ha-smoke.py --bootstrap-lab` is optional automation for **a fresh lab
-container only**. It creates a random local lab account, saves credentials in
-ignored `logs/ha-credentials.json`, checks real HA entities/services and proves
-queued requests, goal changes, one human round and AI resumption. Later runs reuse
-the saved refresh token. Do not use bootstrap against an existing personal instance.
-The ordinary setup above lets you create your own account in the browser instead.
+## Physical and resource boundaries
 
-## RAM 8 GB constraint
+The environment is a synthetic one-room RC heat-balance model with analytic
+constant-input evolution and power integration. Ventilation exchanges outside air
+and can warm the room when outside is hotter. No humidity, air quality, physical
+circuit, 3D building or validated appliance behavior is claimed.
 
-The friend's 8 GB machine is an acceptance target, not this run's hardware. CPU
-inference is forced (`num_gpu=0`), context is capped, one model should be loaded at
-a time, and HA has a 1.5 GiB container cap. The backend is small and has no training
-or replay buffer. These choices do **not** certify 8 GB compatibility.
+The target friend's 8 GB host is still untested. Record the backend, model, HA,
+Docker/WSL and OS footprint together; model file size is not RAM acceptance.
+Existing stage-two model-quality failures remain historical results and are not
+requirements for SafeFlow to correctly supervise proposals.
 
-Measure the backend, Ollama runner, HA, Docker/WSL overhead and host OS together.
-The recorded host had 32 GB; WSL's resident footprint was already large and included
-shared runtime/cache overhead. Do not infer RAM suitability by adding only model
-file size and HA container usage. Required remaining check: run this setup on the
-friend's 8 GB machine with other large models stopped and record peak memory/OOM.
-
-## Stop
-
-Stop the backend with Ctrl+C. Keep all traces, then stop only this lab:
-
-```powershell
-docker compose -f docker/compose.yaml stop
-ollama stop qwen3:0.6b
-ollama stop qwen3:1.7b
-```
-
-These commands retain images, configuration, accounts and evidence.
+The lab API uses its existing bearer-key authentication. It is a single-writer
+research prototype, not a public internet or concurrent physical-device gateway.
+Stop the service with Ctrl+C; stop only the lab with
+`docker compose -f docker/compose.yaml stop`. These preserve data and evidence.

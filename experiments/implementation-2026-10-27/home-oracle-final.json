@@ -1,0 +1,240 @@
+{
+  "type": "independent_home_requirement_oracle",
+  "rest_s": 180,
+  "checked": 30,
+  "mismatches": 0,
+  "traces": [
+    {
+      "trace": "experiments\\implementation-2026-10-27\\live-traces\\session-89e5b04e-7caf-4d13-9cc1-e71e2281de9a.jsonl",
+      "session_id": "89e5b04e-7caf-4d13-9cc1-e71e2281de9a",
+      "checked": 0,
+      "native_snapshots_checked": 0,
+      "status": "passed",
+      "rows": []
+    },
+    {
+      "trace": "experiments\\implementation-2026-10-27\\live-traces\\session-b45ad734-0d1e-4dc2-9e1d-05d9b29aadfb.jsonl",
+      "session_id": "b45ad734-0d1e-4dc2-9e1d-05d9b29aadfb",
+      "checked": 2,
+      "native_snapshots_checked": 0,
+      "status": "passed",
+      "rows": [
+        {
+          "event_id": "f792d666-8595-472c-9364-15ed4c7ee5ab",
+          "source": "human",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "e187a9f9-f0a9-4c26-a50f-f10ffb93e0db",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        }
+      ]
+    },
+    {
+      "trace": "experiments\\implementation-2026-10-27\\autonomous-traces\\session-75db0a30-bbc7-4e14-a4b9-de70f365b7bf.jsonl",
+      "session_id": "75db0a30-bbc7-4e14-a4b9-de70f365b7bf",
+      "checked": 15,
+      "native_snapshots_checked": 0,
+      "status": "passed",
+      "rows": [
+        {
+          "event_id": "147b4aa6-d796-4c52-ac70-4223fc78f478",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "e1e36461-d83f-4296-a7a8-8592bde501ba",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "1a949cbf-1cbf-40b4-92d3-51173a5dcb79",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "da02dad4-368d-4697-a71f-50c465bc192e",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "f2b116b4-c013-4a9b-aa20-9eabb06ac15b",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "fe95d511-9476-4700-bbb7-0b9bc7acce3d",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "ddcac78c-9d28-4d6e-afe0-9a1534d82208",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "20bd869d-8122-4e26-a896-ab99267c98b0",
+          "source": "human",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "b61ed071-5c5c-440d-87a9-ea3e9722d4f1",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "6bed373b-2dee-492e-bbab-2beb0a13fc3d",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "84e0e133-e889-419e-b00d-c411240de288",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "ad613c31-1a0d-4f34-a29a-47ceaf26d8c6",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "9f6c9d6f-df3e-40ae-b570-3b1d8bdb7524",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "de90e0f2-3c15-4451-a56c-b90ee6704e27",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "68eae6b7-15cf-43b8-85b7-21cbf32375ff",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        }
+      ]
+    },
+    {
+      "trace": "experiments\\implementation-2026-10-27\\current-traces\\session-c5529bd7-fbba-4a0c-9ead-b7b938e4177d.jsonl",
+      "session_id": "c5529bd7-fbba-4a0c-9ead-b7b938e4177d",
+      "checked": 11,
+      "native_snapshots_checked": 11,
+      "status": "passed",
+      "rows": [
+        {
+          "event_id": "c0c2ea61-008f-4bea-8e59-9f65f6edc2c8",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "af588885-2ed5-4a57-83c8-f79f9f4a5623",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "4d6fc90d-7855-42fd-9d45-c4bb17e543f3",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "9e85679f-21be-4859-967c-4309e615ba33",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "cbc40abe-668d-4f5f-b9f6-b13b8666f283",
+          "source": "human",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "baadf158-6332-448c-b9af-dc2cda23842a",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "ddbb6ab3-6a3b-4aa0-bef1-a2eb7f9a2717",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "e77d0611-3fa0-4781-b8fe-88dfafbc9172",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "eeec8613-a7bc-44b7-9809-91667c8579f1",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "1f466456-9ac5-44be-95ad-3c4afec54815",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "d98a6935-72a8-46b1-a253-889c54c23265",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        }
+      ]
+    },
+    {
+      "trace": "experiments\\implementation-2026-10-27\\final-traces\\session-714e1835-ff94-4f83-8aee-34e81e3ce095.jsonl",
+      "session_id": "714e1835-ff94-4f83-8aee-34e81e3ce095",
+      "checked": 0,
+      "native_snapshots_checked": 0,
+      "status": "passed",
+      "rows": []
+    },
+    {
+      "trace": "experiments\\implementation-2026-10-27\\final-traces\\session-81e09d0c-c402-44eb-a1ea-1d9038ae52ad.jsonl",
+      "session_id": "81e09d0c-c402-44eb-a1ea-1d9038ae52ad",
+      "checked": 2,
+      "native_snapshots_checked": 2,
+      "status": "passed",
+      "rows": [
+        {
+          "event_id": "ede0c0c4-4e0c-4960-a5d6-0efa5c8bb9c4",
+          "source": "human",
+          "expected": "allow",
+          "found": "allow"
+        },
+        {
+          "event_id": "c0632385-04f1-4167-89f0-5ca237a72f3b",
+          "source": "ai",
+          "expected": "allow",
+          "found": "allow"
+        }
+      ]
+    }
+  ]
+}

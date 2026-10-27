@@ -1,4 +1,6 @@
 # Guides
 
-See [smart-home.md](smart-home.md) for setup, API, physics, log semantics, testing
-and the remaining 8 GB acceptance check.
+- smart-home.md: setup, Home Assistant and operation
+- automata.md: definition language, timing and UPPAAL assumptions
+- api.md: versioned sessions and external integration
+- ../development/architecture.md: SOLID, dependencies and compatibility

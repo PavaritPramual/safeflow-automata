@@ -1,0 +1,112 @@
+{
+  "definition_sha256": "d5b5eedb2f4769517cd4f864c17d901e665c280ae648248f6f5ea59f08b80037",
+  "ir_sha256": "c0a3f56e0381e3253ec4a874b52b11d0a42214f673e2c47915c7bd0c426355dd",
+  "ir_version": "safeflow-ir-1",
+  "converter_version": "safeflow-uppaal-1",
+  "implementation_sha256": "8b38afc2cbb1d31f55fb0d644d1435776bd80dac9c0b548ecf1ea171778fa607",
+  "model_sha256": "4e9025067e739f7cde4447190188f9f88a6f4979fc2f00413148c2bdefa5fdd4",
+  "properties_sha256": "76ea7f6287f16ab30ee313e7675fe1f4003dc07214d40e6d8b7521cf656c5996",
+  "origin": "uppaal_subprocess",
+  "verifier_executable": "D:\\673380278-9\\2569\\Seminar\\tools\\uppaal\\uppaal-5.0.0-win64\\bin\\verifyta.exe",
+  "verifier_sha256": "4c8af2716ff61f3cf35c6d1dc408ccf306d44bb22478e104548a8f0f7a3febe5",
+  "results": [
+    {
+      "id": "no_deadlock",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-000.txt",
+      "output_sha256": "689317bb62df195a99e9bb6b8ac56e71331e13c73e128b190e37e0c95a7e5dcf",
+      "elapsed_s": 3.695280999992974
+    },
+    {
+      "id": "complete_decisions",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-001.txt",
+      "output_sha256": "b7d7416ef1f0800051cdd10f35e3a50a8be06c5074bdfb275f1d571ae93c0a8e",
+      "elapsed_s": 2.544644800014794
+    },
+    {
+      "id": "no_ai_conflict",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-002.txt",
+      "output_sha256": "931be77b8831e89c2953cbf89758e2791879fe09fcb6b2f88e7eb8d83b47ff38",
+      "elapsed_s": 2.520473099895753
+    },
+    {
+      "id": "no_early_restart",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-003.txt",
+      "output_sha256": "182318bc7977f73ea61d0fafed6868cf0692fe295f9b1f4a4d3cd698abc637c2",
+      "elapsed_s": 2.610466800048016
+    },
+    {
+      "id": "invalid_never_executed",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-004.txt",
+      "output_sha256": "88971ef7a068cd84f4a4dc01ecac158666c0b53e3671743e5aa4dcafaf98d0bc",
+      "elapsed_s": 2.534742600051686
+    },
+    {
+      "id": "blocked_preserves_state",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-005.txt",
+      "output_sha256": "f61a2971c1a4255f915cb2a1c00363fb9988c7e82c8e6f5d7ef159955c15b23d",
+      "elapsed_s": 2.511013599927537
+    },
+    {
+      "id": "no_unnecessary_block",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-006.txt",
+      "output_sha256": "41e32026e49a7a4df6acc084c58eecc9b39bac70545c9241c8a445535204d983",
+      "elapsed_s": 2.555146800004877
+    },
+    {
+      "id": "human_proposal_permitted",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-007.txt",
+      "output_sha256": "356e62e40df16db86df4c5f8dec5e68ddbab159887d4bf4fae3e0186be86b9e1",
+      "elapsed_s": 2.5771077999379486
+    },
+    {
+      "id": "human_conflict_reachable",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-008.txt",
+      "output_sha256": "fbeec2c218a392c2a304acc24b126bb15b661bdc206a0ad8ba8f956514c842fa",
+      "elapsed_s": 0.05884329997934401
+    },
+    {
+      "id": "ai_open_reachable",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-009.txt",
+      "output_sha256": "1f16aa429a0e108ea585cf70395b345882b52865a20667fdc9b3539399e7567e",
+      "elapsed_s": 0.05493700003717095
+    },
+    {
+      "id": "blocking_reachable",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-010.txt",
+      "output_sha256": "caa2d3764263feb2fdbf3c4da09fb0a024dc37afc8c27afe6f7bd4d88ec40608",
+      "elapsed_s": 0.05753039999399334
+    },
+    {
+      "id": "expired_open_reachable",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-011.txt",
+      "output_sha256": "feb9e92291cf71bcb35dd87ba27ee6c35b2cf7f1d8da6d834e308d5b96e3880b",
+      "elapsed_s": 0.13730029994621873
+    }
+  ],
+  "status": "passed",
+  "verifier_version": "UPPAAL 5.0.0 (rev. 714BA9DB36F49691), June 2023\nCopyright (c) 2011 - 2023, Aalborg University.\nCopyright (c) 1995 - 2011, Uppsala University and Aalborg University.\nAll rights reserved.\nCompiled using -DENABLE_TIGA -DMULTI_TERMINAL -DENABLE_TIGA_SMC -DENABLE_STORE_MINGRAPH -DTIGA_OTF_BUCHI -DENABLE_LSC \nBuilt with Boost-1.79.0, LibXml2-2.9.14, xxHash-0.8.1, UTAP-1.1.6, UUtils-1.2.0, UDBM-2.0.11, and UCDD-0.2.1\nLicensed to Pavarit Pramual / Khon Kean University (kkumail.com)."
+}

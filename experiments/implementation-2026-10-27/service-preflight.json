@@ -1,0 +1,33 @@
+{
+  "ollama": {
+    "reachable": true,
+    "http_status": 200,
+    "models": [
+      {
+        "name": "qwen3:1.7b",
+        "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7"
+      },
+      {
+        "name": "qwen3:0.6b",
+        "digest": "7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435"
+      },
+      {
+        "name": "qwen3.6:latest",
+        "digest": "07d35212591fc27746f0a317c975a6d68754fb38e9053d82e25f06057af28522"
+      },
+      {
+        "name": "gemma4:latest",
+        "digest": "c6eb396dbd5992bbe3f5cdb947e8bbc0ee413d7c17e2beaae69f5d569cf982eb"
+      }
+    ]
+  },
+  "home_assistant": {
+    "reachable": false,
+    "error": "URLError"
+  },
+  "home_assistant_container": {
+    "exit_code": 0,
+    "state": "exited",
+    "error": ""
+  }
+}

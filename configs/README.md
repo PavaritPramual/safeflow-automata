@@ -1,8 +1,7 @@
-# Configurations
+# Historical case-study data and physics
 
-This directory is reserved for SafeFlow-owned policies and experiment configuration files.
-
-`home.json` contains synthetic physical parameters with explicit provenance;
-`scenarios.json` defines the eight normal-task oracles before evaluation.
-No safety policy is implemented yet. The 180-second cooldown is a future
-experimental policy parameter. Never store credentials in this directory.
+home.json contains synthetic physical parameters and provenance, referenced by
+the new lab adapter configuration. scenarios.json contains earlier normal-task
+oracles retained for historical evaluation. Current automata and editable adapter
+settings are in ../examples/smart-home. Prepared experiment inputs live in
+../tools/prepared_demo. Never store credentials here.

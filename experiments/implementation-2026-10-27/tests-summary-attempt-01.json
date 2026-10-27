@@ -1,0 +1,8 @@
+{
+  "tests_run": 97,
+  "passed": 96,
+  "failures": 1,
+  "errors": 0,
+  "skipped": [],
+  "scope": "Unit, local HTTP, compatibility, independent requirement oracle, concrete generated-XML paths. Test doubles are not real-model or formal evidence."
+}

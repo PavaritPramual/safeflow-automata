@@ -1,0 +1,68 @@
+{
+  "definition_sha256": "d5b5eedb2f4769517cd4f864c17d901e665c280ae648248f6f5ea59f08b80037",
+  "ir_sha256": "c0a3f56e0381e3253ec4a874b52b11d0a42214f673e2c47915c7bd0c426355dd",
+  "ir_version": "safeflow-ir-1",
+  "converter_version": "safeflow-uppaal-1",
+  "implementation_sha256": "864bab3e6fecb4862c583a6084757053a4a6b04681a96d8a6fb13f2f59682494",
+  "model_sha256": "67d13a6de3ede99668f54ca1c8c1c6cdcbc8fce95eac679170ac965718829297",
+  "properties_sha256": "76ea7f6287f16ab30ee313e7675fe1f4003dc07214d40e6d8b7521cf656c5996",
+  "origin": "uppaal_subprocess",
+  "verifier_executable": "D:\\673380278-9\\2569\\Seminar\\tools\\uppaal\\uppaal-5.0.0-win64\\bin\\verifyta.exe",
+  "verifier_sha256": "4c8af2716ff61f3cf35c6d1dc408ccf306d44bb22478e104548a8f0f7a3febe5",
+  "results": [
+    {
+      "id": "no_deadlock",
+      "status": "error",
+      "exit_code": 1,
+      "output_file": "verifier-000.txt",
+      "output_sha256": "241085cbaace6ae52c36c49793e7bca2293dbdc2df7ce49a0ab5bccc5d8d51f5",
+      "elapsed_s": 0.04590769996866584
+    },
+    {
+      "id": "complete_decisions",
+      "status": "not_run"
+    },
+    {
+      "id": "no_ai_conflict",
+      "status": "not_run"
+    },
+    {
+      "id": "no_early_restart",
+      "status": "not_run"
+    },
+    {
+      "id": "invalid_never_executed",
+      "status": "not_run"
+    },
+    {
+      "id": "blocked_preserves_state",
+      "status": "not_run"
+    },
+    {
+      "id": "no_unnecessary_block",
+      "status": "not_run"
+    },
+    {
+      "id": "human_proposal_permitted",
+      "status": "not_run"
+    },
+    {
+      "id": "human_conflict_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "ai_open_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "blocking_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "expired_open_reachable",
+      "status": "not_run"
+    }
+  ],
+  "status": "not_ready",
+  "verifier_version": "UPPAAL 5.0.0 (rev. 714BA9DB36F49691), June 2023\nCopyright (c) 2011 - 2023, Aalborg University.\nCopyright (c) 1995 - 2011, Uppsala University and Aalborg University.\nAll rights reserved.\nCompiled using -DENABLE_TIGA -DMULTI_TERMINAL -DENABLE_TIGA_SMC -DENABLE_STORE_MINGRAPH -DTIGA_OTF_BUCHI -DENABLE_LSC \nBuilt with Boost-1.79.0, LibXml2-2.9.14, xxHash-0.8.1, UTAP-1.1.6, UUtils-1.2.0, UDBM-2.0.11, and UCDD-0.2.1\nLicensed to Pavarit Pramual / Khon Kean University (kkumail.com)."
+}

@@ -1,0 +1,59 @@
+{
+  "definition_sha256": "2edba4b36332d9a80d05eb5143c53136256e30a5cb9977083369a59321fe63f3",
+  "ir_sha256": "019920d315ac09e42248ae1f526207fb21f041e46e8bddd41c51b1337826a648",
+  "ir_version": "safeflow-ir-1",
+  "converter_version": "safeflow-uppaal-1",
+  "model_sha256": "2a4a879b5124ea3807eb50c2ff8d197890769fe0be6287c4a95d02ea18bb756e",
+  "properties_sha256": "17d14294186bf3eb71c79699e820c008a5441f4615d9d6f332219ab5ecf3afca",
+  "origin": "uppaal_subprocess",
+  "verifier_executable": "D:\\673380278-9\\2569\\Seminar\\tools\\uppaal\\uppaal-5.0.0-win64\\bin\\verifyta.exe",
+  "verifier_sha256": "4c8af2716ff61f3cf35c6d1dc408ccf306d44bb22478e104548a8f0f7a3febe5",
+  "results": [
+    {
+      "id": "no_deadlock",
+      "status": "unavailable",
+      "exit_code": 1,
+      "output_file": "verifier-000.txt",
+      "output_sha256": "4911392613fd1520e95c0be86faacb97b85d04f18a978cef157d16153a4aee6d",
+      "elapsed_s": 0.03843309998046607
+    },
+    {
+      "id": "complete_decisions",
+      "status": "not_run"
+    },
+    {
+      "id": "no_ai_conflict",
+      "status": "not_run"
+    },
+    {
+      "id": "no_early_restart",
+      "status": "not_run"
+    },
+    {
+      "id": "invalid_never_executed",
+      "status": "not_run"
+    },
+    {
+      "id": "blocked_preserves_state",
+      "status": "not_run"
+    },
+    {
+      "id": "human_conflict_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "ai_open_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "blocking_reachable",
+      "status": "not_run"
+    },
+    {
+      "id": "expired_open_reachable",
+      "status": "not_run"
+    }
+  ],
+  "status": "not_ready",
+  "verifier_version": "UPPAAL 5.0.0 (rev. 714BA9DB36F49691), June 2023\nCopyright (c) 2011 - 2023, Aalborg University.\nCopyright (c) 1995 - 2011, Uppsala University and Aalborg University.\nAll rights reserved.\nCompiled using -DENABLE_TIGA -DMULTI_TERMINAL -DENABLE_TIGA_SMC -DENABLE_STORE_MINGRAPH -DTIGA_OTF_BUCHI -DENABLE_LSC \nBuilt with Boost-1.79.0, LibXml2-2.9.14, xxHash-0.8.1, UTAP-1.1.6, UUtils-1.2.0, UDBM-2.0.11, and UCDD-0.2.1\nlicense key is not set\nFailed to retrieve licensee."
+}
