@@ -76,6 +76,10 @@ class Session:
             if result['outcome'] == 'halt':
                 self.halted = True
                 self.issue = {'reason': result['reason'], 'event_id': event_id}
+                edge = next((e for e in self.runtime.spec['transitions'] if e['id']==result['transition']),None)
+                expected = bool(edge and edge['outcome']=='halt' and edge['reason']==result['reason'])
+                self._log('session_halt',event_id=event_id,expected=expected,issue=self.issue,snapshot=self.runtime.snapshot())
+                self.sealed = True
             else: self.pending = event_id
             return copy.deepcopy(result)
 

@@ -65,7 +65,8 @@ class Loop:
                 raise
             if human: self.queue.popleft()
             if decision['outcome'] == 'halt':
-                self.last_result = {**decision, 'decision': 'halt'}
+                self.last_result = {**decision, 'decision': 'halt', 'source': 'human' if human else 'ai',
+                                    'action': event['action'], 'validation': 'valid' if event['kind']=='proposal' else 'invalid'}
                 return self.snapshot()
             try:
                 result = self.environment.execute(event['action'] if decision['outcome'] == 'allow' else None)

@@ -163,7 +163,10 @@ def compile_model(definition):
              f'outcome={enums[e["outcome"]]}, next_state={d["states"].index(e["to"])}')
     # Explicit fault branch makes missing/ambiguous guards visible to verification.
     edge(current, 'Decided', 'match_count!=1', f'bad_complete=true, outcome={enums["halt"]}, next_state=control_state')
-    property_chain('decision', 'Decided', 'Apply')
+    loc('AfterDecision')
+    property_chain('decision', 'Decided', 'AfterDecision')
+    edge('AfterDecision','Apply',f'outcome!={enums["halt"]}')
+    edge('AfterDecision','Stopped',f'outcome=={enums["halt"]}')
 
     paths = [(f'outcome!={enums["allow"]}', {})]
     for action, spec in d['actions'].items():

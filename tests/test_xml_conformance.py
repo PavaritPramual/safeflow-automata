@@ -91,11 +91,13 @@ class XmlMachine:
         expected = {k:self.enums[event.get(k) or 'none'] for k in ('source','kind','action')}
         starts=[e for e in self.edges[self.locations['Idle']] if all(self.updates(e).get(k)==v for k,v in expected.items())]
         if len(starts)!=1: raise AssertionError('missing input encoding')
-        self.take(starts[0]);self.automatic('Apply')
+        self.take(starts[0]);self.automatic('AfterDecision')
         outcome=next(k for k in ('allow','block','halt') if self.values['outcome']==self.enums[k])
-        self.automatic('Waiting')
-        for clock in self.clocks: self.values[clock]+=delay
-        self.take(self.edges[self.current][0]);self.automatic('Idle' if outcome!='halt' else 'Stopped')
+        if outcome=='halt': self.automatic('Stopped')
+        else:
+            self.automatic('Waiting')
+            for clock in self.clocks: self.values[clock]+=delay
+            self.take(self.edges[self.current][0]);self.automatic('Idle')
         if any(v for k,v in self.values.items() if k.startswith('bad_')): raise AssertionError('XML property flag raised')
         facts={}
         for name,spec in self.definition.data['variables'].items():
@@ -131,3 +133,10 @@ class XmlConformanceTests(unittest.TestCase):
         d=Definition.load(EXAMPLE)
         for first,second,source in itertools.product(d.data['actions'],d.data['actions'],('ai','human')):
             self.compare_path([('ai','proposal',first,30),(source,'proposal',second,30)])
+
+    def test_declared_halt_has_no_observation_or_time_advance(self):
+        data=Definition.load(EXAMPLE).data;data['transitions'][0]['outcome']='halt'
+        d=Definition(data);xml=XmlMachine(d)
+        outcome,facts=xml.step({'source':'ai','kind':'timeout','action':None},30)
+        self.assertEqual(outcome,'halt');self.assertEqual(facts,d.initial_facts)
+        self.assertEqual(xml.values['c_rest'],0)

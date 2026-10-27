@@ -185,6 +185,15 @@ class RuntimeTests(unittest.TestCase):
 
 
 class MonitoringTests(unittest.TestCase):
+    def test_declared_halt_is_a_sealed_conforming_stop(self):
+        data=Definition.load(EXAMPLE).data;data['transitions'][0]['outcome']='halt'
+        sink=MemorySink();s=Session(Definition(data),TestGate(),sink)
+        self.assertEqual(s.submit('stop','ai','timeout')['outcome'],'halt')
+        self.assertTrue(s.sealed);self.assertTrue(s.halted)
+        self.assertEqual(s.runtime.time_s,0)
+        self.assertEqual(check_records(sink.rows)['status'],'conforms')
+        self.assertEqual(check_records(sink.rows[:-1])['status'],'inconclusive')
+
     def test_completed_path_and_first_mismatch(self):
         s, sink = make_session(); apply(s, 'ac_cool'); apply(s, 'ac_off'); s.finish()
         report = check_records(sink.rows)

@@ -142,6 +142,8 @@ class Definition:
                 raise ValueError('invalid_transition_event')
             if edge['outcome'] not in ('allow', 'block', 'halt') or type(edge['reason']) is not str:
                 raise ValueError('invalid_transition_outcome')
+            if edge['outcome'] == 'halt' and edge['to'] != edge['from']:
+                raise ValueError('halt_must_not_change_state_without_observation')
             expr = Expression(edge['when'], self.symbols)
             import ast
             if any((isinstance(n, ast.Name) and n.id == 'outcome') or

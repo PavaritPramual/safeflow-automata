@@ -20,6 +20,7 @@ def check_records(records, require_seal=True):
     pending = None
     sealed = False
     human_queue = deque()
+    terminal = None
 
     def same(expected, found, field):
         if expected != found: raise ValueError((field, expected, found))
@@ -30,6 +31,8 @@ def check_records(records, require_seal=True):
             same(4, row.get('schema_version'), 'schema_version')
             if sealed: raise ValueError(('event_after_seal', None, row.get('event')))
             name = row.get('event')
+            if terminal and name!='session_halt':
+                raise ValueError(('event_after_halt_decision','session_halt',name))
             if line == 1:
                 same('session_start', name, 'first_event')
                 definition = Definition(row['definition'])
@@ -69,9 +72,9 @@ def check_records(records, require_seal=True):
                 same(result, row['result'], 'decision')
                 decided[event_id] = (event, result)
                 if result['outcome'] == 'halt':
-                    report['integrity'] = 'complete'
-                    raise ValueError(('halted_decision', None, result))
-                pending = event_id
+                    edge=next((e for e in definition.data['transitions'] if e['id']==result['transition']),None)
+                    terminal=(event_id,bool(edge and edge['outcome']=='halt' and edge['reason']==result['reason']))
+                else: pending = event_id
             elif name == 'observation':
                 same(pending, event_id, 'observation_reference')
                 if event_id in observed: raise ValueError(('duplicate_observation', None, event_id))
@@ -86,13 +89,22 @@ def check_records(records, require_seal=True):
                 observed.add(event_id)
             elif name == 'fault':
                 raise ValueError(('runtime_fault', None, row['issue']))
+            elif name == 'session_halt':
+                if terminal is None: raise ValueError(('unexpected_halt_record',None,event_id))
+                same(terminal[0],event_id,'halt_reference')
+                same(terminal[1],row['expected'],'halt_kind')
+                same(runtime.snapshot(),row['snapshot'],'halt_snapshot')
+                if not terminal[1]: raise ValueError(('runtime_fault',None,row['issue']))
+                terminal=None
+                human_queue.clear()  # A declared terminal stop abandons queued requests.
+                sealed=True
             elif name == 'session_end':
                 if pending or human_queue or set(received)-set(decided): raise ValueError(('unfinished_event', None, pending))
                 same(len(decided), row['events'], 'event_count')
                 same(runtime.snapshot(), row['snapshot'], 'final_snapshot')
                 sealed = True
             else: raise ValueError(('unknown_record', None, name))
-        if runtime is None or pending or human_queue or set(received)-set(decided) or (require_seal and not sealed):
+        if runtime is None or pending or terminal or human_queue or set(received)-set(decided) or (require_seal and not sealed):
             report['issue'] = {'line': len(rows)+1, 'reason': 'incomplete_or_live_session'}
         else: report.update(status='conforms', integrity='complete' if sealed else 'live_prefix')
     except (KeyError, TypeError, ValueError) as exc:
