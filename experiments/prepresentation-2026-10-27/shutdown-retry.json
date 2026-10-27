@@ -1,0 +1,8 @@
+{
+  "case": "C-06",
+  "live_response_phase": "passed",
+  "final_trace": "shutdown_requested during a subsequent model call",
+  "accepted": false,
+  "preserved_local_path": "logs/prepresentation-attempts/C-06-shutdown",
+  "retry_adjustment": "wall-clock pause 20 seconds; simulation remains 30 seconds/round; no production source change"
+}

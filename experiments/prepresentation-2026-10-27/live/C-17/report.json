@@ -1,0 +1,64 @@
+{
+  "type": "real_ollama_autonomous_loop_with_real_home_assistant_request",
+  "session_id": "a70b63ca-d566-41a1-95ac-a683be86b551",
+  "baseline_steps": 5,
+  "final_steps": 10,
+  "status": "passed",
+  "simulation_time_s": 300.0,
+  "human_request": {
+    "device": "air_conditioner",
+    "mode": "cool"
+  },
+  "goals": {
+    "target_c": 24,
+    "light_required": true
+  },
+  "final_result": {
+    "outcome": "allow",
+    "reason": "permitted",
+    "transition": "permitted",
+    "next_state": "Monitoring",
+    "event_id": "c6d9bb8d-1b11-4c0a-a91d-18b0bc76db7d",
+    "definition_sha256": "7bf5c98305c00b64d031d60e0c2c610c1daef99ddcb1a9c8c40790a32e95c375",
+    "decision": "allow",
+    "source": "ai",
+    "action": "cooling_off",
+    "validation": "valid"
+  },
+  "provider": {
+    "provider": "ollama",
+    "model": "qwen3:1.7b",
+    "url": "http://127.0.0.1:11434",
+    "options": {
+      "temperature": 0,
+      "num_ctx": 2048,
+      "num_predict": 128,
+      "num_gpu": 0
+    },
+    "command_origin": "model"
+  },
+  "definition_sha256": "7bf5c98305c00b64d031d60e0c2c610c1daef99ddcb1a9c8c40790a32e95c375",
+  "home_assistant_readiness": "ready",
+  "not_prepared_ai_commands": true,
+  "model_identity": {
+    "model": "qwen3:1.7b",
+    "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+    "size_bytes": 1359293444
+  },
+  "response_evidence": {
+    "actual_model_responses": 4,
+    "completed_human_requests": 1,
+    "ai_resumed_after_human": true,
+    "request_options": [
+      {
+        "temperature": 0,
+        "num_ctx": 2048,
+        "num_predict": 128,
+        "num_gpu": 0,
+        "seed": 0
+      }
+    ]
+  },
+  "baseline_event_seq": 16,
+  "response_check": "actual_native_responses"
+}

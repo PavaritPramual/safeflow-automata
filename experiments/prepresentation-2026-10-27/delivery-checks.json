@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "base_commit": "d46a821",
+  "tooling_commit": "9aa4aef4252b88135c6199487c5b41a5c53723a7",
+  "production_source_unchanged": true,
+  "production_python_files": 30,
+  "profile_readiness": {
+    "A": "ready",
+    "B": "ready",
+    "C": "ready"
+  },
+  "tests_passed": 106,
+  "verification_properties_passed": 36,
+  "wrong_or_stale_bundle_rejections": 7,
+  "accepted_live_cases": 3,
+  "actual_native_response_minimum": 4,
+  "closed_traces_conform": true,
+  "independent_oracles_passed": true,
+  "deterministic_native_replay_passed": true,
+  "previous_evidence_files_unchanged": 371,
+  "documentation_broken_links": [],
+  "python": "3.12.14",
+  "pyyaml": "6.0.3",
+  "not_evaluated": [
+    "AI action quality",
+    "8 GB target host",
+    "new physical device types",
+    "other live AI providers"
+  ]
+}

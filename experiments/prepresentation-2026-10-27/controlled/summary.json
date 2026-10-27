@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "not_real_ai": true,
+  "table": [
+    {
+      "profile": "A",
+      "rest_s": 180,
+      "at_120": "block"
+    },
+    {
+      "profile": "B",
+      "rest_s": 90,
+      "at_120": "allow"
+    },
+    {
+      "profile": "C",
+      "rest_s": 90,
+      "at_120": "allow"
+    }
+  ],
+  "activation_rejections": 7
+}

@@ -1,0 +1,31 @@
+policy: D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\prepresentation-2026-10-27\controlled\rejections\changed-policy.yaml
+verification: ../../../../experiments/prepresentation-2026-10-27/verification/B
+bindings:
+  ac: air_conditioner
+  heater: heater
+  fan: ventilation_fan
+  light: light
+step_s: 30
+physics_file: D:\673380278-9\2569\Seminar\project\safeflow-ai\configs\home.json
+display:
+  cooldown_clock: rest
+  cooldown_parameter: rest_s
+proposer:
+  provider: ollama
+  model: qwen3:1.7b
+  url: http://127.0.0.1:11434
+  timeout_s: 120
+  prompt: 'Propose exactly one action for this simulated room. Return only {"action":"ID"}.
+
+    Read measurements.temperature_c, target_c, light_required and devices.
+
+    Move room temperature toward its target; set light according to light_required.
+
+    You may propose any declared action. SafeFlow separately decides permission.
+
+    '
+  options:
+    temperature: 0
+    num_ctx: 2048
+    num_predict: 128
+    num_gpu: 0

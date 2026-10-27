@@ -24,10 +24,15 @@ The successful [verification bundle](experiments/implementation-2026-10-27/verif
 this implementation and the local verifier binary. Other installations or changed
 code/definitions must generate a matching bundle before activation.
 
+The [pre-presentation acceptance](experiments/prepresentation-2026-10-27/README.md)
+adds verified 90-second/renamed profiles and actual 1.7B/0.6B model switching,
+without changing production Python source. The expanded suite passes 106 tests.
+
 ## Start here
 
 - [Editable site definition and adapter settings](examples/smart-home/README.md)
 - [Setup and Home Assistant operation](docs/guides/smart-home.md)
+- [Edit a policy, switch profiles/models and rehearse](docs/guides/prepresentation.md)
 - [Definition language, automata and formal assumptions](docs/guides/automata.md)
 - [API request/response examples](docs/guides/api.md)
 - [Architecture and SOLID boundaries](docs/development/architecture.md)

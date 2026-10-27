@@ -1,0 +1,23 @@
+[
+  {
+    "profile": "A",
+    "definition_sha256": "d5b5eedb2f4769517cd4f864c17d901e665c280ae648248f6f5ea59f08b80037",
+    "status": "passed",
+    "passed": 12,
+    "total": 12
+  },
+  {
+    "profile": "B",
+    "definition_sha256": "39c0a0cf864a9936ffe796f7f13d5c88988d5eb269ef7fd06332395d273a7385",
+    "status": "passed",
+    "passed": 12,
+    "total": 12
+  },
+  {
+    "profile": "C",
+    "definition_sha256": "7bf5c98305c00b64d031d60e0c2c610c1daef99ddcb1a9c8c40790a32e95c375",
+    "status": "passed",
+    "passed": 12,
+    "total": 12
+  }
+]

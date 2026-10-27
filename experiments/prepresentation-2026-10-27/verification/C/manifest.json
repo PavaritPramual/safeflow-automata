@@ -1,0 +1,9 @@
+{
+  "definition_sha256": "7bf5c98305c00b64d031d60e0c2c610c1daef99ddcb1a9c8c40790a32e95c375",
+  "ir_sha256": "9732712ccb834358d3cc12d2bd97ad54adc675acaa7a3fea3ca512f18258d958",
+  "ir_version": "safeflow-ir-1",
+  "converter_version": "safeflow-uppaal-1",
+  "implementation_sha256": "8b38afc2cbb1d31f55fb0d644d1435776bd80dac9c0b548ecf1ea171778fa607",
+  "model_sha256": "9d176a0995ceb0cdcd488384db4dac3bce0eb2e00aec914ccb10ad29f8ffb320",
+  "properties_sha256": "76ea7f6287f16ab30ee313e7675fe1f4003dc07214d40e6d8b7521cf656c5996"
+}

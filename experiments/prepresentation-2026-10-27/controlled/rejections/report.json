@@ -1,0 +1,56 @@
+{
+  "type": "activation_rejections",
+  "not_real_ai": true,
+  "status": "passed",
+  "cases": [
+    {
+      "profile": "A",
+      "bundle": "D:\\673380278-9\\2569\\Seminar\\project\\safeflow-ai\\experiments\\prepresentation-2026-10-27\\verification\\B",
+      "http_status": 503,
+      "reason": "verification_manifest_mismatch",
+      "traces_created": 0
+    },
+    {
+      "profile": "A",
+      "bundle": "D:\\673380278-9\\2569\\Seminar\\project\\safeflow-ai\\experiments\\prepresentation-2026-10-27\\verification\\C",
+      "http_status": 503,
+      "reason": "verification_manifest_mismatch",
+      "traces_created": 0
+    },
+    {
+      "profile": "B",
+      "bundle": "D:\\673380278-9\\2569\\Seminar\\project\\safeflow-ai\\experiments\\prepresentation-2026-10-27\\verification\\A",
+      "http_status": 503,
+      "reason": "verification_manifest_mismatch",
+      "traces_created": 0
+    },
+    {
+      "profile": "B",
+      "bundle": "D:\\673380278-9\\2569\\Seminar\\project\\safeflow-ai\\experiments\\prepresentation-2026-10-27\\verification\\C",
+      "http_status": 503,
+      "reason": "verification_manifest_mismatch",
+      "traces_created": 0
+    },
+    {
+      "profile": "C",
+      "bundle": "D:\\673380278-9\\2569\\Seminar\\project\\safeflow-ai\\experiments\\prepresentation-2026-10-27\\verification\\A",
+      "http_status": 503,
+      "reason": "verification_manifest_mismatch",
+      "traces_created": 0
+    },
+    {
+      "profile": "C",
+      "bundle": "D:\\673380278-9\\2569\\Seminar\\project\\safeflow-ai\\experiments\\prepresentation-2026-10-27\\verification\\B",
+      "http_status": 503,
+      "reason": "verification_manifest_mismatch",
+      "traces_created": 0
+    },
+    {
+      "profile": "B",
+      "bundle": "D:\\673380278-9\\2569\\Seminar\\project\\safeflow-ai\\experiments\\prepresentation-2026-10-27\\verification\\B",
+      "http_status": 503,
+      "reason": "verification_manifest_mismatch",
+      "traces_created": 0
+    }
+  ]
+}
