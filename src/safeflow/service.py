@@ -84,10 +84,12 @@ class Session:
             self.receive(event_id, source, raw, metadata)
             return self.decide(event_id, {'kind': kind, 'action': action})
 
-    def observe(self, event_id, facts, time_s, applied_at_s):
+    def observe(self, event_id, facts, time_s, applied_at_s, evidence=None):
         with self.lock:
             self._active()
-            observation = {'facts': copy.deepcopy(facts), 'time_s': time_s, 'applied_at_s': applied_at_s}
+            observation = {'facts': copy.deepcopy(facts), 'time_s': time_s, 'applied_at_s': applied_at_s,
+                           'evidence': copy.deepcopy(evidence)}
+            canonical(observation)
             if event_id in self.observations:
                 old, result = self.observations[event_id]
                 if old != observation: raise ValueError('duplicate_observation_content_mismatch')
@@ -95,7 +97,7 @@ class Session:
             if self.pending != event_id: raise ValueError('observation_reference_out_of_order')
             event, decision = self.decisions[event_id]
             try:
-                candidate = self.runtime.observed(event, decision, **observation)
+                candidate = self.runtime.observed(event, decision, facts, time_s, applied_at_s)
             except ValueError as exc:
                 self._fault(str(exc), event_id=event_id, expected=self.expected_facts(event_id), found=observation)
                 raise

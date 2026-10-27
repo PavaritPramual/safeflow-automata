@@ -76,7 +76,8 @@ def check_records(records, require_seal=True):
                 same(pending, event_id, 'observation_reference')
                 if event_id in observed: raise ValueError(('duplicate_observation', None, event_id))
                 event, result = decided[event_id]
-                candidate = runtime.observed(event, result, **row['observation'])
+                obs = row['observation']
+                candidate = runtime.observed(event, result, obs['facts'], obs['time_s'], obs['applied_at_s'])
                 same(candidate.snapshot(), row['after'], 'observation_after')
                 report['path'].append({'event_id': event_id, 'line': line, 'source': event['source'],
                                        'action': event['action'], 'decision': result['outcome'],

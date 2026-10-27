@@ -69,7 +69,8 @@ class Loop:
                 return self.snapshot()
             try:
                 result = self.environment.execute(event['action'] if decision['outcome'] == 'allow' else None)
-                self.session.observe(event_id, result['facts'], result['time_s'], result['applied_at_s'])
+                self.session.observe(event_id, result['facts'], result['time_s'], result['applied_at_s'],
+                                     evidence=result.get('measurements'))
             except Exception as exc:
                 self.environment_failed = True
                 if not self.session.halted: self.session.fault('environment_or_observation_failed', event_id=event_id, error=type(exc).__name__)

@@ -68,7 +68,7 @@ def make_server(application, key, host='127.0.0.1', port=8765):
                         self.reply(200, {**session.submit(**data), 'replayed': replayed,
                                          'observation_recorded': data['event_id'] in session.observations})
                     elif path[4] == 'observations':
-                        fields(data, ('event_id', 'facts', 'time_s', 'applied_at_s'))
+                        fields(data, ('event_id', 'facts', 'time_s', 'applied_at_s'), ('evidence',))
                         self.reply(200, session.observe(**data))
                     elif path[4] == 'close':
                         fields(data); session.finish(); self.reply(200, session.snapshot())
