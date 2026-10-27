@@ -44,4 +44,6 @@ class SafeFlowSensor(CoordinatorEntity, SensorEntity):
         data = self.coordinator.data or {}
         return {"enforcement": data.get("enforcement"), "last_result": data.get("last_result"),
                 "model": data.get("model", {}).get("model"), "automata": data.get("automata"),
-                "readiness": data.get("readiness"), "issue": data.get("issue")}
+                "readiness": data.get("readiness"), "issue": data.get("issue"),
+                "ui_busy": self.coordinator.ui_busy, "ui_notice": self.coordinator.ui_notice,
+                "ui_error": self.coordinator.ui_error}

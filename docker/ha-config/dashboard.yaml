@@ -7,130 +7,303 @@ views:
   - type: vertical-stack
     cards:
     - type: markdown
-      content: '# ทดลองควบคุมบ้าน
-
-        กด **ทำงาน 1 รอบ** → อ่านผลด้านล่าง → ดูสถานะบ้าน
+      content: '**วิธีใช้:** ตั้งเป้าหมายถ้าต้องการ → กดทำงาน 1 รอบ → อ่านผลตัดสินและสถานะบ้าน
 
 
-        ถ้าไม่มีคำสั่งคนในคิว AI จะเสนอคำสั่ง ถ้ามีคำสั่งคน รอบนั้นจะใช้คำสั่งคนก่อน
-
-        นี่คือบ้านจำลอง ไม่ได้ควบคุมเครื่องใช้ไฟฟ้าจริง'
+        นี่คือบ้านจำลอง หนึ่งรอบใช้หนึ่งคำสั่งและเพิ่มเวลาจำลอง 30 วินาที เปิดเว็บทิ้งไว้เวลาไม่เดินเอง'
     - type: markdown
       content: '{% set ready = states(''sensor.safeflow_readiness'') %}
 
-        {% set r = state_attr(''sensor.safeflow_status'', ''last_result'') or {} %}
+        {% set halted = states(''sensor.safeflow_status'') == ''halted'' %}
 
-        {% set a = state_attr(''sensor.safeflow_status'', ''automata'') or {} %}
+        {% set busy = state_attr(''sensor.safeflow_status'', ''ui_busy'') %}
 
-        {% set actions = {''light_on'':''เปิดไฟ'',''light_off'':''ปิดไฟ'',''ac_cool'':''เปิดแอร์'',''cooling_on'':''เปิดแอร์'',''ac_off'':''ปิดแอร์'',''cooling_off'':''ปิดแอร์'',''heater_on'':''เปิดฮีเตอร์'',''heater_off'':''ปิดฮีเตอร์'',''fan_on'':''เปิดพัดลมระบายอากาศ'',''fan_off'':''ปิดพัดลมระบายอากาศ'',''hold'':''คงอุปกรณ์ตามเดิม''}
-        %}
+        {% set error = state_attr(''sensor.safeflow_status'', ''ui_error'') %}
 
-        {% set reasons = {''permitted'':''คำสั่งผ่านกฎที่กำหนด'',''human_exception'':''ใช้ข้อยกเว้นสำหรับคำสั่งคน'',''ac_heater_conflict'':''แอร์กับฮีเตอร์ขัดแย้งกัน'',''ac_minimum_off_time'':''แอร์ยังพักไม่ครบเวลาที่กำหนด'',''unusable_proposal'':''ข้อเสนอใช้ไม่ได้
-        เช่น คำตอบผิดรูปแบบหรือหมดเวลา''} %}
+        {% set notice = state_attr(''sensor.safeflow_status'', ''ui_notice'') %}
 
-        **ระบบ:** {{ ''พร้อมใช้งาน'' if ready == ''ready'' else ''ยังไม่พร้อม — '' ~ ready }}
+        {% set pending = states(''sensor.safeflow_pending'') | int(none) %}
+
+        ## 1. เริ่มทำงาน
+
+        - **ระบบ:** {{ ''หยุดทำงาน — ดูรายละเอียดผลด้านล่าง'' if halted else ''พร้อมใช้งาน'' if ready == ''ready''
+        else ''ยังไม่พร้อม / ติดต่อบริการไม่ได้'' }}
+
+        - **โมเดลที่ใช้:** {{ state_attr(''sensor.safeflow_status'', ''model'') or ''ยังไม่มีข้อมูล'' }}
+
+        - **การทำงาน:** {{ ''กำลังทำงาน… กรุณารอ ไม่ต้องกดซ้ำ ผลด้านล่างยังเป็นรอบก่อนหน้า'' if busy else error
+        if error else notice or ''รอคุณกดทำงาน 1 รอบ'' }}
+
+        - **คำขอคนในคิว:** {{ pending ~ '' รายการ'' if pending is not none else ''ยังอ่านจำนวนคิวไม่ได้'' }}
 
 
-        **โมเดล:** {{ state_attr(''sensor.safeflow_status'', ''model'') or ''ยังไม่มีข้อมูล'' }} · **เวลาจำลอง:**
-        {{ states(''sensor.safeflow_simulation_time'') }} วินาที · **คำสั่งคนรออยู่:** {{ states(''sensor.safeflow_pending'')
+        **รอบถัดไป:** {{ ''รอให้รอบปัจจุบันจบก่อน'' if busy else ''ยังไม่ทราบจนกว่าจะอ่านคิวได้'' if pending is
+        none else ''ใช้คำขอคนที่เข้าคิวก่อนหนึ่งรายการ'' if pending > 0 else ''ให้ AI เสนอคำสั่ง เพราะคิวคนว่าง''
         }}
 
-
-        ## ผลรอบล่าสุด
-
-        {% if r %}
-
-        **1. ผู้เสนอ:** {{ {''ai'':''AI'',''human'':''คน''}.get(r.get(''source''), r.get(''source'',''ไม่ทราบ''))
-        }}
-
-
-        **2. คำสั่งที่เสนอ:** {{ actions.get(r.get(''action''), r.get(''action'') or ''ไม่มีคำสั่งที่แปลงได้'')
-        }}
-
-
-        **3. ผลจากตัวกำกับ:** {{ {''allow'':''อนุญาต'',''block'':''บล็อก — ไม่นำคำสั่งนี้ไปใช้'',''halt'':''หยุดระบบ''}.get(r.get(''outcome''),
-        r.get(''decision'',''ยังไม่มีผล'')) }}
-
-
-        **เหตุผล:** {{ reasons.get(r.get(''reason''), r.get(''reason'',''ยังไม่มีเหตุผล'')) }}
-
-        {% else %}
-
-        ยังไม่มีผลใน session นี้ กดปุ่มทำงาน 1 รอบเพื่อเริ่ม
-
-        {% endif %}
-
-
-        {% if a.get(''halted'') %}**ระบบหยุดแล้ว:** {{ a.get(''issue'') }}{% endif %}'
+        '
     - type: button
-      name: ทำงาน 1 รอบ (ใช้คำสั่งคนในคิวก่อน AI)
-      icon: mdi:play-circle
       entity: button.safeflow_step
+      name: ทำงาน 1 รอบ
+      icon: mdi:play-circle
+      icon_height: 28px
       show_state: false
       tap_action:
         action: perform-action
         perform_action: button.press
         target:
           entity_id: button.safeflow_step
-      icon_height: 32px
+      hold_action:
+        action: none
     - type: markdown
-      content: กดครั้งเดียวแล้วรอ AI ตอบ ผลด้านบนจะแสดงรอบที่จบล่าสุดจนกว่ารอบใหม่เสร็จ แต่ละรอบที่จบทำให้เวลาจำลองเพิ่ม
-        30 วินาที หากมีคิวคนมากกว่าหนึ่งคำสั่ง ต้องกดจนคิวหมดจึงกลับไปใช้ AI
-    - type: glance
-      title: สถานะบ้านที่อ่านกลับหลังทำงาน
-      show_state: true
-      entities:
-      - entity: switch.safeflow_air_conditioner
-        name: แอร์
-        tap_action:
-          action: more-info
-      - entity: switch.safeflow_heater
-        name: ฮีเตอร์
-        tap_action:
-          action: more-info
-      - entity: switch.safeflow_ventilation_fan
-        name: พัดลม
-        tap_action:
-          action: more-info
-      - entity: switch.safeflow_light
-        name: ไฟ
-        tap_action:
-          action: more-info
-    - type: entities
-      title: ค่าปัจจุบันและเป้าหมายให้ AI
-      show_header_toggle: false
-      entities:
-      - entity: sensor.safeflow_temperature
-        name: อุณหภูมิห้อง
-      - entity: number.safeflow_target_temperature
-        name: อุณหภูมิที่ต้องการ
-      - entity: switch.safeflow_light_required
-        name: ต้องการเปิดไฟ
-      - entity: sensor.safeflow_power
-        name: กำลังไฟรวม
-      - entity: sensor.safeflow_energy
-        name: พลังงานสะสม
-    - type: markdown
-      content: '## ลองคำสั่งคนแทรก
+      content: '{% set r = state_attr(''sensor.safeflow_status'', ''last_result'') or {} %}
 
-        สวิตช์ด้านล่างส่งคำขอเข้าคิว **ยังไม่เปลี่ยนอุปกรณ์ทันที** หลังส่งให้กด **ทำงาน 1 รอบ** แล้วดูผลด้านบน สถานะสวิตช์จะสะท้อนค่าจริงที่อ่านกลับ
-        จึงอาจยังไม่เปลี่ยนตอนเข้าคิว คำสั่งคนใช้ข้อยกเว้นตามนิยามของตัวอย่างนี้'
+        {% set actions = {''light_on'':''เปิดไฟ'',''light_off'':''ปิดไฟ'',''ac_cool'':''เปิดแอร์'',''cooling_on'':''เปิดแอร์'',''ac_off'':''ปิดแอร์'',''cooling_off'':''ปิดแอร์'',''heater_on'':''เปิดฮีเตอร์'',''heater_off'':''ปิดฮีเตอร์'',''fan_on'':''เปิดพัดลมระบายอากาศ'',''fan_off'':''ปิดพัดลมระบายอากาศ'',''hold'':''คงอุปกรณ์ตามเดิม''}
+        %}
+
+        {% set reasons = {''permitted'':''คำสั่งผ่านกฎที่กำหนด'',''human_exception'':''เป็นคำสั่งคน จึงใช้ข้อยกเว้นตามนิยามของบ้านตัวอย่าง'',''ac_heater_conflict'':''ห้าม
+        AI เปิดแอร์และฮีเตอร์พร้อมกัน'',''ac_minimum_off_time'':''แอร์ยังพักไม่ครบเวลาที่กำหนด'',''unusable_proposal'':''ข้อเสนอใช้ไม่ได้
+        เช่น คำตอบผิดรูปแบบหรือหมดเวลา''} %}
+
+        ## 2. ผลรอบที่จบล่าสุด
+
+        {% if r %}
+
+        | รายการ | ผล |
+
+        |---|---|
+
+        | ใครเสนอ | {{ {''ai'':''AI'',''human'':''คน''}.get(r.get(''source''), ''ไม่ทราบ'') }} |
+
+        | เสนอให้ทำอะไร | {{ actions.get(r.get(''action''), r.get(''action'') or ''ไม่มีคำสั่งที่แปลงได้'') }} |
+
+        | ตัวกำกับตัดสิน | {{ {''allow'':''อนุญาต'',''block'':''บล็อก — ไม่ใช้คำสั่งที่เสนอ'',''halt'':''หยุดระบบ''}.get(r.get(''outcome''),
+        r.get(''decision'',''ยังไม่มีผล'')) }} |
+
+        | เหตุผล | {{ reasons.get(r.get(''reason''), r.get(''reason'',''ไม่มีข้อมูล'')) }} |
+
+
+        {% if r.get(''outcome'') == ''allow'' %}คำสั่งได้รับอนุญาต ดูสถานะที่อ่านกลับจากบ้านด้านล่าง{% if r.get(''source'')
+        == ''ai'' %} การอนุญาตไม่ได้ยืนยันว่า AI ทำตามเป้าหมายได้ดี{% endif %}
+
+        {% elif r.get(''outcome'') == ''block'' %}คำสั่งนี้ไม่ถูกนำไปใช้ อุปกรณ์คงเดิม แต่บ้านยังเดินเวลาจำลองต่อ
+
+        {% endif %}
+
+        {% else %}ยังไม่มีผล กด “ทำงาน 1 รอบ” แล้วรอให้จบ{% endif %}
+
+
+        {% set a = state_attr(''sensor.safeflow_status'', ''automata'') or {} %}
+
+        {% if a.get(''halted'') %}**รายละเอียดการหยุด:** {{ a.get(''issue'') or state_attr(''sensor.safeflow_status'',
+        ''issue'') }}{% endif %}
+
+        '
+    - type: markdown
+      content: '## 3. บ้านจำลองตอนนี้ — อ่านอย่างเดียว
+
+        {% set device_states = {''on'':''เปิด'',''off'':''ปิด'',''unavailable'':''ติดต่อไม่ได้'',''unknown'':''ยังไม่มีข้อมูล''}
+        %}
+
+        | อุปกรณ์ | สถานะที่อ่านกลับ |
+
+        |---|---|
+
+        | แอร์ | {{ device_states.get(states(''switch.safeflow_air_conditioner''), ''ยังไม่มีข้อมูล'') }} |
+
+        | ฮีเตอร์ | {{ device_states.get(states(''switch.safeflow_heater''), ''ยังไม่มีข้อมูล'') }} |
+
+        | พัดลมระบายอากาศ | {{ device_states.get(states(''switch.safeflow_ventilation_fan''), ''ยังไม่มีข้อมูล'')
+        }} |
+
+        | ไฟ | {{ device_states.get(states(''switch.safeflow_light''), ''ยังไม่มีข้อมูล'') }} |
+
+
+        {% set temp = states(''sensor.safeflow_temperature'') | float(none) %}
+
+        {% set power = states(''sensor.safeflow_power'') | float(none) %}
+
+        {% set energy = states(''sensor.safeflow_energy'') | float(none) %}
+
+        {% set t = states(''sensor.safeflow_simulation_time'') | float(none) %}
+
+        **อุณหภูมิห้อง:** {{ (''%.2f'' | format(temp)) ~ '' °C'' if temp is not none else ''ยังไม่มีข้อมูล'' }}
+
+
+        **กำลังไฟรวมขณะนี้:** {{ (''%.0f'' | format(power)) ~ '' W'' if power is not none else ''ยังไม่มีข้อมูล''
+        }} · **พลังงานสะสม:** {{ (''%.3f'' | format(energy)) ~ '' Wh'' if energy is not none else ''ยังไม่มีข้อมูล''
+        }}
+
+
+        **เวลาที่ผ่านไปในบ้านจำลอง:** {{ (''%.0f'' | format(t)) ~ '' วินาที'' if t is not none else ''ยังไม่มีข้อมูล''
+        }}
+
+
+        {% set cooldown = states(''sensor.safeflow_cooldown'') %}
+
+        **เวลาพักแอร์:** {{ {''ready'':''ผ่านเงื่อนไขเวลาแล้ว (ยังต้องตรวจเงื่อนไขอื่นก่อนอนุญาต)'',''resting'':''ยังพักไม่ครบ
+        — AI ขอเปิดใหม่จะถูกบล็อก''}.get(cooldown,''ยังไม่มีข้อมูล'') }}
+
+
+        ค่าทั้งหมดมาจากบ้านจำลอง อุณหภูมิเปลี่ยนตามอุปกรณ์และอากาศภายนอก กำลังไฟรวมตามอุปกรณ์ที่เปิด พลังงานสะสมตามกำลังไฟ
+        × เวลา ไม่ใช่เซนเซอร์หรือมิเตอร์บ้านจริง
+
+        '
+    - type: markdown
+      content: '## 4. เป้าหมายที่อยากให้ AI ทำ
+
+        ปรับสองช่องนี้เพื่อบอกความต้องการ **ยังไม่ใช่คำสั่งเปิด/ปิดอุปกรณ์** เป้าหมายถูกบันทึกทันที แล้วส่งให้ AI
+        เมื่อถึงรอบ AI ถัดไป โมเดลอาจเสนอไม่ตรงเป้าหมาย ตัวกำกับตรวจข้อเสนอตามกฎแยกต่างหาก'
     - type: entities
-      title: ส่งคำขอของคน (รอกดทำงาน 1 รอบ)
+      title: แก้เป้าหมายให้ AI
       show_header_toggle: false
       entities:
-      - entity: switch.safeflow_air_conditioner
-        name: ขอเปิด / ปิดแอร์
-      - entity: switch.safeflow_heater
-        name: ขอเปิด / ปิดฮีเตอร์
-      - entity: switch.safeflow_ventilation_fan
-        name: ขอเปิด / ปิดพัดลม
-      - entity: switch.safeflow_light
-        name: ขอเปิด / ปิดไฟ
+      - entity: number.safeflow_target_temperature
+        name: อยากให้อุณหภูมิห้องเป็น (°C)
+      - entity: select.safeflow_light_goal
+        name: อยากให้ไฟเป็นอย่างไร
+    - type: markdown
+      content: '## 5. ส่งคำขอด้วยตัวเอง
+
+        กด “ขอเปิด” หรือ “ขอปิด” ด้านล่าง **หนึ่งครั้ง = เพิ่มหนึ่งคำขอเข้าคิว** ยังไม่สั่งอุปกรณ์ทันที แล้วกด “ทำงาน
+        1 รอบ” ด้านบนเพื่อนำไปใช้
+
+
+        คำขอเรียงตามที่กด หนึ่งรอบใช้หนึ่งคำขอ เมื่อคิวหมดรอบถัดไปจึงกลับไปใช้ AI ปุ่มเหล่านี้ไม่แสดงสถานะอุปกรณ์และจะไม่ขยับตาม
+        AI
+
+
+        บ้านตัวอย่างนี้กำหนดให้คำสั่งคนข้ามกฎขัดแย้งและเวลาพักได้ ผลจะระบุว่าเป็นข้อยกเว้นคน'
+    - type: grid
+      columns: 2
+      square: false
+      cards:
+      - type: button
+        entity: button.safeflow_request_air_conditioner_on
+        name: ขอเปิดแอร์
+        icon: mdi:power
+        icon_height: 28px
+        show_state: false
+        tap_action:
+          action: perform-action
+          perform_action: button.press
+          target:
+            entity_id: button.safeflow_request_air_conditioner_on
+        hold_action:
+          action: none
+      - type: button
+        entity: button.safeflow_request_air_conditioner_off
+        name: ขอปิดแอร์
+        icon: mdi:power-off
+        icon_height: 28px
+        show_state: false
+        tap_action:
+          action: perform-action
+          perform_action: button.press
+          target:
+            entity_id: button.safeflow_request_air_conditioner_off
+        hold_action:
+          action: none
+    - type: grid
+      columns: 2
+      square: false
+      cards:
+      - type: button
+        entity: button.safeflow_request_heater_on
+        name: ขอเปิดฮีเตอร์
+        icon: mdi:power
+        icon_height: 28px
+        show_state: false
+        tap_action:
+          action: perform-action
+          perform_action: button.press
+          target:
+            entity_id: button.safeflow_request_heater_on
+        hold_action:
+          action: none
+      - type: button
+        entity: button.safeflow_request_heater_off
+        name: ขอปิดฮีเตอร์
+        icon: mdi:power-off
+        icon_height: 28px
+        show_state: false
+        tap_action:
+          action: perform-action
+          perform_action: button.press
+          target:
+            entity_id: button.safeflow_request_heater_off
+        hold_action:
+          action: none
+    - type: grid
+      columns: 2
+      square: false
+      cards:
+      - type: button
+        entity: button.safeflow_request_ventilation_fan_on
+        name: ขอเปิดพัดลม
+        icon: mdi:power
+        icon_height: 28px
+        show_state: false
+        tap_action:
+          action: perform-action
+          perform_action: button.press
+          target:
+            entity_id: button.safeflow_request_ventilation_fan_on
+        hold_action:
+          action: none
+      - type: button
+        entity: button.safeflow_request_ventilation_fan_off
+        name: ขอปิดพัดลม
+        icon: mdi:power-off
+        icon_height: 28px
+        show_state: false
+        tap_action:
+          action: perform-action
+          perform_action: button.press
+          target:
+            entity_id: button.safeflow_request_ventilation_fan_off
+        hold_action:
+          action: none
+    - type: grid
+      columns: 2
+      square: false
+      cards:
+      - type: button
+        entity: button.safeflow_request_light_on
+        name: ขอเปิดไฟ
+        icon: mdi:power
+        icon_height: 28px
+        show_state: false
+        tap_action:
+          action: perform-action
+          perform_action: button.press
+          target:
+            entity_id: button.safeflow_request_light_on
+        hold_action:
+          action: none
+      - type: button
+        entity: button.safeflow_request_light_off
+        name: ขอปิดไฟ
+        icon: mdi:power-off
+        icon_height: 28px
+        show_state: false
+        tap_action:
+          action: perform-action
+          perform_action: button.press
+          target:
+            entity_id: button.safeflow_request_light_off
+        hold_action:
+          action: none
+    - type: markdown
+      content: '## เริ่มต้นใหม่เมื่อจบการทดลอง
+
+        ปุ่มนี้ตั้งบ้านและเป้าหมายกลับค่าเริ่มต้น ล้างคิวคำขอ และเริ่ม session ใหม่ เวลาจำลองกับพลังงานสะสมกลับเป็นศูนย์
+        หลักฐานเดิมยังเก็บไว้ ไม่จำเป็นต้องกดระหว่างรอบ'
     - type: button
       entity: button.safeflow_reset
       name: เริ่มการทดลองใหม่
       icon: mdi:restart
+      icon_height: 28px
       show_state: false
       tap_action:
         action: perform-action
@@ -138,5 +311,6 @@ views:
         target:
           entity_id: button.safeflow_reset
         confirmation:
-          text: เริ่มบ้านและ session ใหม่? หลักฐาน session เดิมจะยังถูกเก็บไว้
-      icon_height: 32px
+          text: เริ่มบ้านจำลองใหม่และล้างคำขอที่ค้าง? เป้าหมายจะกลับค่าเริ่มต้น หลักฐาน session เดิมยังเก็บไว้
+      hold_action:
+        action: none

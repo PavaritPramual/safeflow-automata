@@ -26,11 +26,10 @@ class SafeFlowSwitch(CoordinatorEntity, SwitchEntity):
 
     async def set_mode(self, on):
         if self.device == "light_required":
-            await self.coordinator.request("/goals", {"light_required": on})
+            await self.coordinator.perform("/goals", {"light_required": on}, "กำลังบันทึกเป้าหมายไฟ")
         else:
             mode = "cool" if on and self.device == "air_conditioner" else "on" if on else "off"
-            await self.coordinator.request("/human", {"device": self.device, "mode": mode})
-        await self.coordinator.async_request_refresh()
+            await self.coordinator.perform("/human", {"device": self.device, "mode": mode}, "กำลังส่งคำขอของคน")
 
     async def async_turn_on(self, **kwargs):
         await self.set_mode(True)
@@ -41,4 +40,4 @@ class SafeFlowSwitch(CoordinatorEntity, SwitchEntity):
     @property
     def available(self):
         data = self.coordinator.data or {}
-        return super().available and data.get("readiness") == "ready" and not data.get("halted")
+        return super().available and not self.coordinator.ui_busy and data.get("readiness") == "ready" and not data.get("halted")

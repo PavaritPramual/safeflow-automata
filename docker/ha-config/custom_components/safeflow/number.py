@@ -8,7 +8,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 
 
 class TargetTemperature(CoordinatorEntity, NumberEntity):
-    _attr_name = "SafeFlow target temperature"
+    _attr_name = "อุณหภูมิเป้าหมายให้ AI"
     _attr_unique_id = "safeflow_target_temperature"
     _attr_native_min_value = 10
     _attr_native_max_value = 40
@@ -25,10 +25,9 @@ class TargetTemperature(CoordinatorEntity, NumberEntity):
         return (self.coordinator.data or {}).get("target_c")
 
     async def async_set_native_value(self, value):
-        await self.coordinator.request("/goals", {"target_c": value})
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.perform("/goals", {"target_c": value}, "กำลังบันทึกเป้าหมายอุณหภูมิ")
 
     @property
     def available(self):
         data = self.coordinator.data or {}
-        return super().available and data.get("readiness") == "ready" and not data.get("halted")
+        return super().available and not self.coordinator.ui_busy and data.get("readiness") == "ready" and not data.get("halted")
