@@ -1,0 +1,97 @@
+# Copy this example and edit the finite state/action definitions for your site.
+# Safety properties are independent assertions, not generated from the guards.
+format_version: 1
+id: smart_home
+parameters:
+  rest_s: 180
+variables:
+  ac: {type: enum, values: ["off", cool], initial: "off"}
+  heater: {type: enum, values: ["off", "on"], initial: "off"}
+  fan: {type: enum, values: ["off", "on"], initial: "off"}
+  light: {type: enum, values: ["off", "on"], initial: "off"}
+clocks:
+  rest:
+    reset_when: "before.ac == 'cool' and after.ac == 'off'"
+sources: [ai, human]
+event_kinds: [proposal, invalid_output, timeout, adapter_error]
+actions:
+  hold: {set: {}}
+  ac_off: {set: {ac: "off"}}
+  ac_cool: {set: {ac: cool}}
+  heater_off: {set: {heater: "off"}}
+  heater_on: {set: {heater: "on"}}
+  fan_off: {set: {fan: "off"}}
+  fan_on: {set: {fan: "on"}}
+  light_off: {set: {light: "off"}}
+  light_on: {set: {light: "on"}}
+states: [Monitoring]
+initial: Monitoring
+transitions:
+  - id: malformed
+    from: Monitoring
+    to: Monitoring
+    on: [invalid_output, timeout, adapter_error]
+    when: "True"
+    outcome: block
+    reason: unusable_proposal
+  - id: human_override
+    from: Monitoring
+    to: Monitoring
+    on: [proposal]
+    when: "source == 'human'"
+    outcome: allow
+    reason: human_exception
+  - id: conflict
+    from: Monitoring
+    to: Monitoring
+    on: [proposal]
+    when: "source == 'ai' and ((action == 'ac_cool' and facts.heater == 'on') or (action == 'heater_on' and facts.ac == 'cool'))"
+    outcome: block
+    reason: ac_heater_conflict
+  - id: cooldown
+    from: Monitoring
+    to: Monitoring
+    on: [proposal]
+    when: "source == 'ai' and action == 'ac_cool' and facts.heater != 'on' and facts.ac == 'off' and active.rest and clock.rest < params.rest_s"
+    outcome: block
+    reason: ac_minimum_off_time
+  - id: permitted
+    from: Monitoring
+    to: Monitoring
+    on: [proposal]
+    when: "source == 'ai' and not ((action == 'ac_cool' and facts.heater == 'on') or (action == 'heater_on' and facts.ac == 'cool')) and not (action == 'ac_cool' and facts.ac == 'off' and active.rest and clock.rest < params.rest_s)"
+    outcome: allow
+    reason: permitted
+properties:
+  - id: no_ai_conflict
+    type: invariant
+    at: decision
+    expression: "not (source == 'ai' and outcome == 'allow' and ((action == 'ac_cool' and facts.heater == 'on') or (action == 'heater_on' and facts.ac == 'cool')))"
+  - id: no_early_restart
+    type: invariant
+    at: decision
+    expression: "not (source == 'ai' and outcome == 'allow' and action == 'ac_cool' and facts.ac == 'off' and active.rest and clock.rest < params.rest_s)"
+  - id: invalid_never_executed
+    type: invariant
+    at: decision
+    expression: "kind == 'proposal' or outcome != 'allow'"
+  - id: blocked_preserves_state
+    type: invariant
+    at: observation
+    expression: "outcome == 'allow' or (before.ac == after.ac and before.heater == after.heater and before.fan == after.fan and before.light == after.light)"
+  - id: human_conflict_reachable
+    type: reachable
+    at: observation
+    expression: "source == 'human' and after.ac == 'cool' and after.heater == 'on'"
+  - id: ai_open_reachable
+    type: reachable
+    at: observation
+    expression: "source == 'ai' and outcome == 'allow' and action == 'ac_cool'"
+  - id: blocking_reachable
+    type: reachable
+    at: decision
+    expression: "outcome == 'block'"
+  - id: expired_open_reachable
+    type: reachable
+    at: decision
+    expression: "source == 'ai' and outcome == 'allow' and action == 'ac_cool' and active.rest and clock.rest >= params.rest_s"
