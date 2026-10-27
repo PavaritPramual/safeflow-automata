@@ -1,7 +1,7 @@
 """Policy automata; the environment deliberately remains permissive."""
 import math
 from dataclasses import dataclass
-from .commands import MODES, validate_command
+from ..commands import MODES, validate_command
 
 POLICY_VERSION = "smart-home-v1"
 COOLDOWN_S = 180

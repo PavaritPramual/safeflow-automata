@@ -3,13 +3,13 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-from .behavior import check_file, path_plantuml
-from .commands import Command, validate_command
-from .controller import Controller
+from safeflow.behavior import check_file, path_plantuml
+from safeflow.commands import Command, validate_command
+from safeflow.controller import Controller
 from .diagrams import export_policy
-from .environment import Home
-from .policy import Policy, DEFAULT_POLICY
-from .trace import Trace, replay
+from safeflow.environment import Home
+from safeflow.policy import Policy, DEFAULT_POLICY
+from safeflow.trace import Trace, replay
 
 
 class PreparedAgent:

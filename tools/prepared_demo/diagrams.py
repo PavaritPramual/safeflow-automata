@@ -3,7 +3,7 @@ import argparse
 import json
 import textwrap
 from pathlib import Path
-from .policy import Policy, DEFAULT_POLICY
+from safeflow.policy import Policy, DEFAULT_POLICY
 
 
 def pretty(node):

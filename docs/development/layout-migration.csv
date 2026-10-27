@@ -1,0 +1,7 @@
+old,new,reason
+src/safeflow/demo.py,tools/prepared_demo/run.py,prepared experiment tool
+src/safeflow/diagrams.py,tools/prepared_demo/diagrams.py,prepared experiment export
+src/safeflow/legacy_automata.py,src/safeflow/compat/automata_v2.py,v2 log compatibility
+docs/slides/README.md,removed,unused presentation placeholder
+src/safeflow/enforcer/README.md,removed,obsolete placeholder
+src/safeflow/env_wrapper/README.md,removed,obsolete placeholder

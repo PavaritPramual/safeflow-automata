@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from safeflow.automata import Automata
-from safeflow.legacy_automata import Automata as Legacy
+from safeflow.compat.automata_v2 import Automata as Legacy
 from safeflow.policy import Policy, Engine
 from safeflow.behavior import check_records, check_file
 from safeflow.commands import Command, MODES
@@ -212,7 +212,7 @@ class BehaviorTests(unittest.TestCase):
         with self.assertRaises(ValueError): Trace(path)
 
     def test_complete_demo_is_repeatable_and_never_overwrites(self):
-        from safeflow.demo import run_demo
+        from tools.prepared_demo.run import run_demo
         root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as tmp:
             a, b = Path(tmp) / 'a', Path(tmp) / 'b'

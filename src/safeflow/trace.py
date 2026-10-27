@@ -61,7 +61,7 @@ def replay(records, home):
             home.reset(record["scenario"])
             pending.clear(); decisions.clear()
             if record.get("schema_version") == 2:
-                from .legacy_automata import Automata, POLICY_VERSION
+                from .compat.automata_v2 import Automata, POLICY_VERSION
                 if record.get("policy_version") != POLICY_VERSION:
                     raise ValueError("unsupported_policy_version")
                 guard = Automata(); guard.reset(home.snapshot())
