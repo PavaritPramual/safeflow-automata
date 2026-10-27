@@ -1,0 +1,134 @@
+{
+  "status": "passed",
+  "profile": "A",
+  "trace": "live/session-19ebb0cc-ed06-4a0f-8356-129b9c5de49e.jsonl",
+  "conformance": {
+    "status": "conforms",
+    "integrity": "complete",
+    "issue": null,
+    "path": [
+      {
+        "event_id": "17467d89-c803-45ca-bec5-2574ac950768",
+        "line": 5,
+        "source": "human",
+        "action": "light_on",
+        "decision": "allow",
+        "transition": "human_override",
+        "before": {
+          "state": "Monitoring",
+          "facts": {
+            "ac": "off",
+            "heater": "off",
+            "fan": "off",
+            "light": "off"
+          },
+          "time_s": 0.0,
+          "clocks": {
+            "rest": {
+              "active": false,
+              "elapsed_s": 0.0
+            }
+          }
+        },
+        "after": {
+          "state": "Monitoring",
+          "facts": {
+            "ac": "off",
+            "heater": "off",
+            "fan": "off",
+            "light": "on"
+          },
+          "time_s": 30.0,
+          "clocks": {
+            "rest": {
+              "active": false,
+              "elapsed_s": 30.0
+            }
+          }
+        }
+      },
+      {
+        "event_id": "54b7375e-bf88-4e65-834a-c4b33f1a0884",
+        "line": 8,
+        "source": "ai",
+        "action": "light_on",
+        "decision": "allow",
+        "transition": "light_control",
+        "before": {
+          "state": "Monitoring",
+          "facts": {
+            "ac": "off",
+            "heater": "off",
+            "fan": "off",
+            "light": "on"
+          },
+          "time_s": 30.0,
+          "clocks": {
+            "rest": {
+              "active": false,
+              "elapsed_s": 30.0
+            }
+          }
+        },
+        "after": {
+          "state": "Monitoring",
+          "facts": {
+            "ac": "off",
+            "heater": "off",
+            "fan": "off",
+            "light": "on"
+          },
+          "time_s": 60.0,
+          "clocks": {
+            "rest": {
+              "active": false,
+              "elapsed_s": 60.0
+            }
+          }
+        }
+      }
+    ],
+    "steps": 2
+  },
+  "actual_response_evidence": {
+    "actual_model_responses": 1,
+    "completed_human_requests": 1,
+    "ai_resumed_after_human": true,
+    "request_options": [
+      {
+        "temperature": 0,
+        "num_ctx": 2048,
+        "num_predict": 128,
+        "num_gpu": 0,
+        "seed": 0
+      }
+    ]
+  },
+  "definition_sha256": "54f94c00e2fdb8b723ea19520ca6b9c514a466cef9a6571e6b47ce09885d0c25",
+  "new_demo_session_time_s": 0.0,
+  "oracle": {
+    "trace": "experiments\\device-rules-2026-10-28\\live\\session-19ebb0cc-ed06-4a0f-8356-129b9c5de49e.jsonl",
+    "session_id": "19ebb0cc-ed06-4a0f-8356-129b9c5de49e",
+    "checked": 2,
+    "native_snapshots_checked": 2,
+    "status": "passed",
+    "rows": [
+      {
+        "event_id": "17467d89-c803-45ca-bec5-2574ac950768",
+        "source": "human",
+        "action": "light_on",
+        "canonical_action": "light_on",
+        "expected": "allow",
+        "found": "allow"
+      },
+      {
+        "event_id": "54b7375e-bf88-4e65-834a-c4b33f1a0884",
+        "source": "ai",
+        "action": "light_on",
+        "canonical_action": "light_on",
+        "expected": "allow",
+        "found": "allow"
+      }
+    ]
+  }
+}

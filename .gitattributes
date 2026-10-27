@@ -6,3 +6,5 @@ experiments/**/*.q -text whitespace=cr-at-eol
 experiments/**/*.txt -text whitespace=cr-at-eol
 experiments/**/*.yaml -text whitespace=cr-at-eol
 archive/**/*.json -text whitespace=cr-at-eol
+
+experiments/device-rules-2026-10-28/README.md -text whitespace=cr-at-eol

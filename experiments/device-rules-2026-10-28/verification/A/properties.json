@@ -1,0 +1,122 @@
+[
+  {
+    "id": "no_deadlock",
+    "formula": "A[] not deadlock"
+  },
+  {
+    "id": "complete_decisions",
+    "formula": "A[] !bad_complete"
+  },
+  {
+    "id": "no_ai_conflict",
+    "formula": "A[] !bad_0"
+  },
+  {
+    "id": "no_early_restart",
+    "formula": "A[] !bad_1"
+  },
+  {
+    "id": "invalid_never_executed",
+    "formula": "A[] !bad_2"
+  },
+  {
+    "id": "blocked_preserves_state",
+    "formula": "A[] !bad_3"
+  },
+  {
+    "id": "no_unnecessary_block",
+    "formula": "A[] !bad_4"
+  },
+  {
+    "id": "human_proposal_permitted",
+    "formula": "A[] !bad_5"
+  },
+  {
+    "id": "human_conflict_reachable",
+    "formula": "E<> seen_6"
+  },
+  {
+    "id": "ai_open_reachable",
+    "formula": "E<> seen_7"
+  },
+  {
+    "id": "blocking_reachable",
+    "formula": "E<> seen_8"
+  },
+  {
+    "id": "expired_open_reachable",
+    "formula": "E<> seen_9"
+  },
+  {
+    "id": "ac_off_always_permitted",
+    "formula": "A[] !bad_10"
+  },
+  {
+    "id": "heater_off_always_permitted",
+    "formula": "A[] !bad_11"
+  },
+  {
+    "id": "fan_always_permitted",
+    "formula": "A[] !bad_12"
+  },
+  {
+    "id": "light_always_permitted",
+    "formula": "A[] !bad_13"
+  },
+  {
+    "id": "hold_always_permitted",
+    "formula": "A[] !bad_14"
+  },
+  {
+    "id": "ac_on_effect",
+    "formula": "A[] !bad_15"
+  },
+  {
+    "id": "ac_off_effect",
+    "formula": "A[] !bad_16"
+  },
+  {
+    "id": "heater_on_effect",
+    "formula": "A[] !bad_17"
+  },
+  {
+    "id": "heater_off_effect",
+    "formula": "A[] !bad_18"
+  },
+  {
+    "id": "fan_on_effect",
+    "formula": "A[] !bad_19"
+  },
+  {
+    "id": "fan_off_effect",
+    "formula": "A[] !bad_20"
+  },
+  {
+    "id": "light_on_effect",
+    "formula": "A[] !bad_21"
+  },
+  {
+    "id": "light_off_effect",
+    "formula": "A[] !bad_22"
+  },
+  {
+    "id": "ac_affects_only_itself",
+    "formula": "A[] !bad_23"
+  },
+  {
+    "id": "heater_affects_only_itself",
+    "formula": "A[] !bad_24"
+  },
+  {
+    "id": "fan_affects_only_itself",
+    "formula": "A[] !bad_25"
+  },
+  {
+    "id": "light_affects_only_itself",
+    "formula": "A[] !bad_26"
+  },
+  {
+    "id": "hold_preserves_devices",
+    "formula": "A[] !bad_27"
+  }
+]

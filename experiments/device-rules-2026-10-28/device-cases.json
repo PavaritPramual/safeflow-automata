@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "cases": {
+    "A": 1728,
+    "B": 1728,
+    "C": 1728
+  },
+  "total_cases": 5184,
+  "origin": "controlled_requirement_test_not_real_ai",
+  "expected_effects": {
+    "hold": {},
+    "ac_cool": {
+      "ac": "cool"
+    },
+    "ac_off": {
+      "ac": "off"
+    },
+    "heater_on": {
+      "heater": "on"
+    },
+    "heater_off": {
+      "heater": "off"
+    },
+    "fan_on": {
+      "fan": "on"
+    },
+    "fan_off": {
+      "fan": "off"
+    },
+    "light_on": {
+      "light": "on"
+    },
+    "light_off": {
+      "light": "off"
+    }
+  }
+}

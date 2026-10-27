@@ -1,0 +1,400 @@
+{
+  "format_version": 1,
+  "id": "smart_home",
+  "parameters": {
+    "rest_s": 180
+  },
+  "variables": {
+    "ac": {
+      "type": "enum",
+      "values": [
+        "off",
+        "cool"
+      ],
+      "initial": "off"
+    },
+    "heater": {
+      "type": "enum",
+      "values": [
+        "off",
+        "on"
+      ],
+      "initial": "off"
+    },
+    "fan": {
+      "type": "enum",
+      "values": [
+        "off",
+        "on"
+      ],
+      "initial": "off"
+    },
+    "light": {
+      "type": "enum",
+      "values": [
+        "off",
+        "on"
+      ],
+      "initial": "off"
+    }
+  },
+  "clocks": {
+    "rest": {
+      "reset_when": "before.ac == 'cool' and after.ac == 'off'"
+    }
+  },
+  "sources": [
+    "ai",
+    "human"
+  ],
+  "event_kinds": [
+    "proposal",
+    "invalid_output",
+    "timeout",
+    "adapter_error"
+  ],
+  "actions": {
+    "hold": {
+      "set": {}
+    },
+    "ac_off": {
+      "set": {
+        "ac": "off"
+      }
+    },
+    "ac_cool": {
+      "set": {
+        "ac": "cool"
+      }
+    },
+    "heater_off": {
+      "set": {
+        "heater": "off"
+      }
+    },
+    "heater_on": {
+      "set": {
+        "heater": "on"
+      }
+    },
+    "fan_off": {
+      "set": {
+        "fan": "off"
+      }
+    },
+    "fan_on": {
+      "set": {
+        "fan": "on"
+      }
+    },
+    "light_off": {
+      "set": {
+        "light": "off"
+      }
+    },
+    "light_on": {
+      "set": {
+        "light": "on"
+      }
+    }
+  },
+  "states": [
+    "Monitoring"
+  ],
+  "initial": "Monitoring",
+  "transitions": [
+    {
+      "id": "malformed",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "when": "True",
+      "outcome": "block",
+      "reason": "unusable_proposal",
+      "on": [
+        "invalid_output",
+        "timeout",
+        "adapter_error"
+      ]
+    },
+    {
+      "id": "human_override",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "when": "source == 'human'",
+      "outcome": "allow",
+      "reason": "human_exception",
+      "on": [
+        "proposal"
+      ]
+    },
+    {
+      "id": "conflict",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "when": "source == 'ai' and ((action == 'ac_cool' and facts.heater == 'on') or (action == 'heater_on' and facts.ac == 'cool'))",
+      "outcome": "block",
+      "reason": "ac_heater_conflict",
+      "on": [
+        "proposal"
+      ]
+    },
+    {
+      "id": "cooldown",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "when": "source == 'ai' and action == 'ac_cool' and facts.heater != 'on' and facts.ac == 'off' and active.rest and clock.rest < params.rest_s",
+      "outcome": "block",
+      "reason": "ac_minimum_off_time",
+      "on": [
+        "proposal"
+      ]
+    },
+    {
+      "id": "ac_start",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "on": [
+        "proposal"
+      ],
+      "when": "source == 'ai' and action == 'ac_cool' and facts.heater != 'on' and not (facts.ac == 'off' and active.rest and clock.rest < params.rest_s)",
+      "outcome": "allow",
+      "reason": "permitted"
+    },
+    {
+      "id": "ac_stop",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "on": [
+        "proposal"
+      ],
+      "when": "source == 'ai' and action == 'ac_off'",
+      "outcome": "allow",
+      "reason": "permitted"
+    },
+    {
+      "id": "heater_start",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "on": [
+        "proposal"
+      ],
+      "when": "source == 'ai' and action == 'heater_on' and facts.ac != 'cool'",
+      "outcome": "allow",
+      "reason": "permitted"
+    },
+    {
+      "id": "heater_stop",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "on": [
+        "proposal"
+      ],
+      "when": "source == 'ai' and action == 'heater_off'",
+      "outcome": "allow",
+      "reason": "permitted"
+    },
+    {
+      "id": "fan_control",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "on": [
+        "proposal"
+      ],
+      "when": "source == 'ai' and (action == 'fan_on' or action == 'fan_off')",
+      "outcome": "block",
+      "reason": "permitted"
+    },
+    {
+      "id": "light_control",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "on": [
+        "proposal"
+      ],
+      "when": "source == 'ai' and (action == 'light_on' or action == 'light_off')",
+      "outcome": "allow",
+      "reason": "permitted"
+    },
+    {
+      "id": "hold",
+      "from": "Monitoring",
+      "to": "Monitoring",
+      "on": [
+        "proposal"
+      ],
+      "when": "source == 'ai' and action == 'hold'",
+      "outcome": "allow",
+      "reason": "permitted"
+    }
+  ],
+  "properties": [
+    {
+      "id": "no_ai_conflict",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "not (source == 'ai' and outcome == 'allow' and ((action == 'ac_cool' and facts.heater == 'on') or (action == 'heater_on' and facts.ac == 'cool')))"
+    },
+    {
+      "id": "no_early_restart",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "not (source == 'ai' and outcome == 'allow' and action == 'ac_cool' and facts.ac == 'off' and active.rest and clock.rest < params.rest_s)"
+    },
+    {
+      "id": "invalid_never_executed",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "kind == 'proposal' or outcome != 'allow'"
+    },
+    {
+      "id": "blocked_preserves_state",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome == 'allow' or (before.ac == after.ac and before.heater == after.heater and before.fan == after.fan and before.light == after.light)"
+    },
+    {
+      "id": "no_unnecessary_block",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "kind != 'proposal' or source != 'ai' or outcome != 'block' or ((action == 'ac_cool' and facts.heater == 'on') or (action == 'heater_on' and facts.ac == 'cool') or (action == 'ac_cool' and facts.ac == 'off' and active.rest and clock.rest < params.rest_s))"
+    },
+    {
+      "id": "human_proposal_permitted",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "kind != 'proposal' or source != 'human' or outcome == 'allow'"
+    },
+    {
+      "id": "human_conflict_reachable",
+      "type": "reachable",
+      "at": "observation",
+      "expression": "source == 'human' and after.ac == 'cool' and after.heater == 'on'"
+    },
+    {
+      "id": "ai_open_reachable",
+      "type": "reachable",
+      "at": "observation",
+      "expression": "source == 'ai' and outcome == 'allow' and action == 'ac_cool'"
+    },
+    {
+      "id": "blocking_reachable",
+      "type": "reachable",
+      "at": "decision",
+      "expression": "outcome == 'block'"
+    },
+    {
+      "id": "expired_open_reachable",
+      "type": "reachable",
+      "at": "decision",
+      "expression": "source == 'ai' and outcome == 'allow' and action == 'ac_cool' and active.rest and clock.rest >= params.rest_s"
+    },
+    {
+      "id": "ac_off_always_permitted",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "kind != 'proposal' or not (action == 'ac_off') or outcome == 'allow'"
+    },
+    {
+      "id": "heater_off_always_permitted",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "kind != 'proposal' or not (action == 'heater_off') or outcome == 'allow'"
+    },
+    {
+      "id": "fan_always_permitted",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "kind != 'proposal' or not (action == 'fan_on' or action == 'fan_off') or outcome == 'allow'"
+    },
+    {
+      "id": "light_always_permitted",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "kind != 'proposal' or not (action == 'light_on' or action == 'light_off') or outcome == 'allow'"
+    },
+    {
+      "id": "hold_always_permitted",
+      "type": "invariant",
+      "at": "decision",
+      "expression": "kind != 'proposal' or not (action == 'hold') or outcome == 'allow'"
+    },
+    {
+      "id": "ac_on_effect",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or action != 'ac_cool' or after.ac == 'cool'"
+    },
+    {
+      "id": "ac_off_effect",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or action != 'ac_off' or after.ac == 'off'"
+    },
+    {
+      "id": "heater_on_effect",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or action != 'heater_on' or after.heater == 'on'"
+    },
+    {
+      "id": "heater_off_effect",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or action != 'heater_off' or after.heater == 'off'"
+    },
+    {
+      "id": "fan_on_effect",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or action != 'fan_on' or after.fan == 'on'"
+    },
+    {
+      "id": "fan_off_effect",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or action != 'fan_off' or after.fan == 'off'"
+    },
+    {
+      "id": "light_on_effect",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or action != 'light_on' or after.light == 'on'"
+    },
+    {
+      "id": "light_off_effect",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or action != 'light_off' or after.light == 'off'"
+    },
+    {
+      "id": "ac_affects_only_itself",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or not (action == 'ac_cool' or action == 'ac_off') or (before.heater == after.heater and before.fan == after.fan and before.light == after.light)"
+    },
+    {
+      "id": "heater_affects_only_itself",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or not (action == 'heater_on' or action == 'heater_off') or (before.ac == after.ac and before.fan == after.fan and before.light == after.light)"
+    },
+    {
+      "id": "fan_affects_only_itself",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or not (action == 'fan_on' or action == 'fan_off') or (before.ac == after.ac and before.heater == after.heater and before.light == after.light)"
+    },
+    {
+      "id": "light_affects_only_itself",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "outcome != 'allow' or not (action == 'light_on' or action == 'light_off') or (before.ac == after.ac and before.heater == after.heater and before.fan == after.fan)"
+    },
+    {
+      "id": "hold_preserves_devices",
+      "type": "invariant",
+      "at": "observation",
+      "expression": "action != 'hold' or (before.ac == after.ac and before.heater == after.heater and before.fan == after.fan and before.light == after.light)"
+    }
+  ]
+}

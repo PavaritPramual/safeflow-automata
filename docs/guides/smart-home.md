@@ -28,7 +28,7 @@ Use a new output directory and your licensed verifyta executable:
 ./.venv/Scripts/python.exe -m safeflow serve --verification logs/verified-home-01
 ```
 
-The current retained home bundle passes all 12 properties and is the default in
+The current retained home bundle passes all 30 properties and is the default in
 lab.yaml on this workstation. Early attempts with a license error and exporter
 errors are retained as unsuccessful development evidence. A different executable,
 implementation, definition or property needs a new matching bundle. Until a bundle
@@ -41,10 +41,10 @@ In a separate terminal start only the configured lab:
 docker compose -f docker/compose.yaml up -d
 ```
 
-Open [Home Assistant](http://localhost:8123) and select SafeFlow Lab. If this is a
+Open [Home Assistant](http://localhost:8123) and select บ้านจำลอง. If this is a
 fresh instance, create its local account normally. Existing accounts/storage are
-preserved. The dashboard shows readiness, decisions and device state. Human
-switches queue one command; Run one round uses that request before asking AI.
+preserved. The dashboard shows readiness, decisions and device state. Explicit human open/close
+buttons queue one command; ทำงาน 1 รอบ uses that request before asking AI.
 Adding `--interval 5` to the service enables automatic rounds with a five-second
 wall-clock pause. Each completed round advances 30 simulation seconds regardless
 of model latency. Ctrl+C requests stop; a response arriving after stop is logged

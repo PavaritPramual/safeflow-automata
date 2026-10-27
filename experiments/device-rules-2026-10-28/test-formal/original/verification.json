@@ -1,0 +1,256 @@
+{
+  "definition_sha256": "54f94c00e2fdb8b723ea19520ca6b9c514a466cef9a6571e6b47ce09885d0c25",
+  "ir_sha256": "9e1a94ca2057eb86adf3de3cfa482e47791559f046f93c76f2a70a60b0e1fabe",
+  "ir_version": "safeflow-ir-1",
+  "converter_version": "safeflow-uppaal-1",
+  "implementation_sha256": "8b38afc2cbb1d31f55fb0d644d1435776bd80dac9c0b548ecf1ea171778fa607",
+  "model_sha256": "c74f5600fb65c40dbcaf4c6774c668c0bb9eb875b0d23e54fffe70fb4a5d7c07",
+  "properties_sha256": "1a9ce04d388f661e7bd2c8b3b2be8fa706f68c1a9f914db06bd2948a76248f08",
+  "origin": "uppaal_subprocess",
+  "verifier_executable": "D:\\673380278-9\\2569\\Seminar\\tools\\uppaal\\uppaal-5.0.0-win64\\bin\\verifyta.exe",
+  "verifier_sha256": "4c8af2716ff61f3cf35c6d1dc408ccf306d44bb22478e104548a8f0f7a3febe5",
+  "results": [
+    {
+      "id": "no_deadlock",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-000.txt",
+      "output_sha256": "27c511fca6bf62dba6209d821228517e2bd15319306f4460dd630e58ff58ca93",
+      "elapsed_s": 8.755822400096804
+    },
+    {
+      "id": "complete_decisions",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-001.txt",
+      "output_sha256": "13d5e407cb55bd252fbf715f8b40e159dda2934b07517f2aba14633f006e26bb",
+      "elapsed_s": 5.787144999951124
+    },
+    {
+      "id": "no_ai_conflict",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-002.txt",
+      "output_sha256": "3ae2d7dacc04c6e4723561a21892a1a4b67359b4f3bbf22f3182156334bbef89",
+      "elapsed_s": 5.9860498999478295
+    },
+    {
+      "id": "no_early_restart",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-003.txt",
+      "output_sha256": "0dd82ad387bd0b11fe3ab6fdd748a0aea3c8faacd03dac68f5ea6be9e0ef6b7b",
+      "elapsed_s": 5.999990200041793
+    },
+    {
+      "id": "invalid_never_executed",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-004.txt",
+      "output_sha256": "e168f539388c6cb5e1f2c6f3a4e19729af65a24fa9cbc31f55c7adb3b758956e",
+      "elapsed_s": 5.20080470002722
+    },
+    {
+      "id": "blocked_preserves_state",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-005.txt",
+      "output_sha256": "ac05d15d21bb1edcf1ae94bcdc1d28c8ba7a97e0c8e88b8a31244e16de23845f",
+      "elapsed_s": 5.4542229999788105
+    },
+    {
+      "id": "no_unnecessary_block",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-006.txt",
+      "output_sha256": "4035f02a5c16be3890a5fc5ec84ec12aa33c6d65badee35f17ad754b7dd263bf",
+      "elapsed_s": 5.43337729992345
+    },
+    {
+      "id": "human_proposal_permitted",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-007.txt",
+      "output_sha256": "c9e133d4c30a48d6cc3813a574acc9a2f77b31f724299644a025465c4f9aa053",
+      "elapsed_s": 6.316787000047043
+    },
+    {
+      "id": "human_conflict_reachable",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-008.txt",
+      "output_sha256": "5df72b1646f6794580e524e53ccad657a4d5d0a57b0071d1a3d16ee0e769f633",
+      "elapsed_s": 0.07922539999708533
+    },
+    {
+      "id": "ai_open_reachable",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-009.txt",
+      "output_sha256": "40d93d45d6111e3660e5d2808db94cb6be4a2041db1744932e61b8fd34dca53a",
+      "elapsed_s": 0.0574862000066787
+    },
+    {
+      "id": "blocking_reachable",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-010.txt",
+      "output_sha256": "a2fbd08856a4fb15046ecf49ecc3af6815c1e775b7856786dc0511bd54c6d9ff",
+      "elapsed_s": 0.06228660000488162
+    },
+    {
+      "id": "expired_open_reachable",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-011.txt",
+      "output_sha256": "11ba3d5d9de319c14ef0d6169095f150f59cebe3b0ac641c29d530c12c0faefa",
+      "elapsed_s": 0.18338189995847642
+    },
+    {
+      "id": "ac_off_always_permitted",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-012.txt",
+      "output_sha256": "c15a48b6722193ee63121d4549d9d7dc3d023446e237fc58730da18b675071f2",
+      "elapsed_s": 6.126594400033355
+    },
+    {
+      "id": "heater_off_always_permitted",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-013.txt",
+      "output_sha256": "7df9d6ac375be26e7cce7e9fe9ba3f6e093fd032ebb93754f4512c5257cb8ca1",
+      "elapsed_s": 6.183107599965297
+    },
+    {
+      "id": "fan_always_permitted",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-014.txt",
+      "output_sha256": "449469c90ee622abe3890f4d56555dfb6fd63eb16889c4bd85fc5622386626a1",
+      "elapsed_s": 6.457217499963008
+    },
+    {
+      "id": "light_always_permitted",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-015.txt",
+      "output_sha256": "8ff8fba78346a6f6218191a84e66ea2e23371cda6f953c2b0c27c9d6f589cf6a",
+      "elapsed_s": 6.410570300067775
+    },
+    {
+      "id": "hold_always_permitted",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-016.txt",
+      "output_sha256": "efd54630f57c5f97e0dd7e1ebb41cf728c8499f27f1f27a79002c9cdd3c64efb",
+      "elapsed_s": 5.990929699968547
+    },
+    {
+      "id": "ac_on_effect",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-017.txt",
+      "output_sha256": "25b52524bccbd0bcdc83dab3c2c74fb3ffe9f34c871d2d90178fb083dfdc6f72",
+      "elapsed_s": 5.625440999981947
+    },
+    {
+      "id": "ac_off_effect",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-018.txt",
+      "output_sha256": "fd1649f47b10fcbdd995de0ed7f3e21a5b6e3936bf9bdee2754c412172ccebb2",
+      "elapsed_s": 6.748198000015691
+    },
+    {
+      "id": "heater_on_effect",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-019.txt",
+      "output_sha256": "5137c8efd831f8713eb781eb5ce6a1dcaa17b6e3991c2bc41c28234750f2436d",
+      "elapsed_s": 5.799921700032428
+    },
+    {
+      "id": "heater_off_effect",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-020.txt",
+      "output_sha256": "441d6991652d81d9073cece2f400a8dee5e7cd740851541c6386924ea91da187",
+      "elapsed_s": 5.704986999975517
+    },
+    {
+      "id": "fan_on_effect",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-021.txt",
+      "output_sha256": "98735e832134e6df166e2b8b6f5b6f660f8dd740e97120155af2a7724e191c14",
+      "elapsed_s": 5.7241258000722155
+    },
+    {
+      "id": "fan_off_effect",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-022.txt",
+      "output_sha256": "4cafd19740cee5149cb918ba020f1581cd0801156ed5b127ea955f934a9b43cc",
+      "elapsed_s": 5.629046100075357
+    },
+    {
+      "id": "light_on_effect",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-023.txt",
+      "output_sha256": "f0e291a1b8deee2c09071a1b08c1da826b34b388d2ca02d27d896914f7787406",
+      "elapsed_s": 6.57629460003227
+    },
+    {
+      "id": "light_off_effect",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-024.txt",
+      "output_sha256": "3d932daad9157fa73146665ae6aa776b63a179744db54f67f53b74457f4bc718",
+      "elapsed_s": 6.696329199941829
+    },
+    {
+      "id": "ac_affects_only_itself",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-025.txt",
+      "output_sha256": "75b85b3923b8629f14b262cb7d8f4129a832787d364f66e6e3cf2dbbc876acde",
+      "elapsed_s": 6.153139399946667
+    },
+    {
+      "id": "heater_affects_only_itself",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-026.txt",
+      "output_sha256": "d15b81624a1bf3521c20f6db04ca909fe5a1df87c04df6a782da60eeafcc5e4b",
+      "elapsed_s": 6.236203400068916
+    },
+    {
+      "id": "fan_affects_only_itself",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-027.txt",
+      "output_sha256": "a024cf8b93bb028775c383b669dae0c6e5b28cbd39bf8a06174a91c76c8611c1",
+      "elapsed_s": 5.843738400028087
+    },
+    {
+      "id": "light_affects_only_itself",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-028.txt",
+      "output_sha256": "3cfcad35821cdb9442742be8127beee8e7df1d87cd863fddff59aeb97fa53525",
+      "elapsed_s": 5.870541899930686
+    },
+    {
+      "id": "hold_preserves_devices",
+      "status": "passed",
+      "exit_code": 0,
+      "output_file": "verifier-029.txt",
+      "output_sha256": "01cb691ddcf92fb2705658508f954373346049b32a0078889f30c350e69ec530",
+      "elapsed_s": 5.827096599969082
+    }
+  ],
+  "status": "passed",
+  "verifier_version": "UPPAAL 5.0.0 (rev. 714BA9DB36F49691), June 2023\nCopyright (c) 2011 - 2023, Aalborg University.\nCopyright (c) 1995 - 2011, Uppsala University and Aalborg University.\nAll rights reserved.\nCompiled using -DENABLE_TIGA -DMULTI_TERMINAL -DENABLE_TIGA_SMC -DENABLE_STORE_MINGRAPH -DTIGA_OTF_BUCHI -DENABLE_LSC \nBuilt with Boost-1.79.0, LibXml2-2.9.14, xxHash-0.8.1, UTAP-1.1.6, UUtils-1.2.0, UDBM-2.0.11, and UCDD-0.2.1\nLicensed to Pavarit Pramual / Khon Kean University (kkumail.com)."
+}

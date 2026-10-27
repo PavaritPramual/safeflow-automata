@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "profiles": {
+    "A": {
+      "status": "passed",
+      "property_count": 30,
+      "definition_sha256": "54f94c00e2fdb8b723ea19520ca6b9c514a466cef9a6571e6b47ce09885d0c25"
+    },
+    "B": {
+      "status": "passed",
+      "property_count": 30,
+      "definition_sha256": "35267e41a868e983970022b801630b6411d299adfb94f438fdcd10df77086020"
+    },
+    "C": {
+      "status": "passed",
+      "property_count": 30,
+      "definition_sha256": "250a7cb5e1f97b5502ebab22a353c887fb56c999dc8d1369fbe399c1b47e3e3d"
+    }
+  },
+  "mutations": {
+    "fan-blocked": {
+      "status": "expected_failure_detected",
+      "expected_failed_property": "fan_always_permitted",
+      "failed": [
+        "no_unnecessary_block",
+        "fan_always_permitted"
+      ]
+    },
+    "light-affects-fan": {
+      "status": "expected_failure_detected",
+      "expected_failed_property": "light_affects_only_itself",
+      "failed": [
+        "light_affects_only_itself"
+      ]
+    }
+  }
+}

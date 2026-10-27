@@ -1,0 +1,29 @@
+Options for the verification:
+  Generating no trace
+  Search order is breadth first
+  Using conservative space optimisation
+  Seed is 1793122824
+  State space representation uses minimal constraint systems with future testing
+  Using HashMap + Compress integers for discrete state storage
+[2K
+Verifying formula 1 at D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\device-rules-2026-10-28\test-formal\mutated\query-021.q:1
+ -- Throughput: 856836 states/sec, Load: 10110 states[K
+ -- Throughput: 680805 states/sec, Load: 15829 states[K
+ -- Throughput: 622132 states/sec, Load: 17271 states[K
+ -- Throughput: 657835 states/sec, Load: 14448 states[K
+ -- Throughput: 589038 states/sec, Load: 21617 states[K
+ -- Throughput: 647381 states/sec, Load: 24017 states[K
+ -- Throughput: 537364 states/sec, Load: 12667 states[K
+ -- Throughput: 538864 states/sec, Load: 20141 states[K
+ -- Throughput: 567405 states/sec, Load: 23389 states[K
+ -- Throughput: 513592 states/sec, Load: 24330 states[K
+ -- Throughput: 449082 states/sec, Load: 15046 states[K
+ -- Throughput: 444706 states/sec, Load: 14075 states[K
+ -- Throughput: 426276 states/sec, Load: 19697 states[K
+ -- Throughput: 429403 states/sec, Load: 21767 states[K
+ -- Throughput: 419728 states/sec, Load: 17994 states[K
+ -- Throughput: 437791 states/sec, Load: 9924 states[K
+ -- Throughput: 439639 states/sec, Load: 13254 states[K
+ -- Throughput: 413217 states/sec, Load: 13197 states[K
+ -- Throughput: 505112 states/sec, Load: 4656 states[K
+[2K -- Formula is satisfied.

@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "checks": {
+    "goals_do_not_execute_or_advance": true,
+    "AI_round_does_not_enqueue_human_request": true,
+    "human_request_queues_without_execution": true,
+    "human_open_and_close_rounds_apply_correctly": true,
+    "goals_and_light_state_restored": true
+  },
+  "initial_time_s": 0.0,
+  "final_time_s": 90.0,
+  "note": "One actual AI round and two human rounds; original goals restored, human light changes restored to post-AI state; no reset."
+}

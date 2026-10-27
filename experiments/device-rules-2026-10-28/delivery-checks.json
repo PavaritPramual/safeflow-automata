@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "primary_profile": "A",
+  "primary_rest_s": 180,
+  "ready": {
+    "A": "ready",
+    "B": "ready",
+    "C": "ready"
+  },
+  "production_source_unchanged": true,
+  "tests": 109,
+  "independent_cases": 5184,
+  "actual_UPPAAL_properties_passed": 90,
+  "extra_wrong_definitions_detected": 2,
+  "wrong_or_stale_HTTP_activations_rejected": 7,
+  "accepted_live_traces": 2,
+  "actual_native_AI_replies": 2,
+  "sealed_live_rounds": 5,
+  "broken_doc_links": []
+}

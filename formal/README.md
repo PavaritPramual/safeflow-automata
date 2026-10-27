@@ -8,7 +8,7 @@ queries, identities, raw verifier output and per-property results.
 See [semantics and supported constructs](../docs/guides/automata.md).
 The hand-written predecessor and generator are retained under
 [archive/prototype-v3](../archive/prototype-v3/README.md) for provenance only.
-The [current bundle](../experiments/implementation-2026-10-27/verification/attempt-07/verification.json)
-passes all 12 properties for the declared abstraction. Raw verifier outputs and
+The [current bundle](../experiments/device-rules-2026-10-28/verification/A/verification.json)
+passes all 30 properties for the declared abstraction. Raw verifier outputs and
 a mutated-guard failure are retained with the acceptance evidence. This does not
 prove the Python implementation or physical homes correct for all behaviors.

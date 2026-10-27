@@ -1,0 +1,15 @@
+Options for the verification:
+  Generating no trace
+  Search order is breadth first
+  Using conservative space optimisation
+  Seed is 1793122680
+  State space representation uses minimal constraint systems with future testing
+  Using HashMap + Compress integers for discrete state storage
+[2K
+Verifying formula 1 at D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\device-rules-2026-10-28\verification\C\query-015.q:1
+ -- Throughput: 860219 states/sec, Load: 4979 states[K
+ -- Throughput: 813444 states/sec, Load: 6109 states[K
+ -- Throughput: 817430 states/sec, Load: 7714 states[K
+ -- Throughput: 457226 states/sec, Load: 5075 states[K
+ -- Throughput: 533125 states/sec, Load: 2718 states[K
+[2K -- Formula is satisfied.

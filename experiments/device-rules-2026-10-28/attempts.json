@@ -1,0 +1,20 @@
+{
+  "unsuccessful_attempts": [
+    {
+      "stage": "controlled_api_initial",
+      "status": "rejected_as_expected_by_gate",
+      "http_status": 503,
+      "reason": "verification_manifest_mismatch",
+      "cause": "acceptance utility pinned the 2026-10-27 bundle instead of current config",
+      "correction": "tool now reads bundle from each lab.yaml; explicit --verification-root remains possible",
+      "accepted_results": "controlled-current/summary.json"
+    },
+    {
+      "stage": "old_B_demo_stop",
+      "status": "not_used_as_acceptance",
+      "local_trace": "logs/interactive-demo-20261027/session-4b8b0382-024c-4ec5-b97b-3dcb1508cabb.jsonl",
+      "last_record": "session_start",
+      "note": "Empty B session had no completed rounds when old process stopped. It is not a sealed accepted run. New A evidence is separate."
+    }
+  ]
+}

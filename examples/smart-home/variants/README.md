@@ -1,6 +1,8 @@
 # Editable site variants
 
-A is the unchanged [180-second baseline](../policy.yaml).
+A is the primary [180-second case](../policy.yaml).
+All current profiles include the complete four-device rule catalogue; retained
+2026-10-27 bundles are historical and must not activate changed definitions.
 B is [cooldown-90](cooldown-90/policy.yaml); only parameters.rest_s changes.
 C is [renamed-90](renamed-90/policy.yaml); its AC fact/action IDs also change.
 Native devices and the proposer prompt are unchanged. Each variant has its own

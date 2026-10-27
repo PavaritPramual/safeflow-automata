@@ -101,7 +101,7 @@ def run_profile(tag,output,*,verification=None,_test_gate=None):
     """_test_gate is used only by unit fixtures; CLI never exposes a bypass."""
     output=Path(output);output.mkdir(parents=True,exist_ok=False)
     config_path,contract_path=PROFILES[tag];spec=ORACLE.contract(contract_path)
-    app=Application(config_path,logs=output/'traces',verification=verification or EVIDENCE/'verification'/tag)
+    app=Application(config_path,logs=output/'traces',verification=verification)
     if _test_gate is not None:app.gate=_test_gate
     cases=[]
     with Api(app) as api:
@@ -150,12 +150,13 @@ def check_wrong_bundle(tag,bundle,output,config_path=None):
     return {'profile':tag,'bundle':str(bundle),'http_status':status,'reason':body['reason'],'traces_created':0}
 
 
-def run_rejections(output):
+def run_rejections(output,*,verification_root=None):
     output=Path(output);output.mkdir(parents=True,exist_ok=False)
     cases=[]
+    bundles={tag:Path(verification_root)/tag if verification_root else Application(PROFILES[tag][0]).gate.directory for tag in PROFILES}
     for tag in PROFILES:
         for other in PROFILES:
-            if tag!=other:cases.append(check_wrong_bundle(tag,EVIDENCE/'verification'/other,output/(tag+'-with-'+other)))
+            if tag!=other:cases.append(check_wrong_bundle(tag,bundles[other],output/(tag+'-with-'+other)))
     # Change only the definition after its bundle was verified.
     path=output/'changed-policy.yaml'
     original=(PROFILES['B'][0].parent/'policy.yaml').read_text(encoding='utf-8')
@@ -163,16 +164,18 @@ def run_rejections(output):
     cfg=yaml.safe_load(PROFILES['B'][0].read_text(encoding='utf-8'))
     cfg['policy']=str(path.resolve());cfg['physics_file']=str((ROOT/'configs/home.json').resolve())
     changed=output/'changed-lab.yaml';changed.write_text(yaml.safe_dump(cfg,sort_keys=False),encoding='utf-8')
-    cases.append(check_wrong_bundle('B',EVIDENCE/'verification/B',output/'changed',changed))
+    cases.append(check_wrong_bundle('B',bundles['B'],output/'changed',changed))
     report={'type':'activation_rejections','not_real_ai':True,'status':'passed','cases':cases}
     write_json(output/'report.json',report);return report
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--verification-root',type=Path,help='Optional A/B/C bundle directory; defaults to each current lab.yaml')
+    args=p.parse_args()
     args.output.mkdir(parents=True,exist_ok=False)
-    reports=[run_profile(tag,args.output/tag) for tag in PROFILES]
-    reject=run_rejections(args.output/'rejections')
+    reports=[run_profile(tag,args.output/tag,verification=args.verification_root/tag if args.verification_root else None) for tag in PROFILES]
+    reject=run_rejections(args.output/'rejections',verification_root=args.verification_root)
     table=[{'profile':r['profile'],'rest_s':r['rest_s'],'at_120':next(c['found'] for c in r['cases'] if c['case']=='restart_boundary' and c['elapsed_s']==120)} for r in reports]
     assert [r['at_120'] for r in table]==['block','allow','allow']
     write_json(args.output/'summary.json',{'status':'passed','not_real_ai':True,'table':table,'activation_rejections':len(reject['cases'])})

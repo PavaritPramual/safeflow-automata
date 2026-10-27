@@ -1,0 +1,20 @@
+Options for the verification:
+  Generating no trace
+  Search order is breadth first
+  Using conservative space optimisation
+  Seed is 1793123120
+  State space representation uses minimal constraint systems with future testing
+  Using HashMap + Compress integers for discrete state storage
+[2K
+Verifying formula 1 at D:\673380278-9\2569\Seminar\project\safeflow-ai\experiments\device-rules-2026-10-28\mutations\light-affects-fan\query-012.q:1
+ -- Throughput: 789540 states/sec, Load: 8163 states[K
+ -- Throughput: 815519 states/sec, Load: 13239 states[K
+ -- Throughput: 833346 states/sec, Load: 9077 states[K
+ -- Throughput: 800007 states/sec, Load: 17254 states[K
+ -- Throughput: 752009 states/sec, Load: 9164 states[K
+ -- Throughput: 736987 states/sec, Load: 18376 states[K
+ -- Throughput: 743454 states/sec, Load: 11124 states[K
+ -- Throughput: 752393 states/sec, Load: 14132 states[K
+ -- Throughput: 761294 states/sec, Load: 6466 states[K
+ -- Throughput: 773336 states/sec, Load: 4636 states[K
+[2K -- Formula is satisfied.

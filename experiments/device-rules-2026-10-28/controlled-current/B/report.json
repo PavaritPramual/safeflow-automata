@@ -1,0 +1,275 @@
+{
+  "type": "controlled_requirements_test",
+  "profile": "B",
+  "not_real_ai": true,
+  "actual_llm_calls": 0,
+  "verification_origin": "uppaal_subprocess",
+  "definition_sha256": "35267e41a868e983970022b801630b6411d299adfb94f438fdcd10df77086020",
+  "rest_s": 90,
+  "requirements": {
+    "format_version": 1,
+    "rest_s": 90,
+    "facts": {
+      "ac": "ac",
+      "heater": "heater",
+      "fan": "fan",
+      "light": "light"
+    },
+    "actions": {
+      "hold": "hold",
+      "ac_off": "ac_off",
+      "ac_cool": "ac_cool",
+      "heater_off": "heater_off",
+      "heater_on": "heater_on",
+      "fan_off": "fan_off",
+      "fan_on": "fan_on",
+      "light_off": "light_off",
+      "light_on": "light_on"
+    }
+  },
+  "status": "passed",
+  "cases": [
+    {
+      "case": "restart_boundary",
+      "elapsed_s": 0,
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 0.0,
+      "expected": "block",
+      "found": "block",
+      "reason": "ac_minimum_off_time"
+    },
+    {
+      "case": "restart_boundary",
+      "elapsed_s": 89,
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 89.0,
+      "expected": "block",
+      "found": "block",
+      "reason": "ac_minimum_off_time"
+    },
+    {
+      "case": "restart_boundary",
+      "elapsed_s": 90,
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 90.0,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "restart_boundary",
+      "elapsed_s": 91,
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 91.0,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "restart_boundary",
+      "elapsed_s": 120,
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 120.0,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "restart_boundary",
+      "elapsed_s": 179,
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 179.0,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "restart_boundary",
+      "elapsed_s": 180,
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 180.0,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "restart_boundary",
+      "elapsed_s": 181,
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 181.0,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "first_use",
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": null,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "repeated_off",
+      "action": "ac_off",
+      "canonical_action": "ac_off",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 60.0,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "after_repeated_off",
+      "action": "ac_cool",
+      "canonical_action": "ac_cool",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": 60.0,
+      "expected": "block",
+      "found": "block",
+      "reason": "ac_minimum_off_time"
+    },
+    {
+      "case": "human_exception",
+      "action": "heater_on",
+      "canonical_action": "heater_on",
+      "source": "human",
+      "kind": "proposal",
+      "before_elapsed_s": null,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "human_exception"
+    },
+    {
+      "case": "ai_resumes_from_actual",
+      "action": "heater_on",
+      "canonical_action": "heater_on",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": null,
+      "expected": "block",
+      "found": "block",
+      "reason": "ac_heater_conflict"
+    },
+    {
+      "case": "recover",
+      "action": "heater_off",
+      "canonical_action": "heater_off",
+      "source": "ai",
+      "kind": "proposal",
+      "before_elapsed_s": null,
+      "expected": "allow",
+      "found": "allow",
+      "reason": "permitted"
+    },
+    {
+      "case": "invalid_output",
+      "action": null,
+      "canonical_action": null,
+      "source": "ai",
+      "kind": "invalid_output",
+      "before_elapsed_s": null,
+      "expected": "block",
+      "found": "block",
+      "reason": "unusable_proposal"
+    },
+    {
+      "case": "timeout",
+      "action": null,
+      "canonical_action": null,
+      "source": "ai",
+      "kind": "timeout",
+      "before_elapsed_s": null,
+      "expected": "block",
+      "found": "block",
+      "reason": "unusable_proposal"
+    }
+  ],
+  "native_bindings": "passed",
+  "traces": [
+    {
+      "trace": "session-07c512ae-3ac4-457b-80e6-32acfb388633.jsonl",
+      "steps": 3,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-214fd526-e8b5-4611-a58a-23fd151e6799.jsonl",
+      "steps": 2,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-4e9e71f6-995c-48fd-90b0-8c5d5319897a.jsonl",
+      "steps": 3,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-7f8fda5b-0179-483d-9e2d-a97f692b365d.jsonl",
+      "steps": 3,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-7fee7d6b-45c4-4903-a355-a33a476d69bf.jsonl",
+      "steps": 3,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-838911fc-c8ba-4e90-b94c-7afaa3c91ca6.jsonl",
+      "steps": 4,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-9ac06b76-4f79-4888-a152-a12770959f77.jsonl",
+      "steps": 3,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-c8b8a01a-8dbb-4635-9807-c8506c4ab4f2.jsonl",
+      "steps": 3,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-cf20d999-d59e-4f7b-b6d6-94530af8e374.jsonl",
+      "steps": 4,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-df830df7-0692-4eb9-8a8f-304aade935fd.jsonl",
+      "steps": 3,
+      "status": "conforms"
+    },
+    {
+      "trace": "session-e01a7148-5016-4787-b99e-fff55abefdca.jsonl",
+      "steps": 3,
+      "status": "conforms"
+    }
+  ]
+}

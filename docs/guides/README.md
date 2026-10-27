@@ -6,3 +6,5 @@
 - ../development/architecture.md: SOLID, dependencies and compatibility
 
 - prepresentation.md: operator rehearsal, editable profiles and actual model switching
+
+- [ข้อกำหนดครบสี่อุปกรณ์และขอบเขตกฎ](home-rules.md) — ชุด A เป็นกรณีศึกษาหลัก

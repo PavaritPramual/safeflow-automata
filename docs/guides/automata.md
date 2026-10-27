@@ -75,8 +75,8 @@ committed locations.
 Activation checks every property result, hashes, converter version, exact output
 files and the verifier executable. An unavailable tool, timeout, false property,
 modified source/query/model or missing result keeps the service not ready.
-The current home definition passes all 12 properties; see the
-[actual results](../../experiments/implementation-2026-10-27/verification/attempt-07/verification.json). Earlier license and generated-model errors
+The current home definition passes all 30 properties; see the
+[actual results](../../experiments/device-rules-2026-10-28/verification/A/verification.json). Earlier license and generated-model errors
 remain in preceding attempts, and cannot activate the service.
 
 During operation SafeFlow monitors each event/effect against A; it does not call
