@@ -18,3 +18,8 @@ class SafeFlowButton(CoordinatorEntity, ButtonEntity):
     async def async_press(self):
         await self.coordinator.request("/" + self.action, {})
         await self.coordinator.async_request_refresh()
+
+    @property
+    def available(self):
+        data = self.coordinator.data or {}
+        return super().available and data.get("readiness") == "ready" and (self.action == "reset" or not data.get("halted"))

@@ -8,13 +8,13 @@ from .ports import EventSink, VerificationPort
 
 
 class Session:
-    def __init__(self, definition, gate: VerificationPort, sink: EventSink, facts=None, time_s=0, context=None):
+    def __init__(self, definition, gate: VerificationPort, sink: EventSink, facts=None, time_s=0, context=None, session_id=None):
         # Run this before logging a start or letting any client execute an action.
         self.verification = gate.require(definition)
         facts = definition.initial_facts if facts is None else facts
         if facts != definition.initial_facts: raise ValueError('initial_facts_not_covered_by_verification')
         self.runtime, self.sink = Runtime(definition, facts, time_s), sink
-        self.id, self.seq = str(uuid.uuid4()), 0
+        self.id, self.seq = str(uuid.UUID(session_id)) if session_id else str(uuid.uuid4()), 0
         self.lock = threading.RLock()
         self.halted, self.sealed, self.issue = False, False, None
         self.received, self.decisions, self.observations = {}, {}, {}
@@ -45,6 +45,7 @@ class Session:
             self._active()
             if type(event_id) is not str or not 1 <= len(event_id) <= 128 or type(source) is not str:
                 raise ValueError('invalid_event_envelope')
+            if metadata is not None and type(metadata) is not dict: raise ValueError('metadata_object_required')
             value = {'source': source, 'raw': copy.deepcopy(raw), 'metadata': copy.deepcopy(metadata or {})}
             canonical(value)  # Reject non-JSON/NaN before reserving anything.
             if event_id in self.received:

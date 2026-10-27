@@ -1,5 +1,5 @@
 """Small structural interfaces: implementations need no shared base class."""
-from typing import Protocol, Any
+from typing import Protocol
 from .core.definition import Definition
 
 

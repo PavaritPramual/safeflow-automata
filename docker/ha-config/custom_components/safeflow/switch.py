@@ -37,3 +37,8 @@ class SafeFlowSwitch(CoordinatorEntity, SwitchEntity):
 
     async def async_turn_off(self, **kwargs):
         await self.set_mode(False)
+
+    @property
+    def available(self):
+        data = self.coordinator.data or {}
+        return super().available and data.get("readiness") == "ready" and not data.get("halted")

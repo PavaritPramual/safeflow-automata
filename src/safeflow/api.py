@@ -1,7 +1,6 @@
 """Authenticated versioned service API plus the Home Assistant lab facade."""
 import hmac
 import json
-import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 
@@ -27,7 +26,7 @@ def make_server(application, key, host='127.0.0.1', port=8765):
             self.end_headers(); self.wfile.write(body)
 
         def authenticated(self):
-            return hmac.compare_digest(self.headers.get('Authorization', ''), 'Bearer ' + key)
+            return hmac.compare_digest(self.headers.get('Authorization', '').encode(), ('Bearer ' + key).encode())
 
         def do_GET(self):
             if self.path == '/health':

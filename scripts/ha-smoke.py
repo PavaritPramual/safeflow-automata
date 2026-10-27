@@ -12,7 +12,7 @@ from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from safeflow.evaluate import api
-from safeflow.server import load_key
+from safeflow.configuration import load_key
 
 BASE = "http://127.0.0.1:8123"
 CLIENT = BASE + "/"
@@ -31,6 +31,7 @@ def request(path, data=None, token=None, form=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap-lab", action="store_true")
+    parser.add_argument("--output", default="logs/ha-smoke.json")
     args = parser.parse_args()
     if CREDENTIALS.exists():
         stored = json.loads(CREDENTIALS.read_text())
@@ -60,8 +61,9 @@ def main():
                 "switch.safeflow_air_conditioner", "switch.safeflow_heater",
                 "switch.safeflow_ventilation_fan", "switch.safeflow_light",
                 "button.safeflow_step", "button.safeflow_reset", "sensor.safeflow_decision",
-                "sensor.safeflow_decision_reason", "sensor.safeflow_cooldown"]
+                "sensor.safeflow_decision_reason", "sensor.safeflow_cooldown", "sensor.safeflow_readiness"]
     assert all(s in states and states[s]["state"] != "unavailable" for s in required), "missing/unavailable HA entity"
+    assert states['sensor.safeflow_readiness']['state'] == 'ready', 'verified supervisor is not ready'
     def service(domain, action, data):
         return request(f"/api/services/{domain}/{action}", data, token)
     service("button", "press", {"entity_id": "button.safeflow_reset"})
@@ -82,7 +84,10 @@ def main():
               "queued_without_execution": True, "goal_update": True,
               "human_replaces_ai_one_round": True, "ai_resumes": True,
               "simulation_time_s": ai["simulation_time_s"], "safety_enforcer": ai["enforcement"] == "automata"}
-    Path("logs/ha-smoke.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    output = Path(args.output)
+    if output.exists(): raise RuntimeError('refusing_to_overwrite_ha_evidence')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report))
 
 

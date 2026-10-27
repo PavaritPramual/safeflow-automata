@@ -1,5 +1,4 @@
 """Composition root: select concrete ports here, not inside the automata."""
-import copy
 import json
 import threading
 import uuid
@@ -22,6 +21,8 @@ class Application:
     def __init__(self, config_path, logs='logs', verification=None):
         path = Path(config_path).resolve()
         self.config = yaml.load(path.read_text(encoding='utf-8-sig'), Loader=StrictLoader)
+        if 'physics_file' in self.config:
+            self.config['physics'] = json.loads((path.parent/self.config['physics_file']).read_text(encoding='utf-8'))['physics']
         self.definition = Definition.load(path.parent / self.config['policy'])
         self.gate = VerificationGate(verification or path.parent / self.config['verification'])
         self.logs = Path(logs)
@@ -43,8 +44,9 @@ class Application:
 
     def _session(self, facts=None, time_s=0, context=None):
         self._require_ready()
-        return Session(self.definition, self.gate, Trace(self.logs / ('session-' + str(uuid.uuid4()) + '.jsonl')),
-                       facts, time_s, context=context)
+        ident = str(uuid.uuid4())
+        return Session(self.definition, self.gate, Trace(self.logs / ('session-' + ident + '.jsonl')),
+                       facts, time_s, context=context, session_id=ident)
 
     def create_session(self, facts=None, time_s=0):
         with self.lock:
@@ -95,8 +97,9 @@ class Application:
             try:
                 result = self._lab().snapshot()
                 # Display-only mapping stays in this case-study composition root.
-                clock = result['clocks'].get('rest')
-                rest = self.definition.data['parameters'].get('rest_s', 0)
+                display = self.config.get('display', {})
+                clock = result['clocks'].get(display.get('cooldown_clock'))
+                rest = self.definition.data['parameters'].get(display.get('cooldown_parameter'), 0)
                 result['automata']['cooldown'] = 'resting' if clock and clock['active'] and clock['elapsed_s'] < rest else 'ready'
                 result['readiness'] = 'ready'
                 return result
@@ -130,3 +133,7 @@ class Application:
         with self.lock:
             if self.loop and not self.loop.session.halted and not self.loop.session.sealed and not self.loop.queue:
                 self.loop.finish()
+
+    def request_stop(self):
+        # This must not wait for the lab lock held by an in-flight model request.
+        if self.loop: self.loop.request_stop()

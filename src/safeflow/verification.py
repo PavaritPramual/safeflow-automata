@@ -6,6 +6,7 @@ arbitrary nonnegative environment delays are an over-approximation of the lab's
 30-second steps. Physical thermal equations are outside this verification.
 """
 import copy
+import ast
 import hashlib
 import itertools
 import json
@@ -17,7 +18,6 @@ from pathlib import Path
 from .core.definition import Definition, IR_VERSION, canonical, digest
 
 CONVERTER_VERSION = 'safeflow-uppaal-1'
-OUTCOMES = {'allow': 0, 'block': 1, 'halt': 2}
 
 
 def file_hash(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -55,8 +55,10 @@ def compile_model(definition):
         for prefix in ('v_', 'before_'): declarations.append(f'{typ} {prefix}{k}={literal(spec["initial"])};')
     for k in d['clocks']:
         declarations.extend([f'clock c_{k};', f'bool active_{k}=false;'])
-    declarations.extend([f'int[0,{len(d["states"])-1}] state={d["states"].index(d["initial"])}, next_state={d["states"].index(d["initial"])};',
+    declarations.extend([f'int[0,{len(d["states"])-1}] control_state={d["states"].index(d["initial"])}, next_state={d["states"].index(d["initial"])};',
                          f'int[0,{len(enums)-1}] source={enums[d["sources"][0]]}, kind={enums["proposal"]}, action={enums["none"]}, outcome={enums["block"]};',
+                         f'int[0,{len(d["transitions"])}] match_count=0;',
+                         f'int[0,{len(d["transitions"])-1}] selected=0;',
                          'bool bad_complete=false;'])
     queries = [{'id': 'no_deadlock', 'formula': 'A[] not deadlock'},
                {'id': 'complete_decisions', 'formula': 'A[] !bad_complete'}]
@@ -89,36 +91,78 @@ def compile_model(definition):
     # Enumerate finite input symbols; no proposal can silently omit its action.
     for source, kind, action in itertools.product(source_values, kind_values, action_values):
         if (kind == 'proposal') != (action != 'none'): continue
-        updates = [f'source={enums[source]}', f'kind={enums[kind]}', f'action={enums[action]}']
+        updates = [f'source={enums[source]}', f'kind={enums[kind]}', f'action={enums[action]}', 'match_count=0']
         updates += [f'before_{k}=v_{k}' for k in d['variables']]
         edge('Idle', 'Resolve', assignments=', '.join(updates))
+
+    def fresh(): return loc('Condition' + str(len(locations)))
+
+    def branch(start, yes, no, expression, node=None):
+        """Lower Boolean structure to committed control flow, not clock ORs.
+
+        UPPAAL guards accept conjunctions of clock constraints. Evaluating a
+        Boolean expression as a decision graph avoids exponential DNF expansion.
+        All intermediate locations are committed, so clocks cannot advance.
+        """
+        node = expression.tree if node is None else node
+        if isinstance(node, ast.Constant) and type(node.value) is bool:
+            edge(start, yes if node.value else no); return
+        if isinstance(node, ast.UnaryOp):
+            branch(start, no, yes, expression, node.operand); return
+        if isinstance(node, ast.BoolOp):
+            current = start
+            for i, child in enumerate(node.values):
+                last = i == len(node.values)-1
+                target = (yes if isinstance(node.op, ast.And) else no) if last else fresh()
+                branch(current, target if isinstance(node.op, ast.And) else yes,
+                       no if isinstance(node.op, ast.And) else target, expression, child)
+                current = target
+            return
+        if isinstance(node, ast.Compare) and len(node.ops) > 1:
+            parts = [ast.Compare(left=a, ops=[op], comparators=[b]) for a,op,b in
+                     zip([node.left]+node.comparators,node.ops,node.comparators)]
+            branch(start, yes, no, expression, ast.BoolOp(op=ast.And(), values=parts)); return
+        atom = copy.copy(expression); atom.tree = node
+        if isinstance(node, ast.Compare):
+            inverses = {ast.Eq:ast.NotEq, ast.NotEq:ast.Eq, ast.Lt:ast.GtE, ast.LtE:ast.Gt, ast.Gt:ast.LtE, ast.GtE:ast.Lt}
+            clock_atom = any(isinstance(n, ast.Attribute) and isinstance(n.value, ast.Name) and n.value.id=='clock' for n in ast.walk(node))
+            for truth, target, op in ((True,yes,type(node.ops[0])), (False,no,inverses[type(node.ops[0])])):
+                ops = (ast.Lt,ast.Gt) if clock_atom and op is ast.NotEq else (op,)
+                for actual_op in ops:
+                    term=copy.copy(expression)
+                    term.tree=ast.Compare(left=node.left,ops=[actual_op()],comparators=node.comparators)
+                    edge(start,target,term.uppaal(names,enums))
+        else:
+            text=atom.uppaal(names,enums)
+            edge(start,yes,text);edge(start,no,'!('+text+')')
 
     def property_chain(phase, start, end):
         props = [(i, p) for i, p in enumerate(d['properties']) if p['at'] == phase]
         current = start
         for j, (i, prop) in enumerate(props):
             target = end if j == len(props)-1 else loc(phase.title() + str(j))
-            expr = definition.assertions[prop['id']].uppaal(names, enums)
-            edge(current, target, expr, f'seen_{i}=true' if prop['type'] == 'reachable' else None)
-            edge(current, target, '!(' + expr + ')', f'bad_{i}=true' if prop['type'] == 'invariant' else None)
+            yes,no=fresh(),fresh()
+            branch(current,yes,no,definition.assertions[prop['id']])
+            edge(yes, target, assignments=f'seen_{i}=true' if prop['type'] == 'reachable' else None)
+            edge(no, target, assignments=f'bad_{i}=true' if prop['type'] == 'invariant' else None)
             current = target
         if not props: edge(start, end)
 
     loc('Decided')
-    matches = []
-    for e in d['transitions']:
-        kinds = '(' + ' || '.join('kind==' + str(enums[k]) for k in e['on']) + ')'
-        matches.append(f'(state=={d["states"].index(e["from"])} && {kinds} && {definition.guards[e["id"]].uppaal(names,enums)})')
+    current='Resolve'
     for i, e in enumerate(d['transitions']):
-        other = ' || '.join(x for j, x in enumerate(matches) if i != j) or 'false'
-        guard = matches[i] + ' && !(' + other + ')'
-        edge('Resolve', 'Decided', guard,
+        next_check,check_guard,matched=fresh(),fresh(),fresh()
+        kinds = '(' + ' || '.join('kind==' + str(enums[k]) for k in e['on']) + ')'
+        prefix=f'(control_state=={d["states"].index(e["from"])} && {kinds})'
+        edge(current,check_guard,prefix);edge(current,next_check,'!('+prefix+')')
+        branch(check_guard,matched,next_check,definition.guards[e['id']])
+        edge(matched,next_check,assignments=f'match_count=match_count+1, selected={i}')
+        current=next_check
+    for i,e in enumerate(d['transitions']):
+        edge(current, 'Decided', f'match_count==1 && selected=={i}',
              f'outcome={enums[e["outcome"]]}, next_state={d["states"].index(e["to"])}')
     # Explicit fault branch makes missing/ambiguous guards visible to verification.
-    ambiguous = ['(' + a + ' && ' + b + ')' for a, b in itertools.combinations(matches, 2)]
-    fault = '!(' + ' || '.join(matches) + ')'
-    if ambiguous: fault += ' || ' + ' || '.join(ambiguous)
-    edge('Resolve', 'Decided', fault, f'bad_complete=true, outcome={enums["halt"]}, next_state=state')
+    edge(current, 'Decided', 'match_count!=1', f'bad_complete=true, outcome={enums["halt"]}, next_state=control_state')
     property_chain('decision', 'Decided', 'Apply')
 
     paths = [(f'outcome!={enums["allow"]}', {})]
@@ -129,7 +173,7 @@ def compile_model(definition):
         reset_expr = {k: expr.uppaal(after_names, enums) for k, expr in definition.clock_resets.items()}
         for choices in itertools.product((False, True), repeat=len(reset_expr)):
             guards = [base_guard]
-            assignments = ['state=next_state'] + ['v_' + k + '=' + literal(value) for k, value in effects.items()]
+            assignments = ['control_state=next_state'] + ['v_' + k + '=' + literal(value) for k, value in effects.items()]
             for (clock, expr), yes in zip(reset_expr.items(), choices):
                 guards.append('(' + expr + ')' if yes else '!(' + expr + ')')
                 if yes: assignments += ['c_' + clock + '=0', 'active_' + clock + '=true']
@@ -141,20 +185,33 @@ def compile_model(definition):
     edge('Finished', 'Idle', f'outcome!={enums["halt"]}')
     edge('Finished', 'Stopped', f'outcome=={enums["halt"]}')
     edge('Stopped', 'Stopped')
+    # Flat XML requires all locations before init and all transitions after it.
+    # Property-chain construction above creates locations incrementally.
+    children = list(template)
+    template[:] = ([x for x in children if x.tag == 'name'] +
+                   [x for x in children if x.tag == 'location'] +
+                   [x for x in children if x.tag == 'init'] +
+                   [x for x in children if x.tag == 'transition'])
     ET.SubElement(root, 'system').text = 'S=Supervisor(); system S;'
     xml_queries = ET.SubElement(root, 'queries')
     for query in queries:
         q = ET.SubElement(xml_queries, 'query'); ET.SubElement(q, 'formula').text = query['formula']
         ET.SubElement(q, 'comment').text = query['id']
     ET.indent(root)
-    xml = '<?xml version="1.0" encoding="utf-8"?>\n' + ET.tostring(root, encoding='unicode') + '\n'
+    xml = ('<?xml version="1.0" encoding="utf-8"?>\n'
+           '<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd">\n'
+           + ET.tostring(root, encoding='unicode') + '\n')
     return xml, queries
 
 
 def artifact_identity(definition):
     xml, queries = compile_model(definition)
+    package = Path(__file__).parent
+    implementation = {name: hashlib.sha256((package / name).read_text(encoding='utf-8').encode()).hexdigest() for name in
+                      ('core/definition.py', 'core/expressions.py', 'core/runtime.py', 'verification.py', 'service.py')}
     return {'definition_sha256': definition.sha256, 'ir_sha256': definition.ir_sha256,
             'ir_version': IR_VERSION, 'converter_version': CONVERTER_VERSION,
+            'implementation_sha256': digest(implementation),
             'model_sha256': hashlib.sha256(xml.encode()).hexdigest(), 'properties_sha256': digest(queries)}
 
 
@@ -192,7 +249,14 @@ class UppaalVerifier:
                                    capture_output=True, text=True, timeout=self.timeout_s, encoding='utf-8', errors='replace')
                 output = p.stdout + p.stderr
                 verdicts = re.findall(r'Formula is (NOT satisfied|satisfied)\.', output)
-                status = ('passed' if verdicts == ['satisfied'] else 'failed' if verdicts == ['NOT satisfied'] else 'unavailable') if p.returncode == 0 else 'unavailable'
+                if 'License does not cover verifier.' in output:
+                    status = 'unavailable'
+                elif p.returncode == 0 and verdicts == ['satisfied']:
+                    status = 'passed'
+                elif p.returncode == 0 and verdicts == ['NOT satisfied']:
+                    status = 'failed'
+                else:
+                    status = 'error'  # Syntax errors must not become skipped proof tests.
                 code = p.returncode
             except subprocess.TimeoutExpired:
                 output, status, code = 'verifier_timeout', 'timeout', None
@@ -202,7 +266,7 @@ class UppaalVerifier:
             (directory / filename).write_text(output, encoding='utf-8', newline='\n')
             results.append({'id': query['id'], 'status': status, 'exit_code': code, 'output_file': filename,
                             'output_sha256': file_hash(directory / filename), 'elapsed_s': time.perf_counter()-started})
-            if status in ('unavailable', 'timeout'):
+            if status in ('unavailable', 'timeout', 'error'):
                 results += [{'id': q['id'], 'status': 'not_run'} for q in queries[i+1:]]
                 break
         report = {**artifact_identity(definition), 'origin': 'uppaal_subprocess',

@@ -27,3 +27,8 @@ class TargetTemperature(CoordinatorEntity, NumberEntity):
     async def async_set_native_value(self, value):
         await self.coordinator.request("/goals", {"target_c": value})
         await self.coordinator.async_request_refresh()
+
+    @property
+    def available(self):
+        data = self.coordinator.data or {}
+        return super().available and data.get("readiness") == "ready" and not data.get("halted")

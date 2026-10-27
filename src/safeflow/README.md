@@ -1,9 +1,12 @@
-# SafeFlow source modules
+# Source boundaries
 
-`environment` is deterministic RC physics; `agent` only requests raw Ollama output;
-`commands` validates the proposal shape; `trace` durably records and replays;
-`controller` owns state changes; `server` exposes the authenticated API;
-`evaluate` runs the declared real-model feasibility gate.
+Current service: core/ (typed definitions and runtime), service.py (sessions),
+verification.py (UPPAAL), monitoring.py (X/A), adapters/ (providers and simulation),
+runner.py (loop), application.py (composition), api.py and cli.py (interfaces).
+See ../../docs/development/architecture.md for contracts and SOLID decisions.
 
-There is no safety enforcer in stage one. Reserved enforcer/wrapper directories
-remain explicitly unimplemented until the model acceptance gate is resolved.
+agent.py, automata.py, commands.py, controller.py, policy.py, behavior.py and the
+packaged policies retain the historical v3 regression/experiment path. The v2
+interpreter is under compat/. environment.py is the retained case-study physics
+implementation, used only through the new environment adapter by the service.
+The old server module entry point redirects to the new gated CLI.

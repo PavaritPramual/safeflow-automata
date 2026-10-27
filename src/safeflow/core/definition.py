@@ -143,7 +143,11 @@ class Definition:
             if edge['outcome'] not in ('allow', 'block', 'halt') or type(edge['reason']) is not str:
                 raise ValueError('invalid_transition_outcome')
             expr = Expression(edge['when'], self.symbols)
-            if 'outcome' in edge['when'] or 'after.' in edge['when']: raise ValueError('guard_cannot_read_future')
+            import ast
+            if any((isinstance(n, ast.Name) and n.id == 'outcome') or
+                   (isinstance(n, ast.Attribute) and isinstance(n.value, ast.Name) and n.value.id == 'after')
+                   for n in ast.walk(expr.tree)):
+                raise ValueError('guard_cannot_read_future')
             self.guards[edge['id']] = expr
         if type(d['properties']) is not list or not d['properties']: raise ValueError('properties_required')
         self.assertions = {}

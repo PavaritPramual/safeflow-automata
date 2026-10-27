@@ -45,7 +45,7 @@ def main(argv=None):
             return 0 if result['status'] == 'conforms' else 2
         from .application import Application
         from .api import make_server
-        from .server import load_key
+        from .configuration import load_key
         if args.interval < 0: parser.error('interval cannot be negative')
         app = Application(args.config, logs=args.logs, verification=args.verification)
         if args.model: app.config['proposer']['model'] = args.model
@@ -64,6 +64,7 @@ def main(argv=None):
         except KeyboardInterrupt: pass
         finally:
             stop.set()
+            app.request_stop()
             # Do not seal an episode while an in-flight model call can still act.
             if worker: worker.join(timeout=1)
             server.server_close()

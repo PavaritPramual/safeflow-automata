@@ -1,33 +1,11 @@
-"""Authenticated local case-study API used by Home Assistant and experiments."""
-import argparse
+"""Historical HTTP fixture and key loading; CLI redirects to the verified API."""
 import hmac
 import json
-import os
-import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from .agent import OllamaAgent
-from .commands import MODES
-from .controller import Controller
-from .environment import Home, Physics
-from .trace import Trace
-from .policy import Policy, DEFAULT_POLICY
+from .environment import Home
 
 
-def load_settings(path):
-    with open(path, encoding="utf-8-sig") as stream:
-        return json.load(stream)
-
-
-def load_key():
-    key = os.environ.get("SAFEFLOW_API_KEY")
-    if not key and os.path.exists(".env"):
-        with open(".env", encoding="utf-8-sig") as stream:
-            for line in stream:
-                if line.startswith("SAFEFLOW_API_KEY="):
-                    key = line.strip().split("=", 1)[1]
-    if not key or len(key) < 24:
-        raise RuntimeError("Set SAFEFLOW_API_KEY (at least 24 characters); see setup guide")
-    return key
+from .configuration import load_key
 
 
 def make_server(controller, key, host="127.0.0.1", port=8765):

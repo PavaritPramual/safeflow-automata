@@ -79,6 +79,14 @@ properties:
     type: invariant
     at: observation
     expression: "outcome == 'allow' or (before.ac == after.ac and before.heater == after.heater and before.fan == after.fan and before.light == after.light)"
+  - id: no_unnecessary_block
+    type: invariant
+    at: decision
+    expression: "kind != 'proposal' or source != 'ai' or outcome != 'block' or ((action == 'ac_cool' and facts.heater == 'on') or (action == 'heater_on' and facts.ac == 'cool') or (action == 'ac_cool' and facts.ac == 'off' and active.rest and clock.rest < params.rest_s))"
+  - id: human_proposal_permitted
+    type: invariant
+    at: decision
+    expression: "kind != 'proposal' or source != 'human' or outcome == 'allow'"
   - id: human_conflict_reachable
     type: reachable
     at: observation

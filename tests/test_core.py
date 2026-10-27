@@ -9,7 +9,7 @@ from safeflow.core.definition import Definition
 from safeflow.core.expressions import Expression
 from safeflow.core.runtime import Runtime
 from safeflow.service import Session
-from safeflow.monitoring import check_records
+from safeflow.monitoring import check_records, check_file
 from safeflow.verification import compile_model, build_bundle, VerificationGate, validate_bundle_files
 
 
@@ -83,6 +83,21 @@ class DefinitionTests(unittest.TestCase):
         xml, _ = compile_model(d)
         self.assertIn('v_compressor', xml)
         self.assertNotIn('v_ac', xml)
+
+    def test_bool_integer_actions_and_explicit_control_states(self):
+        d = Definition({'format_version':1,'id':'other_site','parameters':{},
+            'variables':{'enabled':{'type':'bool','initial':False},'level':{'type':'int','min':0,'max':3,'initial':0}},
+            'clocks':{},'sources':['controller'],'event_kinds':['proposal'],'actions':{'start':{'set':{'enabled':True,'level':2}}},
+            'states':['Idle','Running'],'initial':'Idle',
+            'transitions':[{'id':'start','from':'Idle','to':'Running','on':['proposal'],'when':'True','outcome':'allow','reason':'start'},
+                           {'id':'again','from':'Running','to':'Running','on':['proposal'],'when':'True','outcome':'allow','reason':'repeat'}],
+            'properties':[{'id':'finite_level','type':'invariant','at':'observation','expression':'after.level <= 3'}]})
+        r=Runtime(d,d.initial_facts);event={'source':'controller','kind':'proposal','action':'start'}
+        result=r.observed(event,r.consider(event),{'enabled':True,'level':2},1,0)
+        self.assertEqual(result.state,'Running')
+        self.assertEqual(result.facts['level'],2)
+        xml,_=compile_model(d)
+        self.assertIn('int[0,3] v_level=0;',xml)
 
 
 class RuntimeTests(unittest.TestCase):
@@ -189,6 +204,24 @@ class MonitoringTests(unittest.TestCase):
         bad = copy.deepcopy(sink.rows); bad[2]['event_seq'] = 9
         self.assertEqual(check_records(bad)['status'], 'nonconforming')
 
+    def test_partial_tail_is_incomplete_but_corrupt_complete_line_is_invalid(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'trace.jsonl'
+            path.write_text('{"event":')
+            self.assertEqual(check_file(path)['integrity'],'incomplete')
+            path.write_text('{"event":\n')
+            self.assertEqual(check_file(path)['integrity'],'invalid')
+
+    def test_observation_write_failure_keeps_pending_without_committing_state(self):
+        session,sink=make_session()
+        session.submit('one','ai','proposal','ac_cool')
+        sink.write=lambda row: (_ for _ in ()).throw(OSError('disk full'))
+        with self.assertRaises(OSError): session.observe('one',session.expected_facts('one'),30,0)
+        self.assertTrue(session.halted)
+        self.assertEqual(session.pending,'one')
+        self.assertEqual(session.runtime.facts['ac'],'off')
+        self.assertEqual(session.runtime.time_s,0)
+
 
 class CompilerTests(unittest.TestCase):
     def test_compiler_is_deterministic_and_clocks_are_guards(self):
@@ -196,6 +229,8 @@ class CompilerTests(unittest.TestCase):
         xml, queries = compile_model(d)
         self.assertEqual((xml, queries), compile_model(d))
         root = ET.fromstring(xml)
+        tags=[x.tag for x in root.find('template')]
+        self.assertEqual(tags,sorted(tags,key={'name':0,'location':1,'init':2,'transition':3}.__getitem__))
         self.assertEqual([q['id'] for q in queries], d.property_ids)
         self.assertTrue(any('c_rest' in (x.text or '') for x in root.findall('.//label[@kind="guard"]')))
         self.assertFalse(any('c_rest<' in (x.text or '') for x in root.findall('.//label[@kind="assignment"]')))

@@ -15,10 +15,15 @@ class Loop:
         self.steps = 0
         self.requests = {}
         self.environment_failed = False
+        self.stop_requested = threading.Event()
+
+    def request_stop(self):
+        self.stop_requested.set()
 
     def enqueue(self, raw):
         with self.lock:
             self.session._active()
+            if self.stop_requested.is_set(): raise RuntimeError('loop_stopping')
             event_id = str(uuid.uuid4())
             # The queue receipt is kept in its own durable record. Normalization
             # occurs only when the command replaces an AI round.
@@ -33,6 +38,7 @@ class Loop:
                 if old_seed != seed: raise ValueError('step_request_content_mismatch')
                 return copy.deepcopy(snapshot)
             self.session._active()
+            if self.stop_requested.is_set(): raise RuntimeError('loop_stopping')
             sample = self.environment.sample()
             if sample['facts'] != self.session.runtime.facts or sample['time_s'] != self.session.runtime.time_s:
                 self.session.fault('environment_state_changed_outside_session', expected=self.session.runtime.snapshot(), found=sample)
@@ -48,6 +54,9 @@ class Loop:
                     response = {'raw': None, 'error_kind': 'adapter_error', 'error': type(exc).__name__}
                 metadata = self.proposer.metadata()
             self.session.receive(event_id, 'human' if human else 'ai', response, metadata)
+            if self.stop_requested.is_set():
+                self.session.fault('shutdown_requested', event_id=event_id)
+                raise RuntimeError('loop_stopping')
             try:
                 event = self.human_decoder(response) if human else self.proposer.normalize(response)
                 decision = self.session.decide(event_id, event)

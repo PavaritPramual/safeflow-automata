@@ -1,5 +1,6 @@
 """The only new module that knows the one-room simulator's device API."""
 import copy
+import math
 from ..commands import Command
 from ..environment import Home, Physics
 
@@ -7,7 +8,7 @@ from ..environment import Home, Physics
 class SmartHomeEnvironment:
     def __init__(self, definition, bindings, *, physics=None, step_s=30):
         self.definition, self.bindings = definition, copy.deepcopy(bindings)
-        if type(step_s) not in (int, float) or step_s <= 0: raise ValueError('positive_step_required')
+        if type(step_s) not in (int, float) or not math.isfinite(step_s) or step_s <= 0: raise ValueError('positive_step_required')
         self.step_s = step_s
         self.home = Home(Physics(**(physics or {})))
         if set(bindings) != set(definition.data['variables']): raise ValueError('bindings_must_cover_facts')

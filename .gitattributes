@@ -1,4 +1,7 @@
 # Preserve exact bytes of curated experiment evidence on Windows clones.
 experiments/**/*.json -text whitespace=cr-at-eol
 experiments/**/*.jsonl -text whitespace=cr-at-eol
+experiments/**/*.xml -text whitespace=cr-at-eol
+experiments/**/*.q -text whitespace=cr-at-eol
+experiments/**/*.txt -text whitespace=cr-at-eol
 archive/**/*.json -text whitespace=cr-at-eol

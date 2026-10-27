@@ -1,12 +1,16 @@
 # Only this adapter configuration knows the simulator's native device names.
 policy: policy.yaml
-verification: ../../experiments/verification-2026-10-27
+verification: ../../experiments/verification-2026-10-27-02
 bindings:
   ac: air_conditioner
   heater: heater
   fan: ventilation_fan
   light: light
 step_s: 30
+physics_file: ../../configs/home.json
+display:
+  cooldown_clock: rest
+  cooldown_parameter: rest_s
 proposer:
   provider: ollama
   model: qwen3:1.7b

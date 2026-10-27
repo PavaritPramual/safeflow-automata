@@ -4,6 +4,7 @@ import os
 import subprocess
 import tempfile
 import unittest
+from contextlib import nullcontext
 from pathlib import Path
 from unittest.mock import patch
 from safeflow.core.definition import Definition
@@ -57,18 +58,27 @@ class VerifierContractTests(unittest.TestCase):
             verifier.executable.write_bytes(b'changed-fixture')
             with self.assertRaisesRegex(ValueError, 'binary_changed'): VerificationGate(bundle).require(d)
 
+    def test_model_syntax_error_is_an_error_not_a_license_skip(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _,bundle,verifier=self.setup_bundle(tmp)
+            with patch('safeflow.verification.subprocess.run',return_value=subprocess.CompletedProcess([],1,'','Syntax error in model')):
+                report=verifier.verify(bundle)
+            self.assertEqual(report['results'][0]['status'],'error')
+
 
 @unittest.skipUnless(os.environ.get('SAFEFLOW_VERIFYTA'), 'Set SAFEFLOW_VERIFYTA to run real UPPAAL integration')
 class RealUppaalTests(unittest.TestCase):
     def test_real_queries_and_mutated_guard(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        output = os.environ.get('SAFEFLOW_FORMAL_TEST_OUTPUT')
+        context = nullcontext(output) if output else tempfile.TemporaryDirectory()
+        with context as tmp:
             definition = Definition.load(EXAMPLE)
             verifier = UppaalVerifier(os.environ['SAFEFLOW_VERIFYTA'])
             bundle = build_bundle(definition, Path(tmp)/'original')
             report = verifier.verify(bundle)
-            if report['results'][0]['status'] in ('unavailable', 'timeout'):
+            if report['results'][0]['status'] == 'unavailable' and 'License does not cover verifier.' in (bundle/'verifier-000.txt').read_text(encoding='utf-8'):
                 self.skipTest((bundle/'verifier-000.txt').read_text(encoding='utf-8').strip())
-            self.assertEqual(report['status'], 'passed')
+            self.assertEqual(report['status'], 'passed', report)
             VerificationGate(bundle).require(definition)
             data = definition.data
             data['transitions'][2]['outcome'] = 'allow'

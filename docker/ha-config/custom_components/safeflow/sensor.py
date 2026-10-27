@@ -9,6 +9,7 @@ SENSORS = [
     ("simulation_time", "simulation_time_s", "s"),
     ("pending", "pending_requests", None),
     ("status", "halted", None),
+    ("readiness", "readiness", None),
     ("decision", "last_result.decision", None),
     ("decision_reason", "last_result.reason", None),
     ("cooldown", "automata.cooldown", None),
@@ -42,4 +43,5 @@ class SafeFlowSensor(CoordinatorEntity, SensorEntity):
             return None
         data = self.coordinator.data or {}
         return {"enforcement": data.get("enforcement"), "last_result": data.get("last_result"),
-                "model": data.get("model", {}).get("model"), "automata": data.get("automata")}
+                "model": data.get("model", {}).get("model"), "automata": data.get("automata"),
+                "readiness": data.get("readiness"), "issue": data.get("issue")}

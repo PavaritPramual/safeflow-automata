@@ -14,6 +14,7 @@ class Runtime:
         definition.validate_facts(facts)
         self.definition, self.spec = definition, definition.data
         self.facts, self.time_s = copy.deepcopy(facts), timestamp(time_s)
+        self.origin_s = self.time_s
         self.state = self.spec['initial']
         self.resets = {name: None for name in self.spec['clocks']}
 
@@ -23,7 +24,7 @@ class Runtime:
         for prefix, values in (('facts', self.facts), ('before', self.facts), ('after', after or self.facts), ('params', self.spec['parameters'])):
             ctx.update({prefix + '.' + k: v for k, v in values.items()})
         for name, reset in self.resets.items():
-            ctx['clock.' + name] = 0 if reset is None else self.time_s - reset
+            ctx['clock.' + name] = self.time_s - (self.origin_s if reset is None else reset)
             ctx['active.' + name] = reset is not None
         return ctx
 
@@ -73,5 +74,5 @@ class Runtime:
 
     def snapshot(self):
         return {'state': self.state, 'facts': copy.deepcopy(self.facts), 'time_s': self.time_s,
-                'clocks': {k: {'active': v is not None, 'elapsed_s': 0 if v is None else self.time_s-v}
+                'clocks': {k: {'active': v is not None, 'elapsed_s': self.time_s-(self.origin_s if v is None else v)}
                            for k, v in self.resets.items()}}

@@ -111,12 +111,34 @@ class LoopTests(unittest.TestCase):
         self.assertEqual(loop.steps, 1)
         self.assertEqual(loop.proposer.calls, 1)
 
+    def test_numeric_model_adapter_can_replace_llm_without_core_changes(self):
+        class IndexAdapter:
+            def metadata(self): return {'provider':'numeric-test-fixture','not_real_ai':True}
+            def propose(self, observation, seed=0): return {'raw':3}
+            def normalize(self, response):
+                return {'kind':'proposal','action':{3:'light_on'}[response['raw']]}
+        loop,sink=self.make_loop(IndexAdapter())
+        snapshot=loop.step()
+        self.assertEqual(snapshot['devices']['light'],'on')
+        self.assertEqual(sink.rows[1]['raw'],{'raw':3})
+
     def test_malformed_proposer_is_controlled_by_definition(self):
         p = OllamaProposer('test', 'http://fixture', 'choose', ['hold'])
         p.propose = lambda *args: {'raw': {'message': {'content': 'nonsense'}}}
         loop, _ = self.make_loop(p)
         self.assertEqual(loop.step()['last_result']['decision'], 'block')
         self.assertEqual(loop.environment.sample()['time_s'], 30)
+
+    def test_stop_during_model_call_logs_without_operating_environment(self):
+        loop, sink = self.make_loop()
+        def propose(*args):
+            loop.request_stop()
+            return {'native_action': 'ac_cool'}
+        loop.proposer.propose = propose
+        with self.assertRaisesRegex(RuntimeError, 'stopping'): loop.step()
+        self.assertEqual(loop.environment.sample()['time_s'], 0)
+        self.assertEqual(loop.environment.sample()['facts']['ac'], 'off')
+        self.assertEqual([x['event'] for x in sink.rows], ['session_start','received','fault'])
 
 
 class ApplicationTests(unittest.TestCase):
