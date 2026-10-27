@@ -17,7 +17,7 @@ lovelace:
   dashboards:
     safeflow-lab:
       mode: yaml
-      title: SafeFlow Lab
+      title: บ้านจำลอง
       icon: mdi:home-shield
       show_in_sidebar: true
       filename: dashboard.yaml

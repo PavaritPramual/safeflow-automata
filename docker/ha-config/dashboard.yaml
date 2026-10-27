@@ -1,35 +1,142 @@
-title: SafeFlow Lab
+title: บ้านจำลอง
 views:
-  - title: Simulated home
-    path: home
+- title: ทดลองควบคุมบ้าน
+  path: home
+  type: panel
+  cards:
+  - type: vertical-stack
     cards:
-      - type: markdown
-        content: |
-          ## SafeFlow AI
-          บ้านจำลองหนึ่งห้อง — เริ่มควบคุมได้เมื่อสถานะ Readiness เป็น ready
-          ทุกข้อเสนอผ่านตัวกำกับตามนิยามที่ทวนสอบแล้ว รวมข้อยกเว้นคำสั่งคน
-          สวิตช์ส่งคำขอเข้าคิว ปุ่ม **Run one round** ใช้คำสั่งคนก่อน AI หนึ่งรอบ
-      - type: entities
-        title: Room and goals
-        entities:
-          - sensor.safeflow_temperature
-          - sensor.safeflow_power
-          - sensor.safeflow_energy
-          - sensor.safeflow_simulation_time
-          - sensor.safeflow_pending
-          - sensor.safeflow_status
-          - sensor.safeflow_readiness
-          - sensor.safeflow_decision
-          - sensor.safeflow_decision_reason
-          - sensor.safeflow_cooldown
-          - number.safeflow_target_temperature
-          - switch.safeflow_light_required
-      - type: entities
-        title: Propose device commands
-        entities:
-          - switch.safeflow_air_conditioner
-          - switch.safeflow_heater
-          - switch.safeflow_ventilation_fan
-          - switch.safeflow_light
-          - button.safeflow_step
-          - button.safeflow_reset
+    - type: markdown
+      content: '# ทดลองควบคุมบ้าน
+
+        กด **ทำงาน 1 รอบ** → อ่านผลด้านล่าง → ดูสถานะบ้าน
+
+
+        ถ้าไม่มีคำสั่งคนในคิว AI จะเสนอคำสั่ง ถ้ามีคำสั่งคน รอบนั้นจะใช้คำสั่งคนก่อน
+
+        นี่คือบ้านจำลอง ไม่ได้ควบคุมเครื่องใช้ไฟฟ้าจริง'
+    - type: markdown
+      content: '{% set ready = states(''sensor.safeflow_readiness'') %}
+
+        {% set r = state_attr(''sensor.safeflow_status'', ''last_result'') or {} %}
+
+        {% set a = state_attr(''sensor.safeflow_status'', ''automata'') or {} %}
+
+        {% set actions = {''light_on'':''เปิดไฟ'',''light_off'':''ปิดไฟ'',''ac_cool'':''เปิดแอร์'',''cooling_on'':''เปิดแอร์'',''ac_off'':''ปิดแอร์'',''cooling_off'':''ปิดแอร์'',''heater_on'':''เปิดฮีเตอร์'',''heater_off'':''ปิดฮีเตอร์'',''fan_on'':''เปิดพัดลมระบายอากาศ'',''fan_off'':''ปิดพัดลมระบายอากาศ'',''hold'':''คงอุปกรณ์ตามเดิม''}
+        %}
+
+        {% set reasons = {''permitted'':''คำสั่งผ่านกฎที่กำหนด'',''human_exception'':''ใช้ข้อยกเว้นสำหรับคำสั่งคน'',''ac_heater_conflict'':''แอร์กับฮีเตอร์ขัดแย้งกัน'',''ac_minimum_off_time'':''แอร์ยังพักไม่ครบเวลาที่กำหนด'',''unusable_proposal'':''ข้อเสนอใช้ไม่ได้
+        เช่น คำตอบผิดรูปแบบหรือหมดเวลา''} %}
+
+        **ระบบ:** {{ ''พร้อมใช้งาน'' if ready == ''ready'' else ''ยังไม่พร้อม — '' ~ ready }}
+
+
+        **โมเดล:** {{ state_attr(''sensor.safeflow_status'', ''model'') or ''ยังไม่มีข้อมูล'' }} · **เวลาจำลอง:**
+        {{ states(''sensor.safeflow_simulation_time'') }} วินาที · **คำสั่งคนรออยู่:** {{ states(''sensor.safeflow_pending'')
+        }}
+
+
+        ## ผลรอบล่าสุด
+
+        {% if r %}
+
+        **1. ผู้เสนอ:** {{ {''ai'':''AI'',''human'':''คน''}.get(r.get(''source''), r.get(''source'',''ไม่ทราบ''))
+        }}
+
+
+        **2. คำสั่งที่เสนอ:** {{ actions.get(r.get(''action''), r.get(''action'') or ''ไม่มีคำสั่งที่แปลงได้'')
+        }}
+
+
+        **3. ผลจากตัวกำกับ:** {{ {''allow'':''อนุญาต'',''block'':''บล็อก — ไม่นำคำสั่งนี้ไปใช้'',''halt'':''หยุดระบบ''}.get(r.get(''outcome''),
+        r.get(''decision'',''ยังไม่มีผล'')) }}
+
+
+        **เหตุผล:** {{ reasons.get(r.get(''reason''), r.get(''reason'',''ยังไม่มีเหตุผล'')) }}
+
+        {% else %}
+
+        ยังไม่มีผลใน session นี้ กดปุ่มทำงาน 1 รอบเพื่อเริ่ม
+
+        {% endif %}
+
+
+        {% if a.get(''halted'') %}**ระบบหยุดแล้ว:** {{ a.get(''issue'') }}{% endif %}'
+    - type: button
+      name: ทำงาน 1 รอบ (ใช้คำสั่งคนในคิวก่อน AI)
+      icon: mdi:play-circle
+      entity: button.safeflow_step
+      show_state: false
+      tap_action:
+        action: perform-action
+        perform_action: button.press
+        target:
+          entity_id: button.safeflow_step
+      icon_height: 32px
+    - type: markdown
+      content: กดครั้งเดียวแล้วรอ AI ตอบ ผลด้านบนจะแสดงรอบที่จบล่าสุดจนกว่ารอบใหม่เสร็จ แต่ละรอบที่จบทำให้เวลาจำลองเพิ่ม
+        30 วินาที หากมีคิวคนมากกว่าหนึ่งคำสั่ง ต้องกดจนคิวหมดจึงกลับไปใช้ AI
+    - type: glance
+      title: สถานะบ้านที่อ่านกลับหลังทำงาน
+      show_state: true
+      entities:
+      - entity: switch.safeflow_air_conditioner
+        name: แอร์
+        tap_action:
+          action: more-info
+      - entity: switch.safeflow_heater
+        name: ฮีเตอร์
+        tap_action:
+          action: more-info
+      - entity: switch.safeflow_ventilation_fan
+        name: พัดลม
+        tap_action:
+          action: more-info
+      - entity: switch.safeflow_light
+        name: ไฟ
+        tap_action:
+          action: more-info
+    - type: entities
+      title: ค่าปัจจุบันและเป้าหมายให้ AI
+      show_header_toggle: false
+      entities:
+      - entity: sensor.safeflow_temperature
+        name: อุณหภูมิห้อง
+      - entity: number.safeflow_target_temperature
+        name: อุณหภูมิที่ต้องการ
+      - entity: switch.safeflow_light_required
+        name: ต้องการเปิดไฟ
+      - entity: sensor.safeflow_power
+        name: กำลังไฟรวม
+      - entity: sensor.safeflow_energy
+        name: พลังงานสะสม
+    - type: markdown
+      content: '## ลองคำสั่งคนแทรก
+
+        สวิตช์ด้านล่างส่งคำขอเข้าคิว **ยังไม่เปลี่ยนอุปกรณ์ทันที** หลังส่งให้กด **ทำงาน 1 รอบ** แล้วดูผลด้านบน สถานะสวิตช์จะสะท้อนค่าจริงที่อ่านกลับ
+        จึงอาจยังไม่เปลี่ยนตอนเข้าคิว คำสั่งคนใช้ข้อยกเว้นตามนิยามของตัวอย่างนี้'
+    - type: entities
+      title: ส่งคำขอของคน (รอกดทำงาน 1 รอบ)
+      show_header_toggle: false
+      entities:
+      - entity: switch.safeflow_air_conditioner
+        name: ขอเปิด / ปิดแอร์
+      - entity: switch.safeflow_heater
+        name: ขอเปิด / ปิดฮีเตอร์
+      - entity: switch.safeflow_ventilation_fan
+        name: ขอเปิด / ปิดพัดลม
+      - entity: switch.safeflow_light
+        name: ขอเปิด / ปิดไฟ
+    - type: button
+      entity: button.safeflow_reset
+      name: เริ่มการทดลองใหม่
+      icon: mdi:restart
+      show_state: false
+      tap_action:
+        action: perform-action
+        perform_action: button.press
+        target:
+          entity_id: button.safeflow_reset
+        confirmation:
+          text: เริ่มบ้านและ session ใหม่? หลักฐาน session เดิมจะยังถูกเก็บไว้
+      icon_height: 32px
