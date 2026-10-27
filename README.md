@@ -1,100 +1,123 @@
 # SafeFlow AI
 
-A formal framework for automata-based runtime control of AI proposals.
+ระบบกำกับข้อเสนอการกระทำของ AI ด้วยออโตมาตา ผู้ดูแลกำหนดกฎผ่าน YAML แล้วทวนสอบด้วย UPPAAL ก่อนเปิดใช้งาน ตัวกำกับตรวจข้อเสนอก่อนส่งให้สภาพแวดล้อมทำงาน และตรวจผลจริงที่อ่านกลับ
 
-SafeFlow loads a site definition, checks it with UPPAAL, and evaluates incoming
-proposal events before an environment executes them. The first case study uses
-Ollama, a synthetic one-room home, and Home Assistant. Model intelligence is not
-an acceptance gate for the supervisor.
+กรณีศึกษาปัจจุบันใช้ Ollama กับบ้านจำลองหนึ่งห้อง แสดงผลและรับคำสั่งคนผ่าน Home Assistant เป้าหมายคือความถูกต้องของตัวกำกับและการเปลี่ยนตัวเชื่อม คุณภาพการเลือกคำสั่งของ AI ไม่ใช่เกณฑ์ผ่าน
 
-## Current status — 2026-10-27
+## สถานะล่าสุด — 27 ตุลาคม 2569
 
-The YAML/IR engine, versioned session API, observation monitoring, Ollama and
-OpenAI-compatible adapters are implemented. The production entry point requires
-a complete, matching UPPAAL verification bundle.
+- ชุดทดสอบผ่าน **106/106** รวมการทดสอบ API และ UPPAAL จริง
+- นิยาม A/B/C ทวนสอบผ่านชุดละ **12 คุณสมบัติ รวม 36/36**
+- เปลี่ยนเวลาพักและรหัสอุปกรณ์ผ่านไฟล์ โดยไม่แก้ production Python ของตัวกำกับ
+- รันผ่าน Home Assistant จริงครบ B + qwen3:1.7b, C + qwen3:1.7b และ C + qwen3:0.6b แต่ละกรณีได้คำตอบจริงอย่างน้อย 4 ครั้ง มีคำสั่งคนหนึ่งรอบ แล้ว AI กลับมาทำงาน
+- ตรวจ trace ที่ปิดครบด้วยตัวตรวจพฤติกรรม เฉลยอิสระ และการเล่นซ้ำบ้านจำลองแล้ว
 
-**UPPAAL passes all 12 properties** for the current home definition. An independent
-mutated-guard test fails the conflict/cooldown properties as expected. Actual
-Ollama + Home Assistant runs include human intervention and autonomous resumption,
-with sealed traces conforming to the pinned definition. See the
-[acceptance report](experiments/implementation-2026-10-27/README.md) for exact test
-results, raw outputs, observed limits and earlier unsuccessful attempts.
+เปิด [หลักฐานตรวจรับล่าสุด](experiments/prepresentation-2026-10-27/README.md) หรือ [หลักฐานพัฒนาระบบก่อนหน้า](experiments/implementation-2026-10-27/README.md) เพื่อดูผลดิบและข้อจำกัด ผลตรวจเป็นของนิยามและเครื่องมือรุ่นที่ระบุไว้ เครื่องอื่นหรือการแก้นิยามต้องสร้างผลตรวจที่ตรงกันใหม่
 
-The successful [verification bundle](experiments/implementation-2026-10-27/verification/attempt-07/verification.json) binds to
-this implementation and the local verifier binary. Other installations or changed
-code/definitions must generate a matching bundle before activation.
+## A/B/C คืออะไร
 
-The [pre-presentation acceptance](experiments/prepresentation-2026-10-27/README.md)
-adds verified 90-second/renamed profiles and actual 1.7B/0.6B model switching,
-without changing production Python source. The expanded suite passes 106 tests.
+เป็น **ชุดตั้งค่าและนิยามตัวอย่าง (profiles)** ไม่ใช่ชื่อ test case เดี่ยว แต่ละชุดนำไปทดสอบหลายกรณี
 
-## Start here
+| ชุด | เวลาพักแอร์ | รหัสในนิยาม | เมื่อปิดแอร์แล้วพักมา 120 วินาที ก่อน AI ขอเปิดใหม่ |
+|---|---:|---|---|
+| A | 180 วินาที | เดิม | บล็อก |
+| B | 90 วินาที | เดิม | อนุญาต |
+| C | 90 วินาที | cooling_unit / cooling_on / cooling_off | อนุญาต |
 
-- [Editable site definition and adapter settings](examples/smart-home/README.md)
-- [Setup and Home Assistant operation](docs/guides/smart-home.md)
-- [Edit a policy, switch profiles/models and rehearse](docs/guides/prepresentation.md)
-- [Definition language, automata and formal assumptions](docs/guides/automata.md)
-- [API request/response examples](docs/guides/api.md)
-- [Architecture and SOLID boundaries](docs/development/architecture.md)
+คอลัมน์ผลสมมติว่าไม่มีฮีเตอร์เปิดค้าง ชุด C ยังควบคุมแอร์ native ตัวเดิมผ่าน bindings ไม่ใช่การเพิ่มอุปกรณ์กายภาพชนิดใหม่ Test case เช่น ขอบเวลา 89/90/91 และ 179/180/181 วินาที เปิดครั้งแรก ปิดซ้ำ คำสั่งคน และคำตอบผิดรูปแบบ ถูกตรวจแยกจากการรันโมเดลจริง ดู [ไฟล์ตัวอย่าง](examples/smart-home/variants/README.md)
 
-## Verify, then run
+## ส่งไปทวนสอบ UPPAAL อย่างไร
 
-From the repository root, install the package into a virtual environment:
+```text
+policy.yaml → ตรวจรูปแบบและการอ้างอิง → แบบจำลองกลาง (IR)
+            → ตัวแปลงสร้าง model.xml + query-xxx.q
+            → เรียก verifyta จริงทีละคุณสมบัติ
+            → เก็บผลดิบและ verification bundle ที่ผูกกับ hash
+```
+
+SafeFlow สร้าง timed automata จาก state, event, guard, clock, transition และผลของ action ที่ประกาศไว้ แปลง invariant เป็น query แบบ `A[]` และความสามารถเข้าถึงสถานะเป็น `E<>` รวมตรวจ deadlock และความครบถ้วนของการตัดสิน ตัวเชื่อมเรียก verifier ผ่าน subprocess แล้วตรวจทั้งรหัสจบโปรแกรมและคำตอบว่า formula ผ่านจริง เก็บ XML, IR, query, ผลดิบ, รุ่นตัวแปลง และ hash ของ verifier ไว้เป็นหลักฐาน
+
+ต้องผ่านครบและตรงกับนิยามที่จะโหลดจึงเปิดควบคุมได้ นิยามเปลี่ยน ผลไม่ครบ เครื่องมือผิดพลาด หรือหมดเวลา จะไม่พร้อมใช้งาน ระหว่างรันใช้ Automata Engine ตัดสินจาก IR และตรวจเหตุการณ์/ผลจริง **ไม่ได้เรียก UPPAAL ใหม่ทุกคำสั่ง** การทวนสอบครอบคลุมแบบจำลองและสมมติฐานที่ประกาศ ไม่ได้พิสูจน์สมการความร้อนของบ้านจริง ดู [ภาษานิยามและสมมติฐาน](docs/guides/automata.md)
+
+## กดเล่นเดโมตอนพรีเซนต์
+
+ผู้ชมดูหน้า Home Assistant ส่วนผู้สาธิตเปิดบริการจาก terminal ก่อน เริ่มด้วยชุด B แบบกดทีละรอบ จะติดตามคำสั่งคนและ AI ได้ชัดเจน คำสั่งต่อไปนี้ใช้จากราก repository บนเครื่อง lab ปัจจุบันที่ติดตั้งและมีผลตรวจแล้ว
+
+Terminal แรก:
+
+```powershell
+./.venv/Scripts/python.exe -m safeflow serve --config examples/smart-home/variants/cooldown-90/lab.yaml --model qwen3:1.7b --logs logs/present-B-01
+```
+
+Terminal ที่สอง:
+
+```powershell
+docker compose -f docker/compose.yaml up -d homeassistant
+```
+
+1. เปิด [Home Assistant](http://localhost:8123) เข้าบัญชี lab แล้วเลือก **SafeFlow Lab** ตรวจ Readiness = ready
+2. ตั้งอุณหภูมิเป้าหมายหรือไฟ แล้วกด **Run one round** เพื่อให้ AI เสนอคำสั่ง ดูผลตัดสินและสถานะที่อ่านกลับ รอให้รอบจบก่อนกดต่อ
+3. เปิดสวิตช์แอร์เพื่อใส่คำสั่งคนในคิว แล้วกด **Run one round** คำสั่งคนจะใช้รอบนี้
+4. กดอีกครั้ง AI จะกลับมาทำงาน เวลาในบ้านจำลองเดินครั้งละ 30 วินาที
+5. รอรอบจบและคิวว่าง จากนั้น Ctrl+C เพื่อปิด trace
+6. หากต้องการแสดง C ให้เริ่มบริการใหม่ด้วย `--config examples/smart-home/variants/renamed-90/lab.yaml` และใช้ชื่อโฟลเดอร์ logs ใหม่ หากจะสลับโมเดล ใช้ config C เดิมแล้วเปลี่ยนเป็น `--model qwen3:0.6b` โดยเริ่ม session ใหม่
+
+การกดจริงไม่รับรองว่า AI จะเสนอคำสั่งผิดกฎให้เห็นเอง ใช้ตารางและหลักฐานทดสอบควบคุมเวลาอธิบายผลการบล็อก ไม่อ้างว่าข้อมูลเตรียมทดสอบเป็นคำตอบโมเดลจริง ดู [คู่มือซ้อมครบหนึ่งรอบและตรวจ trace](docs/guides/prepresentation.md)
+
+หยุด lab เมื่อจบโดยคงบัญชีและข้อมูลเดิม:
+
+```powershell
+docker compose -f docker/compose.yaml stop homeassistant
+```
+
+## ติดตั้งและทวนสอบบนเครื่องใหม่
+
+ต้องมี Python 3.11+, Docker Desktop, Ollama และ UPPAAL verifier ที่มีสิทธิ์ใช้งาน เหล่านี้เป็นขั้นเตรียมก่อนพรีเซนต์ ไม่ต้องติดตั้งใหม่ทุกครั้งที่กดเดโม
 
 ```powershell
 ./scripts/setup-local.ps1 -Python python
-```
-
-Use a verifier executable with appropriate license rights. Each output directory
-must be new; do not overwrite evidence:
-
-```powershell
-./.venv/Scripts/python.exe -m safeflow verify --definition examples/smart-home/policy.yaml --output logs/verified-home-01 --verifyta /path/to/verifyta
+./.venv/Scripts/python.exe -m safeflow verify --definition examples/smart-home/policy.yaml --output logs/verified-home-01 --verifyta /path/to/verifyta.exe
 ./.venv/Scripts/python.exe -m safeflow serve --config examples/smart-home/lab.yaml --verification logs/verified-home-01
 ```
 
-A failed verification keeps the control API unavailable. `/health`, `/state` and
-`/v1/verification` explain readiness; no bypass flag is provided by this entry
-point. For automatic rounds add `--interval 5`; each completed home round advances
-30 simulated seconds. People use the Home Assistant dashboard at
-[localhost:8123](http://localhost:8123). CLI administration starts and configures
-the service; the API is the integration boundary for other programs.
+เปลี่ยนเส้นทาง verifyta ให้ตรงเครื่องและใช้โฟลเดอร์ผลตรวจใหม่ทุกครั้ง หากใช้ B/C ให้เปลี่ยนทั้ง definition และ config ให้เป็นชุดเดียวกัน บริการมี API แบบมีรุ่นสำหรับระบบอื่น ส่วนผู้ใช้บ้านใช้หน้า Home Assistant การเพิ่ม `--interval 5` ทำให้รันอัตโนมัติโดยพักจริง 5 วินาทีระหว่างรอบ เวลาจำลองยังเดินรอบละ 30 วินาที
+
+ตรวจสถานะได้จาก `/health`, `/state` และ `/v1/verification` หากทวนสอบไม่ผ่านจะเปิดควบคุมไม่ได้
+
+## คู่มือและการทดสอบ
+
+- [นิยามบ้านและตัวเชื่อม](examples/smart-home/README.md)
+- [ตั้งค่า Home Assistant](docs/guides/smart-home.md)
+- [คู่มือซ้อมและสลับโมเดล](docs/guides/prepresentation.md)
+- [ตัวอย่าง API](docs/guides/api.md)
+- [สถาปัตยกรรมและขอบเขต SOLID](docs/development/architecture.md)
 
 ```powershell
 ./.venv/Scripts/python.exe -m unittest discover -s tests -v
 ./.venv/Scripts/python.exe -m safeflow check logs/session-ID.jsonl
 ```
 
-Set `SAFEFLOW_VERIFYTA` when running tests to include real verification and a
-mutated-guard check. That integration test is explicitly skipped if the verifier
-is unavailable. Unit subprocess fixtures are not formal evidence.
+ตั้ง `SAFEFLOW_VERIFYTA` เป็นเส้นทาง verifier เพื่อให้ชุดทดสอบเรียก UPPAAL จริง รวมกรณีจงใจแก้ guard ให้ผิด หากไม่มี verifier จะรายงานข้าม integration test ไม่ถือว่าผ่านการพิสูจน์
 
-## Repository map
+## โครงสร้าง repository
 
-| Directory | Purpose |
+| โฟลเดอร์ | หน้าที่ |
 |---|---|
-| `src/safeflow` | Core, application service, API, verification and adapters |
-| `tests` | Requirement oracles, adapter contracts, API and compatibility tests |
-| `examples` | Editable definitions and site bindings |
-| `docs` | Durable operator/developer documentation and research context |
-| `formal` | Formal semantics and verification instructions |
-| `experiments` | Curated evidence with provenance and limitations |
-| `scripts` | Current setup, integration and resource tools |
-| `tools` | Development-only prepared experiment utilities |
-| `docker` | Home Assistant deployment and integration |
-| `logs` | Ignored local runtime and build output |
-| `archive` | Retired approaches and historical generators |
+| src/safeflow | แกน บริการ API ตัวเชื่อม และการทวนสอบ |
+| tests | ทดสอบข้อกำหนด ตัวเชื่อม API และ compatibility |
+| examples | นิยามและ bindings ที่ผู้ดูแลแก้ได้ |
+| docs | คู่มือใช้งาน สถาปัตยกรรม และบริบทวิจัย |
+| formal | ข้อตกลงความหมายและวิธีทวนสอบ |
+| experiments | หลักฐานที่คัดแล้วพร้อมที่มาและข้อจำกัด |
+| scripts / tools | เครื่องมือติดตั้ง ตรวจระบบ และทดลอง |
+| docker | การเชื่อม Home Assistant |
+| logs | ผลรันเฉพาะเครื่อง ไม่ส่งเข้า Git |
+| archive | วิธีเก่าและไฟล์ประวัติ |
 
-No presentation folder is reserved inside the package. The empty slide and module
-placeholders were removed; the [migration table](docs/development/layout-migration.csv)
-records moves. Earlier stage-one/stage-two results and prepared-command runs are
-retained as historical evidence, not acceptance of this new architecture.
+[ตารางย้ายไฟล์](docs/development/layout-migration.csv) ระบุเส้นทางที่ปรับแล้ว ผลทดลองเก่าเก็บเพื่ออ้างอิงตามรุ่น ไม่ถือเป็นผลรับรองระบบปัจจุบัน
 
-## Boundaries
+## ขอบเขตผลที่ยืนยันได้
 
-Only the declared finite variables, actions, effects and timing abstraction are
-verified. Thermal constants are synthetic. Trace conformance is limited to the
-recorded path; interpreter replay is not an independent proof. Physical homes,
-continuous RL actions, arbitrary UPPAAL syntax and 8 GB hardware acceptance are
-not established. Credentials, model weights and Home Assistant storage remain
-local and ignored by Git.
+ทวนสอบเฉพาะตัวแปร การกระทำ ผล และเวลาตามแบบจำลองที่ประกาศ บ้านใช้สมการความร้อนสังเคราะห์ การตรวจ trace ยืนยันเฉพาะเส้นทางที่บันทึกไว้ การเล่นซ้ำด้วย interpreter เดียวกันไม่ใช่ข้อพิสูจน์อิสระเพียงอย่างเดียว
+
+ยังไม่ได้ตรวจรับบ้านกายภาพ การกระทำ RL แบบต่อเนื่อง ทุกโดเมน ไวยากรณ์ UPPAAL ทุกชนิด หรือเครื่อง RAM 8 GB ข้อมูลลับ น้ำหนักโมเดล และข้อมูลถาวร Home Assistant เก็บเฉพาะเครื่องและไม่ส่งขึ้น Git
