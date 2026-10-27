@@ -37,6 +37,8 @@ class Trace:
 def replay(records, home):
     """Reproduce executed commands and goal changes; never call a model."""
     records = list(records)
+    if any(r.get('schema_version') == 4 for r in records):
+        raise ValueError('use_safeflow_monitoring_for_v4_session_traces')
     versions = {r.get("schema_version") for r in records if r.get("event") == "reset"}
     if 3 in versions:
         from .behavior import check_records

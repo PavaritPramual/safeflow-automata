@@ -4,6 +4,8 @@ Replay uses the runtime interpreter and is not an independent formal proof.
 Independent requirement oracles and UPPAAL comparisons live in tests.
 """
 import copy
+import json
+from pathlib import Path
 from collections import deque
 from .core.definition import Definition
 from .core.runtime import Runtime
@@ -89,7 +91,7 @@ def check_records(records, require_seal=True):
                 same(runtime.snapshot(), row['snapshot'], 'final_snapshot')
                 sealed = True
             else: raise ValueError(('unknown_record', None, name))
-        if runtime is None or pending or set(received)-set(decided) or (require_seal and not sealed):
+        if runtime is None or pending or human_queue or set(received)-set(decided) or (require_seal and not sealed):
             report['issue'] = {'line': len(rows)+1, 'reason': 'incomplete_or_live_session'}
         else: report.update(status='conforms', integrity='complete' if sealed else 'live_prefix')
     except (KeyError, TypeError, ValueError) as exc:
@@ -101,3 +103,23 @@ def check_records(records, require_seal=True):
         report.update(status='nonconforming', integrity='invalid', issue=issue)
     report['steps'] = len(report['path'])
     return report
+
+
+def check_file(path, require_seal=True):
+    try:
+        text = Path(path).read_text(encoding='utf-8')
+    except (OSError, UnicodeError) as exc:
+        return {'status': 'inconclusive', 'integrity': 'incomplete', 'issue': {'reason': str(exc)}, 'steps': 0, 'path': []}
+    lines, rows = text.splitlines(), []
+    for index, line in enumerate(lines, 1):
+        try:
+            if not line.strip(): raise ValueError('blank_trace_line')
+            row = json.loads(line)
+            if type(row) is not dict: raise ValueError('record_object_required')
+            rows.append(row)
+        except ValueError as exc:
+            truncated = index == len(lines) and not text.endswith('\n')
+            return {'status': 'inconclusive' if truncated else 'nonconforming',
+                    'integrity': 'incomplete' if truncated else 'invalid',
+                    'issue': {'line': index, 'reason': str(exc)}, 'steps': 0, 'path': []}
+    return check_records(rows, require_seal=require_seal)

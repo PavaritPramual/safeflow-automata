@@ -97,46 +97,15 @@ def make_server(controller, key, host="127.0.0.1", port=8765):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default="configs/home.json")
-    parser.add_argument("--host", default="0.0.0.0")
-    parser.add_argument("--port", type=int, default=8765)
-    parser.add_argument("--model", default="qwen3:1.7b")
-    parser.add_argument("--unshielded", action="store_true", help="Explicit baseline: disable safety guards")
-    parser.add_argument("--output-mode", choices=("tools", "json"), default="tools")
-    parser.add_argument("--ollama-url", default="http://127.0.0.1:11434")
-    parser.add_argument("--trace", default="logs/home.jsonl")
-    parser.add_argument("--policy", default=str(DEFAULT_POLICY), help="Load one immutable policy at startup")
-    parser.add_argument("--interval", type=float, default=0,
-                        help="Wall-clock pause between automatic rounds; 0 means manual stepping")
-    args = parser.parse_args()
-    if args.interval < 0:
-        parser.error("interval cannot be negative")
-    settings = load_settings(args.config)
-    controller = Controller(Home(Physics(**settings["physics"])),
-                            OllamaAgent(args.model, args.ollama_url, output_mode=args.output_mode), Trace(args.trace),
-                            enforcement=not args.unshielded, policy=Policy.load(args.policy))
-    server = make_server(controller, load_key(), args.host, args.port)
-    stop = threading.Event()
-    if args.interval:
-        def loop():
-            while not stop.wait(args.interval):
-                try:
-                    controller.step()
-                except Exception:
-                    controller.halted = True
-                    break
-        threading.Thread(target=loop, daemon=True).start()
-    print(f"SafeFlow API on port {args.port}; model={args.model}; trace={args.trace}", flush=True)
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        stop.set()
-        server.server_close()
-        if not controller.halted and not controller.queue:
-            controller.finish()
+    """Keep the old module entry point, but always use the verified service.
+
+    make_server/Controller below are retained for historical regression tests;
+    the supported command line cannot start that ungated prototype.
+    """
+    import sys
+    from .cli import main as entry
+    raise SystemExit(entry(['serve', *sys.argv[1:]]))
+
 
 
 if __name__ == "__main__":
