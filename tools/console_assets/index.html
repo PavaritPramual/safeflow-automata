@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeFlow console</title><link rel="stylesheet" href="/style.css"><script src="/console.js" defer></script></head>
+<body>
+<h1>SafeFlow console</h1>
+<div class="controls"><button id="start">Start</button><button id="stop">Stop after round</button><label><input type="checkbox" id="follow" checked> Auto-scroll</label></div>
+<p id="status" role="status">Connecting...</p>
+<form id="human"><label for="action">Human command</label> <select id="action" required></select> <button id="send" type="submit">Queue</button> <span id="pending"></span></form>
+<p id="notice" role="status"></p>
+<div class="latest"><span id="output-title">Latest AI output</span><pre id="last-output">Waiting...</pre><span>Latest decision</span><pre id="last-decision">—</pre></div>
+<div id="console" role="log" aria-label="Live console" tabindex="0"></div>
+<details id="rules"><summary>Rules</summary><p id="policy"></p><img id="overview" src="/overview.svg" alt="Device automata overview" hidden><p id="overview-caption"></p></details>
+</body></html>

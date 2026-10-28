@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1060" viewBox="0 0 1800 1060">
+<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L9,4 L0,8 Z" fill="#111"/></marker></defs>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="48" text-anchor="start" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#111">Home device state model</text>
+<text x="1760" y="47" text-anchor="end" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#111">UML composite state view | Profile A</text>
+<rect x="40" y="85" width="1720" height="795" rx="15" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="70" y="122" text-anchor="start" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#111">Home</text>
+<polyline points="40,145 1760,145" fill="none" stroke="#111" stroke-width="1.8"/>
+<polyline points="900,145 900,880" fill="none" stroke="#111" stroke-width="1.8" stroke-dasharray="9 7"/>
+<polyline points="40,505 1760,505" fill="none" stroke="#111" stroke-width="1.8" stroke-dasharray="9 7"/>
+<text x="70" y="184" text-anchor="start" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#111">Air conditioner + rest clock</text>
+<rect x="150" y="280" width="170" height="80" rx="12" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="235.0" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111">Off</text>
+<text x="235.0" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#111">AC = off</text>
+<rect x="650" y="280" width="190" height="80" rx="12" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="745.0" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111">Cooling</text>
+<text x="745.0" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#111">AC = cool</text>
+<circle cx="95" cy="320" r="8" fill="#111"/>
+<polyline points="103,320 150,320" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="320,320 650,320" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="485" y="218" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#111">ac_cool</text>
+<text x="485" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#111">[H or (AI and G_ac)]</text>
+<text x="485" y="272" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#111">/ allow</text>
+<polyline points="745,360 745,407 235,407 235,360" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="490" y="392" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">ac_off [AI or H] / allow; start rest := 0</text>
+<text x="75" y="449" text-anchor="start" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#111">Off: repeated ac_off does not restart the rest clock</text>
+<text x="75" y="480" text-anchor="start" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#111">Off: AI ac_cool [not G_ac] / block</text>
+<text x="930" y="184" text-anchor="start" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#111">Heater</text>
+<rect x="1030" y="280" width="170" height="80" rx="12" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="1115.0" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111">Off</text>
+<text x="1115.0" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#111">heater = off</text>
+<rect x="1530" y="280" width="190" height="80" rx="12" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="1625.0" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111">On</text>
+<text x="1625.0" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#111">heater = on</text>
+<circle cx="975" cy="320" r="8" fill="#111"/>
+<polyline points="983,320 1030,320" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="1200,320 1530,320" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="1365.0" y="216" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">heater_on</text>
+<text x="1365.0" y="243" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">[H or (AI and AC=off)]</text>
+<text x="1365.0" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">/ allow</text>
+<polyline points="1625,360 1625,412 1115,412 1115,360" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="1370.0" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">heater_off [AI or H] / allow</text>
+<text x="935" y="449" text-anchor="start" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#111">AI heater_on [AC=cool] / block (in either mode)</text>
+<text x="935" y="480" text-anchor="start" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#111">A human may leave AC and heater on together</text>
+<text x="70" y="546" text-anchor="start" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#111">Ventilation fan</text>
+<rect x="150" y="638" width="170" height="80" rx="12" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="235.0" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111">Off</text>
+<text x="235.0" y="699" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#111">fan = off</text>
+<rect x="650" y="638" width="190" height="80" rx="12" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="745.0" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111">On</text>
+<text x="745.0" y="699" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#111">fan = on</text>
+<circle cx="95" cy="678" r="8" fill="#111"/>
+<polyline points="103,678 150,678" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="320,678 650,678" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="485.0" y="574" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">fan_on</text>
+<text x="485.0" y="601" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">[AI or H]</text>
+<text x="485.0" y="628" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">/ allow</text>
+<polyline points="745,718 745,770 235,770 235,718" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="490.0" y="753" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">fan_off [AI or H] / allow</text>
+<text x="75" y="817" text-anchor="start" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">Both commands are permitted; changes fan only</text>
+<text x="75" y="851" text-anchor="start" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#111">Repeated on/off commands keep the same mode</text>
+<text x="930" y="546" text-anchor="start" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#111">Light</text>
+<rect x="1030" y="638" width="170" height="80" rx="12" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="1115.0" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111">Off</text>
+<text x="1115.0" y="699" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#111">light = off</text>
+<rect x="1530" y="638" width="190" height="80" rx="12" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="1625.0" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111">On</text>
+<text x="1625.0" y="699" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#111">light = on</text>
+<circle cx="975" cy="678" r="8" fill="#111"/>
+<polyline points="983,678 1030,678" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="1200,678 1530,678" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="1365.0" y="574" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">light_on</text>
+<text x="1365.0" y="601" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">[AI or H]</text>
+<text x="1365.0" y="628" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">/ allow</text>
+<polyline points="1625,718 1625,770 1115,770 1115,718" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="1370.0" y="753" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">light_off [AI or H] / allow</text>
+<text x="935" y="817" text-anchor="start" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">Both commands are permitted; changes light only</text>
+<text x="935" y="851" text-anchor="start" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#111">light_required is an AI goal, not a permission guard</text>
+<text x="40" y="923" text-anchor="start" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#111">G_ac = heater=off AND (no rest history OR rest &gt;= 180 s)</text>
+<text x="40" y="963" text-anchor="start" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#111">H = human exception to conflict/rest guards; AI = model proposal. One command per round.</text>
+<text x="40" y="999" text-anchor="start" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#111">hold, block and unrelated commands keep device modes unchanged; observed time still advances.</text>
+<text x="40" y="1035" text-anchor="start" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#111">Self-loops omitted. In Cooling, AI ac_cool [heater=on] is still blocked. One shared policy governs all regions.</text>
+</svg>
